@@ -4,6 +4,7 @@ dist/
 *.tsbuildinfo
 .ondevice/storybook.requires.ts
 storybook-static/
-.lostpixel/
+.lostpixel/current/
+.lostpixel/difference/
 .tamagui/
 coverage/

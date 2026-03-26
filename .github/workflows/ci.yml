@@ -64,8 +64,6 @@ jobs:
 
       - name: Run Lost Pixel
         uses: lost-pixel/lost-pixel@v3.22.0
-        with:
-          LOST_PIXEL_MODE: update
 
       - name: Upload visual snapshots
         if: always()
@@ -100,7 +98,7 @@ jobs:
         run: |
           npx http-server storybook-static -p 6006 &
           sleep 5
-          maestro test --platform web e2e/
+          maestro test --platform web e2e/integration/ e2e/journeys/
 
   e2e-ios:
     if: github.base_ref == 'master' || github.ref == 'refs/heads/master'

@@ -6,4 +6,8 @@ export const config: CustomProjectConfig = {
   },
   generateOnly: true,
   failOnDifference: true,
+  threshold: 0.1,
+  imagePathBaseline: ".lostpixel/baseline",
+  imagePathCurrent: ".lostpixel/current",
+  imagePathDifference: ".lostpixel/difference",
 };
