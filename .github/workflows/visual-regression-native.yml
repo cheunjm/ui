@@ -1,0 +1,85 @@
+name: Visual Regression (Native)
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  maestro-ios:
+    name: Maestro (iOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Start iOS Simulator
+        uses: futureware-tech/simulator-action@v4
+        with:
+          model: iPhone 16
+          os_version: ">=18.0"
+
+      - name: Build and run Expo on iOS Simulator
+        run: npx expo run:ios --no-install
+
+      - name: Install Maestro
+        uses: dniHze/maestro-test-action@v1
+        with:
+          flow: .maestro/visual-regression
+          report: maestro-report-ios.xml
+
+      - name: Upload Maestro report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-ios-report
+          path: maestro-report-ios.xml
+
+  maestro-android:
+    name: Maestro (Android)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build Expo Android
+        run: npx expo run:android --no-install --variant debug
+
+      - name: Run Maestro tests on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          ram-size: 2048M
+          target: default
+          script: |
+            adb install android/app/build/outputs/apk/debug/app-debug.apk
+            npx maestro test --format=junit --output=maestro-report-android.xml .maestro/visual-regression
+
+      - name: Upload Maestro report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-android-report
+          path: maestro-report-android.xml

@@ -1,0 +1,25 @@
+name: Visual Regression
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  lost-pixel:
+    name: Lost Pixel (Web)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build Storybook
+        run: npm run storybook:build
+
+      - name: Run Lost Pixel
+        uses: lost-pixel/lost-pixel@v3.22.0

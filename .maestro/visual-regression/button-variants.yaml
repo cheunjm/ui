@@ -1,0 +1,39 @@
+appId: com.cheunjm.ui
+# NOTE: Requires ios.bundleIdentifier / android.package in app.config.ts
+---
+- launchApp
+
+# Navigate to Button Variants
+- tapOn: "Atoms"
+- tapOn: "Button"
+- tapOn: "Variants"
+
+- tapOn: "Filled"
+- assertScreenshot:
+    path: button-filled.png
+    thresholdPercentage: 98
+
+- tapOn: "Outlined"
+- assertScreenshot:
+    path: button-outlined.png
+    thresholdPercentage: 98
+
+- tapOn: "Text"
+- assertScreenshot:
+    path: button-text.png
+    thresholdPercentage: 98
+
+- tapOn: "Elevated"
+- assertScreenshot:
+    path: button-elevated.png
+    thresholdPercentage: 98
+
+- tapOn: "Tonal"
+- assertScreenshot:
+    path: button-tonal.png
+    thresholdPercentage: 98
+
+- tapOn: "Disabled"
+- assertScreenshot:
+    path: button-disabled.png
+    thresholdPercentage: 98

@@ -5,3 +5,10 @@ dist/
 .ondevice/storybook.requires.ts
 storybook-static/
 .vercel
+
+# Lost Pixel
+.lostpixel/current/
+.lostpixel/difference/
+
+# Maestro
+.maestro/screenshots/

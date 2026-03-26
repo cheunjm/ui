@@ -1,0 +1,19 @@
+appId: com.cheunjm.ui
+# NOTE: Requires ios.bundleIdentifier / android.package in app.config.ts
+---
+- launchApp
+
+# Navigate to Button States
+- tapOn: "Atoms"
+- tapOn: "Button"
+- tapOn: "States"
+
+- tapOn: "Default"
+- assertScreenshot:
+    path: button-state-default.png
+    thresholdPercentage: 98
+
+- tapOn: "Disabled"
+- assertScreenshot:
+    path: button-state-disabled.png
+    thresholdPercentage: 98
