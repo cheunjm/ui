@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run storybook:build",
+  "outputDirectory": "storybook-static",
+  "installCommand": "npm ci",
+  "framework": null
+}
