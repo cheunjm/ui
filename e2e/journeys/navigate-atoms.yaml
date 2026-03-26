@@ -1,0 +1,30 @@
+appId: com.cheunjm.ui
+url: http://localhost:6006
+---
+- launchApp
+
+# Navigate through all Button variant stories
+- openLink: http://localhost:6006/?path=/story/atoms-button-variants--filled
+- assertVisible: "Filled Button"
+- takeScreenshot: journey-button-filled
+
+- openLink: http://localhost:6006/?path=/story/atoms-button-variants--outlined
+- assertVisible: "Outlined Button"
+- takeScreenshot: journey-button-outlined
+
+- openLink: http://localhost:6006/?path=/story/atoms-button-variants--text
+- assertVisible: "Text Button"
+
+- openLink: http://localhost:6006/?path=/story/atoms-button-variants--elevated
+- assertVisible: "Elevated Button"
+
+- openLink: http://localhost:6006/?path=/story/atoms-button-variants--tonal
+- assertVisible: "Tonal Button"
+
+- openLink: http://localhost:6006/?path=/story/atoms-button-variants--disabled
+- assertVisible: "Disabled Button"
+- takeScreenshot: journey-button-disabled
+
+# Navigate to Button states stories
+- openLink: http://localhost:6006/?path=/story/atoms-button-states--default
+- takeScreenshot: journey-button-states

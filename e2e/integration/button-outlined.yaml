@@ -1,0 +1,7 @@
+appId: com.cheunjm.ui
+url: http://localhost:6006
+---
+- launchApp
+- openLink: http://localhost:6006/?path=/story/atoms-button-variants--outlined
+- assertVisible: "Outlined Button"
+- takeScreenshot: button-outlined
