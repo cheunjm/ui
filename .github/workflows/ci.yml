@@ -121,11 +121,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Boot iOS simulator
+        run: |
+          xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
+          xcrun simctl bootstatus "iPhone 15 Pro" -b
+
       - name: Build iOS app
         run: npx expo run:ios --no-install
 
       - name: Run Maestro E2E (iOS)
         run: maestro test --platform ios e2e/integration/ e2e/journeys/
+
+      - name: Shutdown simulator
+        if: always()
+        run: xcrun simctl shutdown all 2>/dev/null || true
 
   e2e-android:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
