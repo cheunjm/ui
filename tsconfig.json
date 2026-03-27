@@ -7,5 +7,6 @@
       "@storybook/react": ["./node_modules/@storybook/react-native/node_modules/@storybook/react"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".ondevice/**/*.ts", ".ondevice/**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx", ".ondevice/**/*.ts", ".ondevice/**/*.tsx", ".storybook/**/*.ts", ".storybook/**/*.tsx"],
+  "exclude": [".ondevice/storybook.requires.ts"]
 }
