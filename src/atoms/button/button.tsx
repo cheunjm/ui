@@ -3,14 +3,15 @@ import type { ButtonProps } from "./button.type";
 
 const StyledButton = styled(TamaguiButton, {
   name: "Button",
-  borderRadius: "$md",
-  paddingHorizontal: "$lg",
+  borderRadius: "$full",
+  paddingHorizontal: "$2xl",
   paddingVertical: "$sm",
   fontFamily: "$label",
   fontWeight: "500",
   fontSize: 14,
   letterSpacing: 0.1,
   minHeight: 40,
+  minWidth: 64,
 
   variants: {
     variant: {

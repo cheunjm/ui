@@ -1,60 +1,99 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { XStack, YStack, Text } from "tamagui";
 import { Button } from "../../button";
+import type { ButtonVariant } from "../../button.type";
 
-const meta: Meta<typeof Button> = {
+const types: ButtonVariant[] = [
+  "filled",
+  "outlined",
+  "text",
+  "elevated",
+  "tonal",
+];
+
+const typeLabels: Record<ButtonVariant, string> = {
+  filled: "Filled",
+  outlined: "Outlined",
+  text: "Text",
+  elevated: "Elevated",
+  tonal: "Tonal",
+};
+
+const states = ["enabled", "hovered", "focused", "pressed", "disabled"] as const;
+
+const stateLabels: Record<(typeof states)[number], string> = {
+  enabled: "Enabled",
+  hovered: "Hovered",
+  focused: "Focused",
+  pressed: "Pressed",
+  disabled: "Disabled",
+};
+
+function VariantLabel({ label }: { label: string }) {
+  return (
+    <XStack
+      backgroundColor="#E8DEF8"
+      borderRadius={14}
+      paddingHorizontal={12}
+      paddingVertical={6}
+      justifyContent="center"
+    >
+      <Text fontSize={12} fontWeight="500" color="#6750A4">
+        {label}
+      </Text>
+    </XStack>
+  );
+}
+
+function Variants() {
+  return (
+    <XStack
+      backgroundColor="#FFFFFF"
+      borderRadius={12}
+      borderWidth={1}
+      borderColor="#E0E0E0"
+      padding={24}
+    >
+      <YStack gap={12}>
+        {/* Column headers */}
+        <XStack gap={12}>
+          <XStack width={100} />
+          {states.map((s) => (
+            <XStack key={s} width={120} justifyContent="center">
+              <VariantLabel label={stateLabels[s]} />
+            </XStack>
+          ))}
+        </XStack>
+
+        {/* Rows — one per type */}
+        {types.map((type) => (
+          <XStack key={type} gap={12} alignItems="center">
+            <XStack width={100}>
+              <VariantLabel label={typeLabels[type]} />
+            </XStack>
+            {states.map((state) => (
+              <XStack key={state} width={120} justifyContent="center">
+                <Button
+                  variant={type}
+                  disabled={state === "disabled"}
+                >
+                  Button
+                </Button>
+              </XStack>
+            ))}
+          </XStack>
+        ))}
+      </YStack>
+    </XStack>
+  );
+}
+
+const meta: Meta = {
   title: "Atoms/Button/Variants",
-  component: Button,
-  argTypes: {
-    variant: {
-      control: "select",
-      options: ["filled", "outlined", "text", "elevated", "tonal"],
-    },
-    disabled: { control: "boolean" },
-  },
+  component: Variants,
 };
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj;
 
-export const Filled: Story = {
-  args: {
-    children: "Filled Button",
-    variant: "filled",
-  },
-};
-
-export const Outlined: Story = {
-  args: {
-    children: "Outlined Button",
-    variant: "outlined",
-  },
-};
-
-export const Text: Story = {
-  args: {
-    children: "Text Button",
-    variant: "text",
-  },
-};
-
-export const Elevated: Story = {
-  args: {
-    children: "Elevated Button",
-    variant: "elevated",
-  },
-};
-
-export const Tonal: Story = {
-  args: {
-    children: "Tonal Button",
-    variant: "tonal",
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    children: "Disabled Button",
-    variant: "filled",
-    disabled: true,
-  },
-};
+export const Default: Story = {};
