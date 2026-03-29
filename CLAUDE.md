@@ -18,6 +18,12 @@ npm start          # Expo dev server (press i for iOS, a for Android, w for web)
 - `src/tokens/custom/` — hand-written tokens (animation, etc.)
 - `.ondevice/` — Storybook React Native config
 
+## Secrets Management
+
+- **Doppler project**: `cheunjm-ui` with environments `develop` / `stage` / `main`
+- **CI**: `DOPPLER_TOKEN` GitHub secret → `dopplerhq/cli-action@v3` → `doppler run --`
+- **Local**: `DOPPLER_TOKEN=$(op item get "doppler.pt.jaemincheun" --vault "Openclaw" --fields token --reveal)`
+
 ## Conventions
 
 - Components use Tamagui `styled()` internally, expose MD3 API externally

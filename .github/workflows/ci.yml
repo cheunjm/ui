@@ -7,38 +7,45 @@ on:
       - master
   pull_request:
 
+env:
+  DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+
 jobs:
   lint-type-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dopplerhq/cli-action@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: doppler run -- npm ci
 
       - name: Typecheck
-        run: npm run typecheck
+        run: doppler run -- npm run typecheck
 
   unit-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dopplerhq/cli-action@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: doppler run -- npm ci
 
       - name: Run unit tests
-        run: npm test -- --ci --coverage
+        run: doppler run -- npm test -- --ci --coverage
 
       - name: Upload coverage
         if: always()
@@ -52,16 +59,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dopplerhq/cli-action@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: doppler run -- npm ci
 
       - name: Build Storybook
-        run: npm run storybook:build
+        run: doppler run -- npm run storybook:build
 
       - name: Run Lost Pixel
         uses: lost-pixel/lost-pixel@v3.22.0
@@ -80,13 +89,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dopplerhq/cli-action@v3
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: doppler run -- npm ci
 
       - name: Install Maestro
         run: |
@@ -100,10 +111,10 @@ jobs:
           sudo chmod +x /usr/bin/google-chrome
 
       - name: Build Storybook
-        run: npm run storybook:build
+        run: doppler run -- npm run storybook:build
 
       - name: Serve Storybook and run E2E
         run: |
           npx http-server storybook-static -p 6006 &
           sleep 5
-          maestro test --platform web e2e/integration/ e2e/journeys/
+          doppler run -- maestro test --platform web e2e/integration/ e2e/journeys/
