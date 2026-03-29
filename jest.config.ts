@@ -10,6 +10,7 @@ const config: Config = {
     "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@sentry/react-native|native-base|react-native-svg|tamagui|@tamagui/.*)",
   ],
   testMatch: ["**/*.test.ts", "**/*.test.tsx"],
+  coverageReporters: ["text", "lcov", "json-summary"],
   collectCoverageFrom: [
     "src/**/*.{ts,tsx}",
     "!src/**/*.story.tsx",
