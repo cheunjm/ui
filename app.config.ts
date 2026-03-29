@@ -8,7 +8,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: "portrait",
   userInterfaceStyle: "automatic",
   platforms: ["ios", "android", "web"],
+  ios: {
+    bundleIdentifier: "com.aramiworks.ui.storybook",
+  },
+  android: {
+    package: "com.aramiworks.ui.storybook",
+  },
   web: {
     bundler: "metro",
+  },
+  extra: {
+    eas: {
+      projectId: "f87a5c53-8609-45df-8af5-67cde87098c1",
+    },
   },
 });

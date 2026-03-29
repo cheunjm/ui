@@ -1,0 +1,41 @@
+{
+  "cli": {
+    "version": ">= 18.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "develop": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "develop",
+      "env": {
+        "APP_ENV": "develop"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "stage": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "stage",
+      "env": {
+        "APP_ENV": "stage"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "production": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "channel": "production",
+      "env": {
+        "APP_ENV": "production"
+      },
+      "ios": {
+        "simulator": true
+      }
+    }
+  }
+}

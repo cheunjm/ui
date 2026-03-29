@@ -3,8 +3,7 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches:
-      - master
+    branches: [main, develop, stage]
   pull_request:
 
 env:
@@ -25,6 +24,9 @@ jobs:
 
       - name: Install dependencies
         run: doppler run -- npm ci
+
+      - name: Lint
+        run: doppler run -- npm run lint
 
       - name: Typecheck
         run: doppler run -- npm run typecheck
