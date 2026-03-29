@@ -1,6 +1,6 @@
-import type { Config } from "jest";
+import type { Config } from "@jest/types";
 
-const config: Config = {
+const config: Config.InitialOptions = {
   preset: "jest-expo",
   setupFilesAfterEnv: ["./jest.setup.ts"],
   moduleNameMapper: {
