@@ -6,6 +6,10 @@ on:
     branches: [main, develop, stage]
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
@@ -56,7 +60,59 @@ jobs:
           name: coverage
           path: coverage/
 
-  visual-regression:
+      - name: Comment on PR with coverage summary
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summaryPath = 'coverage/coverage-summary.json';
+            const marker = '<!-- coverage-comment -->';
+            let body = marker + '\n';
+
+            if (!fs.existsSync(summaryPath)) {
+              body += '### :bar_chart: Coverage\nCoverage report not found — tests may have failed before generating coverage.';
+            } else {
+              const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
+              const total = summary.total;
+
+              const fmt = (metric) => `${metric.pct}% (${metric.covered}/${metric.total})`;
+
+              body += '### :bar_chart: Coverage Summary\n\n';
+              body += '| Metric | Coverage | Covered/Total |\n';
+              body += '|--------|----------|---------------|\n';
+              body += `| Statements | ${total.statements.pct}% | ${total.statements.covered}/${total.statements.total} |\n`;
+              body += `| Branches | ${total.branches.pct}% | ${total.branches.covered}/${total.branches.total} |\n`;
+              body += `| Functions | ${total.functions.pct}% | ${total.functions.covered}/${total.functions.total} |\n`;
+              body += `| Lines | ${total.lines.pct}% | ${total.lines.covered}/${total.lines.total} |\n`;
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+  visual-baseline:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -74,16 +130,132 @@ jobs:
       - name: Build Storybook
         run: doppler run -- npm run storybook:build
 
-      - name: Run Lost Pixel
+      - name: Generate baseline screenshots
         uses: lost-pixel/lost-pixel@v3.22.0
+        env:
+          LOST_PIXEL_MODE: update
+
+      - name: Save baselines to cache
+        uses: actions/cache/save@v4
+        with:
+          path: .lostpixel/baseline/
+          key: lost-pixel-baselines-${{ github.sha }}
+
+  visual-regression:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dopplerhq/cli-action@v3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: doppler run -- npm ci
+
+      - name: Build Storybook
+        run: doppler run -- npm run storybook:build
+
+      - name: Restore baselines from cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .lostpixel/baseline/
+          key: lost-pixel-baselines-
+          restore-keys: |
+            lost-pixel-baselines-
+
+      - name: Run Lost Pixel comparison
+        id: lostpixel
+        uses: lost-pixel/lost-pixel@v3.22.0
+        env:
+          LOST_PIXEL_GENERATE_META: "true"
         continue-on-error: true
 
-      - name: Upload visual snapshots
+      - name: Upload visual diff artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: lost-pixel-snapshots
-          path: .lostpixel/
+          name: lost-pixel-diffs
+          path: |
+            .lostpixel/current/
+            .lostpixel/difference/
+
+      - name: Comment on PR with visual diff summary
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const metaPath = '.lostpixel/current/meta.json';
+            const marker = '<!-- lost-pixel-comment -->';
+            let body = marker + '\n';
+
+            const lpResult = '${{ steps.lostpixel.outcome }}';
+
+            if (lpResult === 'success') {
+              body += '### :white_check_mark: Visual Regression — No Changes\n';
+              body += 'All screenshots match the baseline.';
+            } else {
+              body += '### :warning: Visual Regression — Changes Detected\n\n';
+
+              if (fs.existsSync(metaPath)) {
+                const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+                const entries = Object.entries(meta);
+                const changed = entries.filter(([, v]) => !v.isWithinThreshold);
+                const withinThreshold = entries.filter(([, v]) => v.isWithinThreshold && v.pixelDifference > 0);
+
+                body += '| Shot | Pixel Diff | % Diff | Status |\n';
+                body += '|------|-----------|--------|--------|\n';
+                for (const [name, data] of entries) {
+                  const pct = (data.pixelDifferencePercentage * 100).toFixed(2);
+                  const status = data.isWithinThreshold ? ':yellow_circle: Within threshold' : ':red_circle: Changed';
+                  body += `| \`${name}\` | ${data.pixelDifference} | ${pct}% | ${status} |\n`;
+                }
+
+                body += `\n**${changed.length} shot(s) changed** beyond threshold.`;
+                if (withinThreshold.length > 0) {
+                  body += ` ${withinThreshold.length} within threshold.`;
+                }
+              } else {
+                const baselineExists = fs.existsSync('.lostpixel/baseline');
+                if (!baselineExists) {
+                  body += ':information_source: No baselines found — this is expected for the first PR after enabling visual regression.\n';
+                  body += 'Baselines will be generated when this PR merges to main.';
+                } else {
+                  body += 'Could not find `meta.json`. Check the `lost-pixel-diffs` artifact for diff images.';
+                }
+              }
+
+              body += '\n\nDownload the **lost-pixel-diffs** artifact to review diff images.';
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
 
   e2e-web:
     runs-on: ubuntu-latest

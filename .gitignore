@@ -5,7 +5,6 @@ dist/
 .ondevice/storybook.requires.ts
 storybook-static/
 .vercel
-.lostpixel/current/
-.lostpixel/difference/
+.lostpixel/
 .tamagui/
 coverage/
