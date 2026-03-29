@@ -1,0 +1,50 @@
+appId: com.aramiworks.ui.storybook
+---
+- launchApp
+
+# Spacer
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-spacer-stories-spacer-horizontal--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-spacer-horizontal
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-spacer-stories-spacer-vertical--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-spacer-vertical
+
+# Text
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-text-stories-text-body--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-text-body
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-text-stories-text-display--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-text-display
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-text-stories-text-headline--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-text-headline
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-text-stories-text-label--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-text-label
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-text-stories-text-title--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-text-title
+
+# Button
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-button-stories-button-anatomy--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-button-anatomy
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-button-stories-button-overview--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-button-overview
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-button-stories-button-specs--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-button-specs
+
+- openLink: "cheunjm-ui://?STORYBOOK_STORY_ID=atoms-button-stories-button-variants--default"
+- waitForAnimationToEnd
+- takeScreenshot: android-atoms-button-variants

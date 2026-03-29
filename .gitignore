@@ -6,5 +6,10 @@ dist/
 storybook-static/
 .vercel
 .lostpixel/
+.lostpixel-ios/
+.lostpixel-android/
+e2e-results/
+ios/
+android/
 .tamagui/
 coverage/

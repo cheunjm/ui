@@ -388,3 +388,430 @@ jobs:
       - name: Fail if E2E failed
         if: steps.e2e.outcome == 'failure'
         run: exit 1
+
+  visual-baseline-ios:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Boot iOS simulator
+        run: |
+          xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
+          xcrun simctl bootstatus "iPhone 15 Pro" -b
+
+      - name: Build iOS app
+        run: npx expo run:ios --no-install --device "iPhone 15 Pro"
+
+      - name: Run visual screenshot flow
+        run: |
+          export PATH="$HOME/.maestro/bin:$PATH"
+          mkdir -p .lostpixel-ios/baseline
+          maestro test --platform ios --output .lostpixel-ios/baseline e2e/visual/screenshot-all-stories.yaml
+          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-ios/baseline/ 2>/dev/null || true
+
+      - name: Save iOS baselines to cache
+        uses: actions/cache/save@v4
+        with:
+          path: .lostpixel-ios/baseline/
+          key: lost-pixel-baselines-ios-${{ github.sha }}
+
+      - name: Shutdown simulator
+        if: always()
+        run: xcrun simctl shutdown all 2>/dev/null || true
+
+  visual-regression-ios:
+    if: github.event_name == 'pull_request'
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Boot iOS simulator
+        run: |
+          xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
+          xcrun simctl bootstatus "iPhone 15 Pro" -b
+
+      - name: Build iOS app
+        run: npx expo run:ios --no-install --device "iPhone 15 Pro"
+
+      - name: Restore iOS baselines from cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .lostpixel-ios/baseline/
+          key: lost-pixel-baselines-ios-
+          restore-keys: |
+            lost-pixel-baselines-ios-
+
+      - name: Run visual screenshot flow
+        id: ios_screenshots
+        continue-on-error: true
+        run: |
+          export PATH="$HOME/.maestro/bin:$PATH"
+          mkdir -p .lostpixel-ios/current
+          maestro test --platform ios e2e/visual/screenshot-all-stories.yaml
+          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-ios/current/ 2>/dev/null || true
+
+      - name: Compare iOS screenshots
+        id: ios_diff
+        continue-on-error: true
+        run: |
+          mkdir -p .lostpixel-ios/difference
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const baselineDir = '.lostpixel-ios/baseline';
+            const currentDir = '.lostpixel-ios/current';
+            const diffDir = '.lostpixel-ios/difference';
+            const results = {};
+
+            if (!fs.existsSync(baselineDir) || fs.readdirSync(baselineDir).length === 0) {
+              console.log('No baselines found — skipping comparison');
+              fs.writeFileSync('.lostpixel-ios/meta.json', JSON.stringify({ _noBaselines: true }));
+              process.exit(0);
+            }
+
+            const baselineFiles = fs.readdirSync(baselineDir).filter(f => f.endsWith('.png'));
+            const currentFiles = fs.readdirSync(currentDir).filter(f => f.endsWith('.png'));
+            let hasChanges = false;
+
+            for (const file of new Set([...baselineFiles, ...currentFiles])) {
+              const bPath = path.join(baselineDir, file);
+              const cPath = path.join(currentDir, file);
+              const name = file.replace('.png', '');
+
+              if (!fs.existsSync(bPath)) {
+                results[name] = { status: 'new', pixelDifference: 0, pixelDifferencePercentage: 0 };
+                hasChanges = true;
+              } else if (!fs.existsSync(cPath)) {
+                results[name] = { status: 'removed', pixelDifference: 0, pixelDifferencePercentage: 0 };
+                hasChanges = true;
+              } else {
+                const b = fs.readFileSync(bPath);
+                const c = fs.readFileSync(cPath);
+                if (Buffer.compare(b, c) !== 0) {
+                  results[name] = { status: 'changed', pixelDifference: -1, pixelDifferencePercentage: -1 };
+                  fs.copyFileSync(cPath, path.join(diffDir, file));
+                  hasChanges = true;
+                } else {
+                  results[name] = { status: 'unchanged', pixelDifference: 0, pixelDifferencePercentage: 0 };
+                }
+              }
+            }
+
+            fs.writeFileSync('.lostpixel-ios/meta.json', JSON.stringify(results, null, 2));
+            if (hasChanges) process.exit(1);
+          "
+
+      - name: Upload iOS visual diff artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lost-pixel-diffs-ios
+          path: |
+            .lostpixel-ios/current/
+            .lostpixel-ios/difference/
+
+      - name: Comment on PR with iOS visual diff
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const metaPath = '.lostpixel-ios/meta.json';
+            const marker = '<!-- lost-pixel-ios-comment -->';
+            let body = marker + '\n';
+
+            const diffResult = '${{ steps.ios_diff.outcome }}';
+            const screenshotResult = '${{ steps.ios_screenshots.outcome }}';
+
+            if (screenshotResult !== 'success') {
+              body += '### :iphone: iOS Visual Regression — Screenshot Failed\n';
+              body += 'Maestro screenshot flow failed. Check the `lost-pixel-diffs-ios` artifact.';
+            } else if (diffResult === 'success') {
+              body += '### :iphone: iOS Visual Regression — No Changes\n';
+              body += 'All iOS screenshots match the baseline.';
+            } else if (fs.existsSync(metaPath)) {
+              const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+
+              if (meta._noBaselines) {
+                body += '### :iphone: iOS Visual Regression\n';
+                body += ':information_source: No baselines found — expected for first PR. Baselines generated on merge to main.';
+              } else {
+                body += '### :warning: iOS Visual Regression — Changes Detected\n\n';
+                const entries = Object.entries(meta);
+                const changed = entries.filter(([, v]) => v.status !== 'unchanged');
+
+                body += '| Shot | Status |\n';
+                body += '|------|--------|\n';
+                for (const [name, data] of entries) {
+                  let status = ':green_circle: Unchanged';
+                  if (data.status === 'changed') status = ':red_circle: Changed';
+                  else if (data.status === 'new') status = ':blue_circle: New';
+                  else if (data.status === 'removed') status = ':white_circle: Removed';
+                  body += `| \`${name}\` | ${status} |\n`;
+                }
+
+                body += `\n**${changed.length} shot(s) changed.** Download **lost-pixel-diffs-ios** artifact for details.`;
+              }
+            } else {
+              body += '### :iphone: iOS Visual Regression\n';
+              body += 'No comparison data available.';
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Shutdown simulator
+        if: always()
+        run: xcrun simctl shutdown all 2>/dev/null || true
+
+  visual-baseline-android:
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start Android emulator
+        run: |
+          export ANDROID_HOME="$HOME/Library/Android/sdk"
+          export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+          emulator -avd Pixel_7_API_34 -no-window -no-audio -no-boot-anim &
+          adb wait-for-device
+          adb shell input keyevent 82
+
+      - name: Build Android app
+        run: npx expo run:android
+
+      - name: Run visual screenshot flow
+        run: |
+          export PATH="$HOME/.maestro/bin:$PATH"
+          mkdir -p .lostpixel-android/baseline
+          maestro test --platform android e2e/visual/screenshot-all-stories-android.yaml
+          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-android/baseline/ 2>/dev/null || true
+
+      - name: Save Android baselines to cache
+        uses: actions/cache/save@v4
+        with:
+          path: .lostpixel-android/baseline/
+          key: lost-pixel-baselines-android-${{ github.sha }}
+
+      - name: Kill emulator
+        if: always()
+        run: adb emu kill 2>/dev/null || true
+
+  visual-regression-android:
+    if: github.event_name == 'pull_request'
+    runs-on: [self-hosted, macOS, ARM64]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start Android emulator
+        run: |
+          export ANDROID_HOME="$HOME/Library/Android/sdk"
+          export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
+          emulator -avd Pixel_7_API_34 -no-window -no-audio -no-boot-anim &
+          adb wait-for-device
+          adb shell input keyevent 82
+
+      - name: Build Android app
+        run: npx expo run:android
+
+      - name: Restore Android baselines from cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .lostpixel-android/baseline/
+          key: lost-pixel-baselines-android-
+          restore-keys: |
+            lost-pixel-baselines-android-
+
+      - name: Run visual screenshot flow
+        id: android_screenshots
+        continue-on-error: true
+        run: |
+          export PATH="$HOME/.maestro/bin:$PATH"
+          mkdir -p .lostpixel-android/current
+          maestro test --platform android e2e/visual/screenshot-all-stories-android.yaml
+          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-android/current/ 2>/dev/null || true
+
+      - name: Compare Android screenshots
+        id: android_diff
+        continue-on-error: true
+        run: |
+          mkdir -p .lostpixel-android/difference
+          node -e "
+            const fs = require('fs');
+            const path = require('path');
+            const baselineDir = '.lostpixel-android/baseline';
+            const currentDir = '.lostpixel-android/current';
+            const diffDir = '.lostpixel-android/difference';
+            const results = {};
+
+            if (!fs.existsSync(baselineDir) || fs.readdirSync(baselineDir).length === 0) {
+              fs.writeFileSync('.lostpixel-android/meta.json', JSON.stringify({ _noBaselines: true }));
+              process.exit(0);
+            }
+
+            const baselineFiles = fs.readdirSync(baselineDir).filter(f => f.endsWith('.png'));
+            const currentFiles = fs.readdirSync(currentDir).filter(f => f.endsWith('.png'));
+            let hasChanges = false;
+
+            for (const file of new Set([...baselineFiles, ...currentFiles])) {
+              const bPath = path.join(baselineDir, file);
+              const cPath = path.join(currentDir, file);
+              const name = file.replace('.png', '');
+
+              if (!fs.existsSync(bPath)) {
+                results[name] = { status: 'new' };
+                hasChanges = true;
+              } else if (!fs.existsSync(cPath)) {
+                results[name] = { status: 'removed' };
+                hasChanges = true;
+              } else {
+                const b = fs.readFileSync(bPath);
+                const c = fs.readFileSync(cPath);
+                if (Buffer.compare(b, c) !== 0) {
+                  results[name] = { status: 'changed' };
+                  fs.copyFileSync(cPath, path.join(diffDir, file));
+                  hasChanges = true;
+                } else {
+                  results[name] = { status: 'unchanged' };
+                }
+              }
+            }
+
+            fs.writeFileSync('.lostpixel-android/meta.json', JSON.stringify(results, null, 2));
+            if (hasChanges) process.exit(1);
+          "
+
+      - name: Upload Android visual diff artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lost-pixel-diffs-android
+          path: |
+            .lostpixel-android/current/
+            .lostpixel-android/difference/
+
+      - name: Comment on PR with Android visual diff
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const metaPath = '.lostpixel-android/meta.json';
+            const marker = '<!-- lost-pixel-android-comment -->';
+            let body = marker + '\n';
+
+            const diffResult = '${{ steps.android_diff.outcome }}';
+            const screenshotResult = '${{ steps.android_screenshots.outcome }}';
+
+            if (screenshotResult !== 'success') {
+              body += '### :robot: Android Visual Regression — Screenshot Failed\n';
+              body += 'Maestro screenshot flow failed. Check the `lost-pixel-diffs-android` artifact.';
+            } else if (diffResult === 'success') {
+              body += '### :robot: Android Visual Regression — No Changes\n';
+              body += 'All Android screenshots match the baseline.';
+            } else if (fs.existsSync(metaPath)) {
+              const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+
+              if (meta._noBaselines) {
+                body += '### :robot: Android Visual Regression\n';
+                body += ':information_source: No baselines found — expected for first PR. Baselines generated on merge to main.';
+              } else {
+                body += '### :warning: Android Visual Regression — Changes Detected\n\n';
+                const entries = Object.entries(meta);
+                const changed = entries.filter(([, v]) => v.status !== 'unchanged');
+
+                body += '| Shot | Status |\n';
+                body += '|------|--------|\n';
+                for (const [name, data] of entries) {
+                  let status = ':green_circle: Unchanged';
+                  if (data.status === 'changed') status = ':red_circle: Changed';
+                  else if (data.status === 'new') status = ':blue_circle: New';
+                  else if (data.status === 'removed') status = ':white_circle: Removed';
+                  body += `| \`${name}\` | ${status} |\n`;
+                }
+
+                body += `\n**${changed.length} shot(s) changed.** Download **lost-pixel-diffs-android** artifact for details.`;
+              }
+            } else {
+              body += '### :robot: Android Visual Regression\n';
+              body += 'No comparison data available.';
+            }
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
+
+      - name: Kill emulator
+        if: always()
+        run: adb emu kill 2>/dev/null || true
