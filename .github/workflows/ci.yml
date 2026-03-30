@@ -407,6 +407,9 @@ jobs:
           xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
           xcrun simctl bootstatus "iPhone 15 Pro" -b
 
+      - name: Prebuild iOS
+        run: npx expo prebuild --platform ios --clean
+
       - name: Build iOS app
         run: npx expo run:ios --no-install --device "iPhone 15 Pro"
 
@@ -444,6 +447,9 @@ jobs:
         run: |
           xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
           xcrun simctl bootstatus "iPhone 15 Pro" -b
+
+      - name: Prebuild iOS
+        run: npx expo prebuild --platform ios --clean
 
       - name: Build iOS app
         run: npx expo run:ios --no-install --device "iPhone 15 Pro"
@@ -621,6 +627,9 @@ jobs:
           adb wait-for-device
           adb shell input keyevent 82
 
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --clean
+
       - name: Build Android app
         run: npx expo run:android
 
@@ -661,6 +670,9 @@ jobs:
           emulator -avd Pixel_7_API_34 -no-window -no-audio -no-boot-anim &
           adb wait-for-device
           adb shell input keyevent 82
+
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --clean
 
       - name: Build Android app
         run: npx expo run:android
