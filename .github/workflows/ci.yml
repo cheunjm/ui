@@ -81,9 +81,13 @@ jobs:
               const summary = JSON.parse(fs.readFileSync(summaryPath, 'utf8'));
               output.available = true;
               output.total = summary.total;
+              const cwd = process.cwd() + '/';
               const files = {};
               for (const [key, value] of Object.entries(summary)) {
-                if (key !== 'total') files[key] = value;
+                if (key !== 'total') {
+                  const relative = key.startsWith(cwd) ? key.slice(cwd.length) : key;
+                  files[relative] = value;
+                }
               }
               output.files = files;
             }
