@@ -405,7 +405,9 @@ jobs:
         run: rm -rf node_modules && npm ci
 
       - name: Build standalone iOS app
-        run: npx eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
+        run: |
+          npm install -g eas-cli
+          eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
 
       - name: Boot simulator, install and launch
         run: |
@@ -449,7 +451,9 @@ jobs:
         run: rm -rf node_modules && npm ci
 
       - name: Build standalone iOS app
-        run: npx eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
+        run: |
+          npm install -g eas-cli
+          eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
 
       - name: Boot simulator, install and launch
         run: |
