@@ -2,6 +2,8 @@ export { Button } from "./button";
 export type { ButtonProps } from "./button";
 export { Divider } from "./divider";
 export type { DividerProps, DividerOrientation, DividerInset } from "./divider";
+export { Icon } from "./icon";
+export type { IconProps, IconSize, IconName } from "./icon";
 export { Spacer } from "./spacer";
 export type { SpacerProps } from "./spacer";
 export { Text } from "./text";
