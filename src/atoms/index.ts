@@ -1,5 +1,7 @@
 export { Badge } from "./badge";
 export type { BadgeProps, BadgeSize } from "./badge";
+export { Chip } from "./chip";
+export type { ChipProps, ChipType } from "./chip";
 export { Button } from "./button";
 export type { ButtonProps } from "./button";
 export { Divider } from "./divider";
