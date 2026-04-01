@@ -1,4 +1,5 @@
 name: CI
+# Native visual regression with EAS build + simctl screenshots
 
 on:
   workflow_dispatch:
