@@ -33,6 +33,7 @@
     "@tamagui/themes": "^1.112.0",
     "expo": "^55.0.9",
     "expo-dev-client": "~55.0.19",
+    "expo-updates": "~55.0.16",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-native": "0.83.4",
