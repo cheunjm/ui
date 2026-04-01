@@ -78,7 +78,11 @@ export function FAB({
         color={iconColor}
       />
       {isExtended && (
-        <Text fontSize={14} fontWeight="500" color={iconColor}>
+        <Text
+          fontSize={14}
+          fontWeight="500"
+          color={iconColor as any}
+        >
           {label}
         </Text>
       )}
