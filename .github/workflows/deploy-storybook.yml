@@ -27,6 +27,8 @@ jobs:
 
       - name: Build Storybook
         run: vercel build ${{ github.ref_name == 'main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          STORYBOOK_ENV: ${{ github.ref_name }}
 
       - name: Deploy to Vercel
         id: deploy
