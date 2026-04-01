@@ -71,6 +71,12 @@ function Specs() {
 const meta: Meta = {
   title: "Atoms/Button/Specs",
   component: Specs,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=208-36",
+    },
+  },
 };
 
 export default meta;

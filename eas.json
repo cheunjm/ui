@@ -16,25 +16,26 @@
       }
     },
     "stage": {
-      "developmentClient": true,
       "distribution": "internal",
       "channel": "stage",
       "env": {
         "APP_ENV": "stage"
-      },
-      "ios": {
-        "simulator": true
       }
     },
     "production": {
-      "developmentClient": true,
-      "distribution": "internal",
+      "distribution": "store",
       "channel": "production",
+      "autoIncrement": true,
       "env": {
         "APP_ENV": "production"
-      },
+      }
+    }
+  },
+  "submit": {
+    "production": {
       "ios": {
-        "simulator": true
+        "appleId": "jaemincheun@gmail.com",
+        "ascAppId": "com.aramiworks.ui.storybook"
       }
     },
     "visual-test": {

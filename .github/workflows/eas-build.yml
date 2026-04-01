@@ -3,6 +3,11 @@ name: EAS Build (iOS & Android)
 on:
   push:
     branches: [main, develop, stage]
+    paths-ignore:
+      - '*.md'
+      - '.storybook/**'
+      - 'e2e/**'
+      - 'stories/**'
 
 jobs:
   build:
@@ -40,5 +45,26 @@ jobs:
           eas build \
             --platform ${{ matrix.platform }} \
             --profile ${{ steps.profile.outputs.name }} \
-            --non-interactive \
-            --no-wait
+            --non-interactive
+
+      - name: Notify Slack on success
+        if: success()
+        run: |
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"C0AH9QDT2SW\",
+              \"text\": \"✅ *EAS Build complete* — @cheunjm/ui\n• Platform: ${{ matrix.platform }}\n• Profile: ${{ steps.profile.outputs.name }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
+            }"
+
+      - name: Notify Slack on failure
+        if: failure()
+        run: |
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"C0AH9QDT2SW\",
+              \"text\": \"❌ *EAS Build failed* — @cheunjm/ui\n• Platform: ${{ matrix.platform }}\n• Profile: ${{ steps.profile.outputs.name }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
+            }"

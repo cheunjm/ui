@@ -59,6 +59,12 @@ function Overview() {
 const meta: Meta = {
   title: "Atoms/Button/Overview",
   component: Overview,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=208-33",
+    },
+  },
 };
 
 export default meta;

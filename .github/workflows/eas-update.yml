@@ -1,0 +1,55 @@
+name: EAS Update (OTA)
+
+on:
+  push:
+    branches: [main, develop, stage]
+    paths:
+      - 'src/**'
+      - 'app.config.ts'
+      - '.ondevice/**'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Map branch to channel
+        id: channel
+        run: |
+          case "${{ github.ref_name }}" in
+            main)    echo "name=production" >> $GITHUB_OUTPUT ;;
+            stage)   echo "name=stage" >> $GITHUB_OUTPUT ;;
+            develop) echo "name=develop" >> $GITHUB_OUTPUT ;;
+          esac
+
+      - name: Publish OTA update
+        run: |
+          eas update \
+            --channel ${{ steps.channel.outputs.name }} \
+            --message "${{ github.event.head_commit.message }}" \
+            --non-interactive
+
+      - name: Notify Slack
+        if: success()
+        run: |
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"channel\": \"C0AH9QDT2SW\",
+              \"text\": \"🔄 *OTA Update published* — @cheunjm/ui\n• Channel: ${{ steps.channel.outputs.name }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
+            }"

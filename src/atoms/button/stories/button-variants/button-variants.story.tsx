@@ -91,6 +91,12 @@ function Variants() {
 const meta: Meta = {
   title: "Atoms/Button/Variants",
   component: Variants,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=208-34",
+    },
+  },
 };
 
 export default meta;

@@ -106,6 +106,12 @@ function Anatomy() {
 const meta: Meta = {
   title: "Atoms/Button/Anatomy",
   component: Anatomy,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=208-35",
+    },
+  },
 };
 
 export default meta;
