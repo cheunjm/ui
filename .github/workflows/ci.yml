@@ -390,7 +390,6 @@ jobs:
         run: exit 1
 
   visual-baseline-ios:
-    # TODO: remove continue-on-error after INF-421 (worklets/reanimated fix)
     continue-on-error: true
     if: github.ref == 'refs/heads/main'
     runs-on: [self-hosted, macOS, ARM64]
@@ -404,30 +403,25 @@ jobs:
       - name: Clean install dependencies
         run: rm -rf node_modules && npm ci
 
-      - name: Boot iOS simulator
+      - name: Build standalone iOS app
+        run: npx eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
+
+      - name: Boot simulator, install and launch
         run: |
           xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
           xcrun simctl bootstatus "iPhone 15 Pro" -b
-
-      - name: Build, install and launch iOS app
-        run: |
-          npx expo prebuild --platform ios --clean
-          cd ios && pod install && cd ..
-          DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 15 Pro " | head -1 | grep -oE '[0-9A-F-]{36}')
-          echo "Building for device: $DEVICE_UDID"
-          xcodebuild -workspace ios/cheunjmui.xcworkspace -scheme cheunjmui -configuration Debug -sdk iphonesimulator -destination "id=$DEVICE_UDID" -derivedDataPath build/ios build
-          ls -la build/ios/Build/Products/Debug-iphonesimulator/ || true
-          APP_PATH=$(find build/ios/Build/Products/Debug-iphonesimulator -name "*.app" -maxdepth 1 | head -1)
-          echo "Found app at: $APP_PATH"
+          mkdir -p build/ios-extracted
+          tar xzf build/ios-app.tar.gz -C build/ios-extracted
+          APP_PATH=$(find build/ios-extracted -name "*.app" -maxdepth 1 | head -1)
+          xcrun simctl uninstall "iPhone 15 Pro" com.aramiworks.ui.storybook 2>/dev/null || true
           xcrun simctl install "iPhone 15 Pro" "$APP_PATH"
           xcrun simctl launch "iPhone 15 Pro" com.aramiworks.ui.storybook
+          sleep 10
 
-      - name: Run visual screenshot flow
+      - name: Take screenshots
         run: |
-          export PATH="$HOME/.maestro/bin:$PATH"
           mkdir -p .lostpixel-ios/baseline
-          maestro test --platform ios --output .lostpixel-ios/baseline e2e/visual/screenshot-all-stories.yaml
-          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-ios/baseline/ 2>/dev/null || true
+          bash scripts/ios-visual-screenshots.sh "$(xcrun simctl list devices booted | grep 'iPhone 15 Pro' | grep -oE '[0-9A-F-]{36}' | head -1)" .lostpixel-ios/baseline
 
       - name: Save iOS baselines to cache
         uses: actions/cache/save@v4
@@ -440,7 +434,6 @@ jobs:
         run: xcrun simctl shutdown all 2>/dev/null || true
 
   visual-regression-ios:
-    # TODO: remove continue-on-error after INF-421 (worklets/reanimated fix)
     continue-on-error: true
     if: github.event_name == 'pull_request'
     runs-on: [self-hosted, macOS, ARM64]
@@ -454,23 +447,20 @@ jobs:
       - name: Clean install dependencies
         run: rm -rf node_modules && npm ci
 
-      - name: Boot iOS simulator
+      - name: Build standalone iOS app
+        run: npx eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
+
+      - name: Boot simulator, install and launch
         run: |
           xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
           xcrun simctl bootstatus "iPhone 15 Pro" -b
-
-      - name: Build, install and launch iOS app
-        run: |
-          npx expo prebuild --platform ios --clean
-          cd ios && pod install && cd ..
-          DEVICE_UDID=$(xcrun simctl list devices available | grep "iPhone 15 Pro " | head -1 | grep -oE '[0-9A-F-]{36}')
-          echo "Building for device: $DEVICE_UDID"
-          xcodebuild -workspace ios/cheunjmui.xcworkspace -scheme cheunjmui -configuration Debug -sdk iphonesimulator -destination "id=$DEVICE_UDID" -derivedDataPath build/ios build
-          ls -la build/ios/Build/Products/Debug-iphonesimulator/ || true
-          APP_PATH=$(find build/ios/Build/Products/Debug-iphonesimulator -name "*.app" -maxdepth 1 | head -1)
-          echo "Found app at: $APP_PATH"
+          mkdir -p build/ios-extracted
+          tar xzf build/ios-app.tar.gz -C build/ios-extracted
+          APP_PATH=$(find build/ios-extracted -name "*.app" -maxdepth 1 | head -1)
+          xcrun simctl uninstall "iPhone 15 Pro" com.aramiworks.ui.storybook 2>/dev/null || true
           xcrun simctl install "iPhone 15 Pro" "$APP_PATH"
           xcrun simctl launch "iPhone 15 Pro" com.aramiworks.ui.storybook
+          sleep 10
 
       - name: Restore iOS baselines from cache
         uses: actions/cache/restore@v4
@@ -480,14 +470,13 @@ jobs:
           restore-keys: |
             lost-pixel-baselines-ios-
 
-      - name: Run visual screenshot flow
+      - name: Take screenshots
         id: ios_screenshots
         continue-on-error: true
         run: |
-          export PATH="$HOME/.maestro/bin:$PATH"
+          UDID=$(xcrun simctl list devices booted | grep 'iPhone 15 Pro' | grep -oE '[0-9A-F-]{36}' | head -1)
           mkdir -p .lostpixel-ios/current
-          maestro test --platform ios e2e/visual/screenshot-all-stories.yaml
-          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-ios/current/ 2>/dev/null || true
+          bash scripts/ios-visual-screenshots.sh "$UDID" .lostpixel-ios/current
 
       - name: Compare iOS screenshots
         id: ios_diff
