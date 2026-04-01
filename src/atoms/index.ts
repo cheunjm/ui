@@ -14,6 +14,12 @@ export { Icon } from "./icon";
 export type { IconProps, IconSize, IconName } from "./icon";
 export { IconButton } from "./icon-button";
 export type { IconButtonProps, IconButtonVariant } from "./icon-button";
+export { ProgressIndicator } from "./progress-indicator";
+export type {
+  ProgressIndicatorProps,
+  ProgressIndicatorType,
+  ProgressIndicatorMode,
+} from "./progress-indicator";
 export { RadioButton } from "./radio-button";
 export type { RadioButtonProps } from "./radio-button";
 export { Spacer } from "./spacer";
