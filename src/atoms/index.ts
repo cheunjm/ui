@@ -18,6 +18,8 @@ export { RadioButton } from "./radio-button";
 export type { RadioButtonProps } from "./radio-button";
 export { Spacer } from "./spacer";
 export type { SpacerProps } from "./spacer";
+export { Switch } from "./switch";
+export type { SwitchProps } from "./switch";
 export { Text } from "./text";
 export type { TextProps } from "./text";
 export { TextField } from "./text-field";
