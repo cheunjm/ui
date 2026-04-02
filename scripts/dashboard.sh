@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # @cheunjm/ui — Local Dev Dashboard
-# Shows live status of dev services, connected devices, and running processes.
+# Shows live status of dev services, connected devices, running processes, and service logs.
 # Usage: ./scripts/dashboard.sh [--once]
 
 INTERVAL=5
@@ -109,6 +109,31 @@ render() {
   printf "  %s  Maestro E2E            %s\n" "$(status_dot $maestro_running)" "$( $maestro_running && echo 'running' || echo '--' )"
   printf "  %s  ESLint                 %s\n" "$(status_dot $lint_running)" "$( $lint_running && echo 'running' || echo '--' )"
   printf "  %s  TypeScript             %s\n" "$(status_dot $tsc_running)" "$( $tsc_running && echo 'running' || echo '--' )"
+  echo
+
+  # --- Logs ---
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  local logs_dir
+  logs_dir="$(cd "$script_dir/.." && pwd)/logs"
+
+  printf "${CYAN}Logs${RESET}\n"
+
+  local has_logs=false
+  for logfile in expo storybook; do
+    local path="$logs_dir/${logfile}.log"
+    if [[ -f "$path" ]]; then
+      has_logs=true
+      printf "  ${DIM}── %s ──${RESET}\n" "$logfile"
+      tail -n 6 "$path" 2>/dev/null | while IFS= read -r line; do
+        printf "  ${DIM}%s${RESET}\n" "$line"
+      done
+    fi
+  done
+
+  if ! $has_logs; then
+    printf "  ${DIM}No logs yet — run ./scripts/start.sh to capture service output${RESET}\n"
+  fi
   echo
 
   printf "${DIM}Press Ctrl+C to exit${RESET}\n"

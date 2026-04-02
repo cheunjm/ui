@@ -14,3 +14,4 @@ ios/
 android/
 .tamagui/
 coverage/
+logs/
