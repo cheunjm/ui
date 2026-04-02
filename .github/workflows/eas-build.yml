@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      profile: ${{ steps.profile.outputs.name }}
     strategy:
       matrix:
         platform: [ios, android]
@@ -41,24 +43,22 @@ jobs:
             --profile ${{ steps.profile.outputs.name }} \
             --non-interactive
 
-      - name: Notify Slack on success
-        if: success()
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: always()
+    steps:
+      - name: Notify Slack
         run: |
+          if [ "${{ needs.build.result }}" = "success" ]; then
+            STATUS="✅ *EAS Build complete*"
+          else
+            STATUS="❌ *EAS Build failed*"
+          fi
           curl -s -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AH9QDT2SW\",
-              \"text\": \"✅ *EAS Build complete* — @cheunjm/ui\n• Platform: ${{ matrix.platform }}\n• Profile: ${{ steps.profile.outputs.name }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
-            }"
-
-      - name: Notify Slack on failure
-        if: failure()
-        run: |
-          curl -s -X POST https://slack.com/api/chat.postMessage \
-            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"channel\": \"C0AH9QDT2SW\",
-              \"text\": \"❌ *EAS Build failed* — @cheunjm/ui\n• Platform: ${{ matrix.platform }}\n• Profile: ${{ steps.profile.outputs.name }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
+              \"text\": \"${STATUS} — @cheunjm/ui\n• Platforms: iOS & Android\n• Profile: ${{ needs.build.outputs.profile }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
             }"

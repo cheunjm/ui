@@ -30,6 +30,9 @@ jobs:
       - name: Install dependencies
         run: doppler run -- npm ci
 
+      - name: Audit production dependencies
+        run: npm audit --audit-level=critical --omit=dev
+
       - name: Lint
         run: doppler run -- npm run lint
 
@@ -53,6 +56,14 @@ jobs:
 
       - name: Run unit tests
         run: doppler run -- npm test -- --ci --coverage
+
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: coverage
+          fail_ci_if_error: false
 
       - name: Upload coverage
         if: always()
