@@ -12,6 +12,8 @@ export { Icon } from "./icon";
 export type { IconProps, IconSize, IconName } from "./icon";
 export { IconButton } from "./icon-button";
 export type { IconButtonProps, IconButtonVariant } from "./icon-button";
+export { RadioButton } from "./radio-button";
+export type { RadioButtonProps } from "./radio-button";
 export { Spacer } from "./spacer";
 export type { SpacerProps } from "./spacer";
 export { Text } from "./text";
