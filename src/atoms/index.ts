@@ -6,6 +6,8 @@ export { Button } from "./button";
 export type { ButtonProps } from "./button";
 export { Divider } from "./divider";
 export type { DividerProps, DividerOrientation, DividerInset } from "./divider";
+export { FAB } from "./fab";
+export type { FabProps, FabSize, FabColor } from "./fab";
 export { Icon } from "./icon";
 export type { IconProps, IconSize, IconName } from "./icon";
 export { IconButton } from "./icon-button";
