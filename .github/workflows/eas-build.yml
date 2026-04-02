@@ -1,13 +1,7 @@
 name: EAS Build (iOS & Android)
 
 on:
-  push:
-    branches: [main, develop, stage]
-    paths-ignore:
-      - '*.md'
-      - '.storybook/**'
-      - 'e2e/**'
-      - 'stories/**'
+  workflow_dispatch:
 
 jobs:
   build:
