@@ -102,101 +102,58 @@ jobs:
           name: pr-data-coverage
           path: pr-data/coverage.json
 
-  visual-baseline:
-    if: github.ref == 'refs/heads/main'
+  chromatic:
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/stage'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: dopplerhq/cli-action@v3
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: doppler run -- npm ci
+      - run: npm ci
 
-      - name: Build Storybook
-        run: doppler run -- npm run storybook:build
-
-      - name: Generate baseline screenshots
-        uses: lost-pixel/lost-pixel@v3.22.0
+      - name: Run Chromatic
+        id: chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          buildScriptName: storybook:build
+          exitZeroOnChanges: true
+          autoAcceptChanges: main
+          onlyChanged: true
+          skip: ${{ github.event.pull_request.draft }}
         env:
-          LOST_PIXEL_MODE: update
+          CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
-      - name: Save baselines to cache
-        uses: actions/cache/save@v4
-        with:
-          path: .lostpixel/baseline/
-          key: lost-pixel-baselines-${{ github.sha }}
-
-  visual-regression:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: dopplerhq/cli-action@v3
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: doppler run -- npm ci
-
-      - name: Build Storybook
-        run: doppler run -- npm run storybook:build
-
-      - name: Restore baselines from cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .lostpixel/baseline/
-          key: lost-pixel-baselines-
-          restore-keys: |
-            lost-pixel-baselines-
-
-      - name: Run Lost Pixel comparison
-        id: lostpixel
-        uses: lost-pixel/lost-pixel@v3.22.0
-        env:
-          LOST_PIXEL_GENERATE_META: "true"
-        continue-on-error: true
-
-      - name: Upload visual diff artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lost-pixel-diffs
-          path: |
-            .lostpixel/current/
-            .lostpixel/difference/
-
-      - name: Prepare visual PR data
-        if: always()
+      - name: Prepare Chromatic PR data
+        if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const metaPath = '.lostpixel/current/meta.json';
-            const output = {
-              outcome: '${{ steps.lostpixel.outcome }}',
-              entries: null,
-              baselineExists: fs.existsSync('.lostpixel/baseline'),
+            const raw = (v, fallback) => {
+              const s = `${v}`;
+              return (!s || s === 'undefined' || s === 'null') ? fallback : s;
             };
-
-            if (fs.existsSync(metaPath)) {
-              output.entries = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-            }
-
+            const output = {
+              outcome: '${{ steps.chromatic.outcome }}',
+              buildUrl: raw('${{ steps.chromatic.outputs.buildUrl }}', ''),
+              storybookUrl: raw('${{ steps.chromatic.outputs.storybookUrl }}', ''),
+              changeCount: parseInt(raw('${{ steps.chromatic.outputs.changeCount }}', '0'), 10),
+              errorCount: parseInt(raw('${{ steps.chromatic.outputs.errorCount }}', '0'), 10),
+              componentCount: parseInt(raw('${{ steps.chromatic.outputs.componentCount }}', '0'), 10),
+              specCount: parseInt(raw('${{ steps.chromatic.outputs.specCount }}', '0'), 10),
+            };
             fs.mkdirSync('pr-data', { recursive: true });
             fs.writeFileSync('pr-data/visual.json', JSON.stringify(output));
 
-      - name: Upload visual PR data
-        if: always()
+      - name: Upload Chromatic PR data
+        if: always() && github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: pr-data-visual
@@ -296,383 +253,9 @@ jobs:
         if: steps.e2e.outcome == 'failure'
         run: exit 1
 
-  visual-baseline-ios:
-    continue-on-error: true
-    if: github.ref == 'refs/heads/main'
-    runs-on: [self-hosted, macOS, ARM64]
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Clean install dependencies
-        run: rm -rf node_modules && npm ci
-
-      - name: Build standalone iOS app
-        run: |
-          npm install -g eas-cli
-          eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
-
-      - name: Boot simulator, install and launch
-        run: |
-          xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
-          xcrun simctl bootstatus "iPhone 15 Pro" -b
-          mkdir -p build/ios-extracted
-          tar xzf build/ios-app.tar.gz -C build/ios-extracted
-          APP_PATH=$(find build/ios-extracted -name "*.app" -maxdepth 1 | head -1)
-          xcrun simctl uninstall "iPhone 15 Pro" com.aramiworks.ui.storybook 2>/dev/null || true
-          xcrun simctl install "iPhone 15 Pro" "$APP_PATH"
-          xcrun simctl launch "iPhone 15 Pro" com.aramiworks.ui.storybook
-          sleep 10
-
-      - name: Take screenshots
-        run: |
-          mkdir -p .lostpixel-ios/baseline
-          bash scripts/ios-visual-screenshots.sh "$(xcrun simctl list devices booted | grep 'iPhone 15 Pro' | grep -oE '[0-9A-F-]{36}' | head -1)" .lostpixel-ios/baseline
-
-      - name: Save iOS baselines to cache
-        uses: actions/cache/save@v4
-        with:
-          path: .lostpixel-ios/baseline/
-          key: lost-pixel-baselines-ios-${{ github.sha }}
-
-      - name: Shutdown simulator
-        if: always()
-        run: xcrun simctl shutdown all 2>/dev/null || true
-
-  visual-regression-ios:
-    continue-on-error: true
-    if: github.event_name == 'pull_request'
-    runs-on: [self-hosted, macOS, ARM64]
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Clean install dependencies
-        run: rm -rf node_modules && npm ci
-
-      - name: Build standalone iOS app
-        run: |
-          npm install -g eas-cli
-          eas build --profile visual-test --platform ios --local --non-interactive --output build/ios-app.tar.gz
-
-      - name: Boot simulator, install and launch
-        run: |
-          xcrun simctl boot "iPhone 15 Pro" 2>/dev/null || true
-          xcrun simctl bootstatus "iPhone 15 Pro" -b
-          mkdir -p build/ios-extracted
-          tar xzf build/ios-app.tar.gz -C build/ios-extracted
-          APP_PATH=$(find build/ios-extracted -name "*.app" -maxdepth 1 | head -1)
-          xcrun simctl uninstall "iPhone 15 Pro" com.aramiworks.ui.storybook 2>/dev/null || true
-          xcrun simctl install "iPhone 15 Pro" "$APP_PATH"
-          xcrun simctl launch "iPhone 15 Pro" com.aramiworks.ui.storybook
-          sleep 10
-
-      - name: Restore iOS baselines from cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .lostpixel-ios/baseline/
-          key: lost-pixel-baselines-ios-
-          restore-keys: |
-            lost-pixel-baselines-ios-
-
-      - name: Take screenshots
-        id: ios_screenshots
-        continue-on-error: true
-        run: |
-          UDID=$(xcrun simctl list devices booted | grep 'iPhone 15 Pro' | grep -oE '[0-9A-F-]{36}' | head -1)
-          mkdir -p .lostpixel-ios/current
-          bash scripts/ios-visual-screenshots.sh "$UDID" .lostpixel-ios/current
-
-      - name: Compare iOS screenshots
-        id: ios_diff
-        continue-on-error: true
-        run: |
-          mkdir -p .lostpixel-ios/difference
-          node -e "
-            const fs = require('fs');
-            const path = require('path');
-            const baselineDir = '.lostpixel-ios/baseline';
-            const currentDir = '.lostpixel-ios/current';
-            const diffDir = '.lostpixel-ios/difference';
-            const results = {};
-
-            if (!fs.existsSync(baselineDir) || fs.readdirSync(baselineDir).length === 0) {
-              console.log('No baselines found — skipping comparison');
-              fs.writeFileSync('.lostpixel-ios/meta.json', JSON.stringify({ _noBaselines: true }));
-              process.exit(0);
-            }
-
-            const baselineFiles = fs.readdirSync(baselineDir).filter(f => f.endsWith('.png'));
-            const currentFiles = fs.readdirSync(currentDir).filter(f => f.endsWith('.png'));
-            let hasChanges = false;
-
-            for (const file of new Set([...baselineFiles, ...currentFiles])) {
-              const bPath = path.join(baselineDir, file);
-              const cPath = path.join(currentDir, file);
-              const name = file.replace('.png', '');
-
-              if (!fs.existsSync(bPath)) {
-                results[name] = { status: 'new', pixelDifference: 0, pixelDifferencePercentage: 0 };
-                hasChanges = true;
-              } else if (!fs.existsSync(cPath)) {
-                results[name] = { status: 'removed', pixelDifference: 0, pixelDifferencePercentage: 0 };
-                hasChanges = true;
-              } else {
-                const b = fs.readFileSync(bPath);
-                const c = fs.readFileSync(cPath);
-                if (Buffer.compare(b, c) !== 0) {
-                  results[name] = { status: 'changed', pixelDifference: -1, pixelDifferencePercentage: -1 };
-                  fs.copyFileSync(cPath, path.join(diffDir, file));
-                  hasChanges = true;
-                } else {
-                  results[name] = { status: 'unchanged', pixelDifference: 0, pixelDifferencePercentage: 0 };
-                }
-              }
-            }
-
-            fs.writeFileSync('.lostpixel-ios/meta.json', JSON.stringify(results, null, 2));
-            if (hasChanges) process.exit(1);
-          "
-
-      - name: Upload iOS visual diff artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lost-pixel-diffs-ios
-          path: |
-            .lostpixel-ios/current/
-            .lostpixel-ios/difference/
-
-      - name: Prepare iOS visual PR data
-        if: always()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const output = {
-              screenshotOutcome: '${{ steps.ios_screenshots.outcome }}',
-              diffOutcome: '${{ steps.ios_diff.outcome }}',
-              entries: null,
-              noBaselines: false,
-            };
-            const metaPath = '.lostpixel-ios/meta.json';
-            if (fs.existsSync(metaPath)) {
-              const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-              if (meta._noBaselines) {
-                output.noBaselines = true;
-              } else {
-                output.entries = meta;
-              }
-            }
-            fs.mkdirSync('pr-data', { recursive: true });
-            fs.writeFileSync('pr-data/visual-ios.json', JSON.stringify(output));
-
-      - name: Upload iOS visual PR data
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr-data-visual-ios
-          path: pr-data/visual-ios.json
-
-      - name: Shutdown simulator
-        if: always()
-        run: xcrun simctl shutdown all 2>/dev/null || true
-
-  visual-baseline-android:
-    # TODO: remove continue-on-error after INF-421 (worklets/reanimated fix) + AVD setup
-    continue-on-error: true
-    if: github.ref == 'refs/heads/main'
-    runs-on: [self-hosted, macOS, ARM64]
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Clean install dependencies
-        run: rm -rf node_modules && npm ci
-
-      - name: Start Android emulator
-        run: |
-          export ANDROID_HOME="$HOME/Library/Android/sdk"
-          export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
-          emulator -avd Pixel_7_API_34 -no-window -no-audio -no-boot-anim &
-          adb wait-for-device
-          adb shell input keyevent 82
-
-      - name: Prebuild Android
-        run: npx expo prebuild --platform android --clean
-
-      - name: Build Android app
-        run: npx expo run:android
-
-      - name: Run visual screenshot flow
-        run: |
-          export PATH="$HOME/.maestro/bin:$PATH"
-          mkdir -p .lostpixel-android/baseline
-          maestro test --platform android e2e/visual/screenshot-all-stories-android.yaml
-          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-android/baseline/ 2>/dev/null || true
-
-      - name: Save Android baselines to cache
-        uses: actions/cache/save@v4
-        with:
-          path: .lostpixel-android/baseline/
-          key: lost-pixel-baselines-android-${{ github.sha }}
-
-      - name: Kill emulator
-        if: always()
-        run: adb emu kill 2>/dev/null || true
-
-  visual-regression-android:
-    # TODO: remove continue-on-error after INF-421 (worklets/reanimated fix) + AVD setup
-    continue-on-error: true
-    if: github.event_name == 'pull_request'
-    runs-on: [self-hosted, macOS, ARM64]
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Clean install dependencies
-        run: rm -rf node_modules && npm ci
-
-      - name: Start Android emulator
-        run: |
-          export ANDROID_HOME="$HOME/Library/Android/sdk"
-          export PATH="$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$PATH"
-          emulator -avd Pixel_7_API_34 -no-window -no-audio -no-boot-anim &
-          adb wait-for-device
-          adb shell input keyevent 82
-
-      - name: Prebuild Android
-        run: npx expo prebuild --platform android --clean
-
-      - name: Build Android app
-        run: npx expo run:android
-
-      - name: Restore Android baselines from cache
-        uses: actions/cache/restore@v4
-        with:
-          path: .lostpixel-android/baseline/
-          key: lost-pixel-baselines-android-
-          restore-keys: |
-            lost-pixel-baselines-android-
-
-      - name: Run visual screenshot flow
-        id: android_screenshots
-        continue-on-error: true
-        run: |
-          export PATH="$HOME/.maestro/bin:$PATH"
-          mkdir -p .lostpixel-android/current
-          maestro test --platform android e2e/visual/screenshot-all-stories-android.yaml
-          cp -f ~/.maestro/tests/*/screenshots/*.png .lostpixel-android/current/ 2>/dev/null || true
-
-      - name: Compare Android screenshots
-        id: android_diff
-        continue-on-error: true
-        run: |
-          mkdir -p .lostpixel-android/difference
-          node -e "
-            const fs = require('fs');
-            const path = require('path');
-            const baselineDir = '.lostpixel-android/baseline';
-            const currentDir = '.lostpixel-android/current';
-            const diffDir = '.lostpixel-android/difference';
-            const results = {};
-
-            if (!fs.existsSync(baselineDir) || fs.readdirSync(baselineDir).length === 0) {
-              fs.writeFileSync('.lostpixel-android/meta.json', JSON.stringify({ _noBaselines: true }));
-              process.exit(0);
-            }
-
-            const baselineFiles = fs.readdirSync(baselineDir).filter(f => f.endsWith('.png'));
-            const currentFiles = fs.readdirSync(currentDir).filter(f => f.endsWith('.png'));
-            let hasChanges = false;
-
-            for (const file of new Set([...baselineFiles, ...currentFiles])) {
-              const bPath = path.join(baselineDir, file);
-              const cPath = path.join(currentDir, file);
-              const name = file.replace('.png', '');
-
-              if (!fs.existsSync(bPath)) {
-                results[name] = { status: 'new' };
-                hasChanges = true;
-              } else if (!fs.existsSync(cPath)) {
-                results[name] = { status: 'removed' };
-                hasChanges = true;
-              } else {
-                const b = fs.readFileSync(bPath);
-                const c = fs.readFileSync(cPath);
-                if (Buffer.compare(b, c) !== 0) {
-                  results[name] = { status: 'changed' };
-                  fs.copyFileSync(cPath, path.join(diffDir, file));
-                  hasChanges = true;
-                } else {
-                  results[name] = { status: 'unchanged' };
-                }
-              }
-            }
-
-            fs.writeFileSync('.lostpixel-android/meta.json', JSON.stringify(results, null, 2));
-            if (hasChanges) process.exit(1);
-          "
-
-      - name: Upload Android visual diff artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lost-pixel-diffs-android
-          path: |
-            .lostpixel-android/current/
-            .lostpixel-android/difference/
-
-      - name: Prepare Android visual PR data
-        if: always()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const output = {
-              screenshotOutcome: '${{ steps.android_screenshots.outcome }}',
-              diffOutcome: '${{ steps.android_diff.outcome }}',
-              entries: null,
-              noBaselines: false,
-            };
-            const metaPath = '.lostpixel-android/meta.json';
-            if (fs.existsSync(metaPath)) {
-              const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-              if (meta._noBaselines) {
-                output.noBaselines = true;
-              } else {
-                output.entries = meta;
-              }
-            }
-            fs.mkdirSync('pr-data', { recursive: true });
-            fs.writeFileSync('pr-data/visual-android.json', JSON.stringify(output));
-
-      - name: Upload Android visual PR data
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr-data-visual-android
-          path: pr-data/visual-android.json
-
-      - name: Kill emulator
-        if: always()
-        run: adb emu kill 2>/dev/null || true
-
   pr-summary:
     if: always() && github.event_name == 'pull_request'
-    needs: [unit-test, visual-regression, e2e-web, visual-regression-ios, visual-regression-android]
+    needs: [unit-test, chromatic, e2e-web]
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -757,85 +340,26 @@ jobs:
               : null;
 
             if (!vis) {
-              body += 'Visual regression data not available.\n\n';
-            } else if (vis.outcome === 'success') {
-              body += ':white_check_mark: All screenshots match the baseline.\n\n';
+              body += 'Chromatic data not available.\n\n';
+            } else if (vis.outcome !== 'success') {
+              body += ':x: Chromatic build failed.\n\n';
+              if (vis.buildUrl) {
+                body += `:link: [View Chromatic build](${vis.buildUrl})\n\n`;
+              }
+            } else if (vis.changeCount > 0) {
+              body += `:warning: **${vis.changeCount} visual change(s) detected** — review and approve in Chromatic.\n\n`;
+              body += `| Metric | Value |\n`;
+              body += `|--------|-------|\n`;
+              body += `| Components | ${vis.componentCount} |\n`;
+              body += `| Stories | ${vis.specCount} |\n`;
+              body += `| Changes | ${vis.changeCount} |\n`;
+              body += `| Errors | ${vis.errorCount} |\n\n`;
+              body += `:link: [Review in Chromatic](${vis.buildUrl})\n\n`;
             } else {
-              body += ':warning: **Changes detected**\n\n';
-              if (vis.entries) {
-                const entries = Object.entries(vis.entries);
-                const changed = entries.filter(([, v]) => !v.isWithinThreshold);
-                body += '| Shot | Pixel Diff | % Diff | Status |\n';
-                body += '|------|-----------|--------|--------|\n';
-                for (const [name, data] of entries) {
-                  const pct = (data.pixelDifferencePercentage * 100).toFixed(2);
-                  const status = data.isWithinThreshold ? ':yellow_circle: Within threshold' : ':red_circle: Changed';
-                  body += `| \`${name}\` | ${data.pixelDifference} | ${pct}% | ${status} |\n`;
-                }
-                body += `\n**${changed.length} shot(s) changed** beyond threshold.\n`;
-              } else if (!vis.baselineExists) {
-                body += ':information_source: No baselines found — expected for first PR.\n';
+              body += ':white_check_mark: No visual changes detected.\n\n';
+              if (vis.buildUrl) {
+                body += `:link: [View Chromatic build](${vis.buildUrl})\n\n`;
               }
-              const artifactUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
-              body += `\n:frame_with_picture: [Download diff images](${artifactUrl})\n\n`;
-            }
-
-            // --- VISUAL REGRESSION (iOS) ---
-            body += '### :iphone: Visual Regression (iOS)\n\n';
-            const visIos = fs.existsSync('pr-data/visual-ios.json')
-              ? JSON.parse(fs.readFileSync('pr-data/visual-ios.json', 'utf8'))
-              : null;
-
-            if (!visIos) {
-              body += 'iOS visual data not available.\n\n';
-            } else if (visIos.screenshotOutcome !== 'success') {
-              body += 'Screenshot capture failed. Check artifacts.\n\n';
-            } else if (visIos.diffOutcome === 'success') {
-              body += ':white_check_mark: All iOS screenshots match the baseline.\n\n';
-            } else if (visIos.noBaselines) {
-              body += ':information_source: No baselines found — expected for first PR.\n\n';
-            } else if (visIos.entries) {
-              const entries = Object.entries(visIos.entries);
-              const changed = entries.filter(([, v]) => v.status !== 'unchanged');
-              body += '| Shot | Status |\n';
-              body += '|------|--------|\n';
-              for (const [name, data] of entries) {
-                let status = ':green_circle: Unchanged';
-                if (data.status === 'changed') status = ':red_circle: Changed';
-                else if (data.status === 'new') status = ':blue_circle: New';
-                else if (data.status === 'removed') status = ':white_circle: Removed';
-                body += `| \`${name}\` | ${status} |\n`;
-              }
-              body += `\n**${changed.length} shot(s) changed.**\n\n`;
-            }
-
-            // --- VISUAL REGRESSION (Android) ---
-            body += '### :robot: Visual Regression (Android)\n\n';
-            const visAndroid = fs.existsSync('pr-data/visual-android.json')
-              ? JSON.parse(fs.readFileSync('pr-data/visual-android.json', 'utf8'))
-              : null;
-
-            if (!visAndroid) {
-              body += 'Android visual data not available.\n\n';
-            } else if (visAndroid.screenshotOutcome !== 'success') {
-              body += 'Screenshot capture failed. Check artifacts.\n\n';
-            } else if (visAndroid.diffOutcome === 'success') {
-              body += ':white_check_mark: All Android screenshots match the baseline.\n\n';
-            } else if (visAndroid.noBaselines) {
-              body += ':information_source: No baselines found — expected for first PR.\n\n';
-            } else if (visAndroid.entries) {
-              const entries = Object.entries(visAndroid.entries);
-              const changed = entries.filter(([, v]) => v.status !== 'unchanged');
-              body += '| Shot | Status |\n';
-              body += '|------|--------|\n';
-              for (const [name, data] of entries) {
-                let status = ':green_circle: Unchanged';
-                if (data.status === 'changed') status = ':red_circle: Changed';
-                else if (data.status === 'new') status = ':blue_circle: New';
-                else if (data.status === 'removed') status = ':white_circle: Removed';
-                body += `| \`${name}\` | ${status} |\n`;
-              }
-              body += `\n**${changed.length} shot(s) changed.**\n\n`;
             }
 
             // --- E2E TESTS ---
@@ -885,7 +409,7 @@ jobs:
             }
 
             // --- CLEAN UP OLD COMMENTS ---
-            const oldMarkers = ['<!-- coverage-comment -->', '<!-- lost-pixel-comment -->', '<!-- e2e-comment -->', '<!-- lost-pixel-ios-comment -->', '<!-- lost-pixel-android-comment -->'];
+            const oldMarkers = ['<!-- coverage-comment -->', '<!-- lost-pixel-comment -->', '<!-- e2e-comment -->'];
             for (const old of oldMarkers) {
               const stale = comments.find(c => c.body.includes(old));
               if (stale) {

@@ -7,7 +7,6 @@ dist/
 .ondevice/storybook.requires.ts
 storybook-static/
 .vercel
-.lostpixel/
 .lostpixel-ios/
 .lostpixel-android/
 e2e-results/
