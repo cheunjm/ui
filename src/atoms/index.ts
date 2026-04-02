@@ -1,9 +1,11 @@
 export { Badge } from "./badge";
 export type { BadgeProps, BadgeSize } from "./badge";
-export { Chip } from "./chip";
-export type { ChipProps, ChipType } from "./chip";
 export { Button } from "./button";
 export type { ButtonProps } from "./button";
+export { Checkbox } from "./checkbox";
+export type { CheckboxProps, CheckboxState } from "./checkbox";
+export { Chip } from "./chip";
+export type { ChipProps, ChipType } from "./chip";
 export { Divider } from "./divider";
 export type { DividerProps, DividerOrientation, DividerInset } from "./divider";
 export { FAB } from "./fab";
