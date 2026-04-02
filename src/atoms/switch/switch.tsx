@@ -80,7 +80,7 @@ export function Switch({
           <Thumb
             width={thumbSize}
             height={thumbSize}
-            backgroundColor={thumbBackgroundColor}
+            backgroundColor={thumbBackgroundColor as any}
             alignSelf={selected ? "flex-end" : "flex-start"}
           >
             {showIcon && (
