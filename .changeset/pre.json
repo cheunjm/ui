@@ -4,5 +4,7 @@
   "initialVersions": {
     "@cheunjm/ui": "0.0.1"
   },
-  "changesets": []
+  "changesets": [
+    "add-changeset-enforcement"
+  ]
 }
