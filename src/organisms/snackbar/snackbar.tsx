@@ -28,7 +28,7 @@ export function Snackbar({
   duration = 4000,
   testID,
 }: SnackbarProps) {
-  const timerRef = useRef<ReturnType<typeof setTimeout>>();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const theme = useTheme();
 
   useEffect(() => {
