@@ -13,6 +13,8 @@
     "ios": "expo start --ios",
     "android": "expo start --android",
     "web": "expo start --web",
+    "run:ios": "expo run:ios",
+    "run:android": "expo run:android",
     "storybook:generate": "sb-rn-get-stories",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",
