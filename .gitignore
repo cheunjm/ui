@@ -5,6 +5,7 @@ ios/
 dist/
 *.tsbuildinfo
 .ondevice/storybook.requires.ts
+.storybook/storybook.requires.ts
 storybook-static/
 .vercel
 .lostpixel-ios/
