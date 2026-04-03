@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # @arami-works/ui — Dev launcher
-# Sets up a tmux session with:
+# Starts all local services (Expo + Storybook Web) and opens a tmux session with:
 #   top pane  (~70%): dashboard + logs
 #   bottom pane (~30%): free (Claude Code, shell, etc.)
 #
@@ -28,6 +28,10 @@ if [[ "${1:-}" == "--attach-only" ]]; then
   echo "No session found. Run ./scripts/dev.sh to start one."
   exit 1
 fi
+
+# Start all services (Expo + Storybook Web) in the background
+echo "Starting local services..."
+"$SCRIPT_DIR/start.sh" all
 
 # Create log directory
 mkdir -p "$REPO_ROOT/logs"
