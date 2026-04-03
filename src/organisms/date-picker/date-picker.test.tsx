@@ -1,57 +1,32 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-import { TamaguiProvider } from "tamagui";
-import config from "../../../tamagui.config";
+import { render, screen, fireEvent } from "@/test-utils";
 import { DatePicker } from "./date-picker";
-
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <TamaguiProvider config={config}>{children}</TamaguiProvider>
-);
 
 describe("DatePicker", () => {
   it("renders when visible", () => {
-    const { getByTestId } = render(
-      <DatePicker
-        visible
-        onConfirm={jest.fn()}
-        onDismiss={jest.fn()}
-        testID="date-picker"
-      />,
-      { wrapper }
+    render(
+      <DatePicker visible onConfirm={jest.fn()} onDismiss={jest.fn()} testID="date-picker" />
     );
-    expect(getByTestId("date-picker")).toBeTruthy();
+    expect(screen.getByTestId("date-picker")).toBeTruthy();
   });
 
   it("does not render when not visible", () => {
-    const { queryByTestId } = render(
-      <DatePicker
-        visible={false}
-        onConfirm={jest.fn()}
-        onDismiss={jest.fn()}
-        testID="date-picker"
-      />,
-      { wrapper }
+    render(
+      <DatePicker visible={false} onConfirm={jest.fn()} onDismiss={jest.fn()} testID="date-picker" />
     );
-    expect(queryByTestId("date-picker")).toBeNull();
+    expect(screen.queryByTestId("date-picker")).toBeNull();
   });
 
   it("calls onDismiss when cancel pressed", () => {
     const onDismiss = jest.fn();
-    const { getByText } = render(
-      <DatePicker visible onConfirm={jest.fn()} onDismiss={onDismiss} testID="dp" />,
-      { wrapper }
-    );
-    fireEvent.press(getByText("Cancel"));
+    render(<DatePicker visible onConfirm={jest.fn()} onDismiss={onDismiss} testID="dp" />);
+    fireEvent.press(screen.getByText("Cancel"));
     expect(onDismiss).toHaveBeenCalled();
   });
 
   it("calls onConfirm when OK pressed", () => {
     const onConfirm = jest.fn();
-    const { getByText } = render(
-      <DatePicker visible onConfirm={onConfirm} onDismiss={jest.fn()} testID="dp" />,
-      { wrapper }
-    );
-    fireEvent.press(getByText("OK"));
+    render(<DatePicker visible onConfirm={onConfirm} onDismiss={jest.fn()} testID="dp" />);
+    fireEvent.press(screen.getByText("OK"));
     expect(onConfirm).toHaveBeenCalled();
   });
 });
