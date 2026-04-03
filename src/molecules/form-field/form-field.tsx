@@ -1,5 +1,5 @@
 import { View, XStack, YStack } from "tamagui";
-import { Text, TextField } from "@/atoms";
+import { Text, TextField } from "../../atoms";
 import type { FormFieldProps } from "./form-field.type";
 
 export function FormField({

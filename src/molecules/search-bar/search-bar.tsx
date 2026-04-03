@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { TextInput } from "react-native";
 import { styled, View, useTheme } from "tamagui";
-import { Icon } from "@/atoms/icon";
-import { IconButton } from "@/atoms/icon-button";
+import { Icon } from "../../atoms/icon";
+import { IconButton } from "../../atoms/icon-button";
 import type { SearchBarProps } from "./search-bar.type";
 
 const PillContainer = styled(View, {

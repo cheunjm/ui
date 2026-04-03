@@ -1,4 +1,4 @@
-import type { TextFieldProps } from "@/atoms";
+import type { TextFieldProps } from "../../atoms";
 
 export type FormFieldProps = {
   /** Label text above the field */
