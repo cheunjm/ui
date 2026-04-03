@@ -1,5 +1,5 @@
 ---
-"@cheunjm/ui": patch
+"@arami-works/ui": patch
 ---
 
 Fix Tamagui `createTamagui()` error by adding required `true` key to size and space tokens

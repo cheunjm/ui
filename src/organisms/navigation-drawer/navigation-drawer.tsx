@@ -57,7 +57,8 @@ export function NavigationDrawer({
                 <YStack key={sIdx}>
                   {section.header && (
                     <Text
-                      variant="titleSmall"
+                      role="title"
+                      size="small"
                       color="$onSurfaceVariant"
                       paddingLeft={16}
                       paddingTop={16}
@@ -83,7 +84,8 @@ export function NavigationDrawer({
                             color={isActive ? "$onSecondaryContainer" : "$onSurfaceVariant"}
                           />
                           <Text
-                            variant="labelLarge"
+                            role="label"
+                            size="large"
                             color={isActive ? "$onSecondaryContainer" : "$onSurfaceVariant"}
                             flex={1}
                           >
