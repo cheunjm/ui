@@ -6,7 +6,6 @@ on:
 
 permissions:
   statuses: write
-  pull-requests: write
 
 jobs:
   changeset:
@@ -19,39 +18,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           FILES=$(find .changeset -name "*.md" ! -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          MARKER="<!-- changeset-check -->"
-
           if [ "$FILES" -gt 0 ]; then
-            STATUS="success"
-            STATUS_DESC="Changeset detected"
-            COMMENT_BODY="${MARKER}
-          ### 🦋 Changeset detected
-
-          This PR includes a changeset and will be included in the next version bump."
+            gh api -X POST repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+              -f state="success" \
+              -f context="changeset" \
+              -f description="Changeset detected"
           else
-            STATUS="failure"
-            STATUS_DESC="No changeset found — add one with npx changeset"
-            COMMENT_BODY="${MARKER}
-          ### ⚠️ No changeset found
-
-          This PR does not include a changeset. Run \`npx changeset\` to add one, or this PR will be blocked from merging."
+            gh api -X POST repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+              -f state="failure" \
+              -f context="changeset" \
+              -f description="No changeset found — add one with npx changeset"
+            exit 1
           fi
-
-          gh api -X POST repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
-            -f state="$STATUS" \
-            -f context="changeset" \
-            -f description="$STATUS_DESC"
-
-          EXISTING=$(gh api repos/${{ github.repository }}/issues/${PR_NUMBER}/comments \
-            --jq ".[] | select(.body | startswith(\"${MARKER}\")) | .id" | head -1)
-
-          if [ -n "$EXISTING" ]; then
-            gh api -X PATCH repos/${{ github.repository }}/issues/comments/${EXISTING} \
-              -f body="$COMMENT_BODY"
-          else
-            gh api -X POST repos/${{ github.repository }}/issues/${PR_NUMBER}/comments \
-              -f body="$COMMENT_BODY"
-          fi
-
-          [ "$STATUS" = "failure" ] && exit 1 || exit 0
