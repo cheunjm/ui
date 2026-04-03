@@ -59,6 +59,7 @@ function Overview() {
 const meta: Meta = {
   title: "Atoms/Button/Overview",
   component: Overview,
+  tags: ["autodocs"],
   parameters: {
     design: {
       type: "figma",

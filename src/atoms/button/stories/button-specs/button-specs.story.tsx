@@ -71,6 +71,7 @@ function Specs() {
 const meta: Meta = {
   title: "Atoms/Button/Specs",
   component: Specs,
+  tags: ["autodocs"],
   parameters: {
     design: {
       type: "figma",
