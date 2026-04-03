@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { View } from "tamagui";
 import { NavigationDrawer } from "../../navigation-drawer";
-import { Button } from "../../../atoms/button";
+import { Button } from "../../../../atoms/button";
 
 const sections = [
   {

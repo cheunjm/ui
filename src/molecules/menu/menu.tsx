@@ -15,8 +15,7 @@ const Container = styled(View, {
   shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.3,
   shadowRadius: 6,
-  elevation: 3,
-});
+} as const);
 
 export function Menu({ visible, onDismiss, items, testID }: MenuProps) {
   return (
@@ -56,11 +55,11 @@ export function Menu({ visible, onDismiss, items, testID }: MenuProps) {
                       <Icon name={item.leadingIcon} size={24} color="$onSurface" />
                     </View>
                   )}
-                  <Text variant="labelLarge" color="$onSurface" flex={1}>
+                  <Text role="label" size="large" color="$onSurface" flex={1}>
                     {item.label}
                   </Text>
                   {item.trailingText && (
-                    <Text variant="labelSmall" color="$onSurfaceVariant" marginLeft={12}>
+                    <Text role="label" size="small" color="$onSurfaceVariant" marginLeft={12}>
                       {item.trailingText}
                     </Text>
                   )}

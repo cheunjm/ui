@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { View } from "tamagui";
 import { Menu } from "../../menu";
-import { Button } from "../../../atoms/button";
+import { Button } from "../../../../atoms/button";
 
 function Overview() {
   const [visible, setVisible] = useState(false);
