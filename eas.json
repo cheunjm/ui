@@ -27,6 +27,25 @@
         "APP_ENV": "production"
       }
     },
+    "develop-simulator": {
+      "extends": "develop",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "stage-simulator": {
+      "extends": "stage",
+      "ios": {
+        "simulator": true
+      }
+    },
+    "production-simulator": {
+      "extends": "production",
+      "distribution": "internal",
+      "ios": {
+        "simulator": true
+      }
+    },
     "visual-test": {
       "developmentClient": false,
       "distribution": "internal",
