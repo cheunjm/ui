@@ -1,19 +1,21 @@
-import React, { useState } from "react";
-import { YStack } from "tamagui";
+import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+import { YStack, Text } from "tamagui";
 import { TimePicker } from "../../time-picker";
 import { Button } from "../../../atoms/button";
-import { Text } from "../../../atoms/text";
 
-export const TimePickerOverview = () => {
+function Overview() {
   const [visible, setVisible] = useState(false);
   const [hour, setHour] = useState(9);
   const [minute, setMinute] = useState(0);
 
-  const display = `${String(hour % 12 || 12).padStart(2, "0")}:${String(minute).padStart(2, "0")} ${hour < 12 ? "AM" : "PM"}`;
+  const h12 = hour % 12 || 12;
+  const period = hour < 12 ? "AM" : "PM";
+  const display = `${String(h12).padStart(2, "0")}:${String(minute).padStart(2, "0")} ${period}`;
 
   return (
     <YStack gap={16} padding={32} alignItems="center">
-      <Text variant="bodyMedium">Selected: {display}</Text>
+      <Text>{`Selected: ${display}`}</Text>
       <Button variant="filled" onPress={() => setVisible(true)}>
         Pick a Time
       </Button>
@@ -27,6 +29,16 @@ export const TimePickerOverview = () => {
       />
     </YStack>
   );
+}
+
+const meta: Meta = {
+  title: "Organisms/TimePicker/Overview",
+  component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
-TimePickerOverview.storyName = "TimePicker/Overview";
+export default meta;
+
+type Story = StoryObj;
+
+export const Default: Story = {};
