@@ -2,6 +2,8 @@ export { BottomSheet } from "./bottom-sheet";
 export type { BottomSheetProps } from "./bottom-sheet";
 export { Carousel } from "./carousel";
 export type { CarouselProps, CarouselItem, CarouselVariant } from "./carousel";
+export { DatePicker } from "./date-picker";
+export type { DatePickerProps, DatePickerMode } from "./date-picker";
 export { Dialog } from "./dialog";
 export type { DialogProps } from "./dialog";
 export { NavigationBar } from "./navigation-bar";
