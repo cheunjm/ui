@@ -12,6 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   platforms: ["ios", "android", "web"],
   ios: {
     bundleIdentifier: "com.aramiworks.ui.storybook",
+    developmentTeam: "2ZM4PS6CMF",
   },
   android: {
     package: "com.aramiworks.ui.storybook",
