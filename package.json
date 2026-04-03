@@ -12,6 +12,7 @@
     "access": "public"
   },
   "scripts": {
+    "dev:dashboard": "mprocs",
     "start": "expo start",
     "ios": "expo start --ios",
     "android": "expo start --android",

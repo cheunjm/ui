@@ -1,0 +1,8 @@
+procs:
+  expo:
+    cmd: ["npm", "run", "start"]
+    autostart: true
+
+  storybook:
+    cmd: ["npm", "run", "storybook:web"]
+    autostart: true
