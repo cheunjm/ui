@@ -106,7 +106,7 @@ function Anatomy() {
 const meta: Meta = {
   title: "Atoms/Button/Anatomy",
   component: Anatomy,
-  tags: ["autodocs"],
+  tags: ["autodocs", "!dev"],
   parameters: {
     design: {
       type: "figma",
@@ -116,6 +116,7 @@ const meta: Meta = {
 };
 
 export default meta;
+
 type Story = StoryObj;
 
 export const Default: Story = {};
