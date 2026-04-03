@@ -20,11 +20,10 @@ const RichContainer = styled(View, {
   borderRadius: 12,
   padding: 16,
   maxWidth: 280,
-  shadowColor: "$shadow",
+  shadowColor: "#000",
   shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.3,
+  shadowOpacity: 0.15,
   shadowRadius: 4,
-  elevation: 2,
 });
 
 function getTooltipOffset(placement: TooltipPlacement): object {
@@ -67,18 +66,18 @@ export function Tooltip({
         <RNView style={tooltipStyle}>
           {variant === "plain" ? (
             <PlainContainer>
-              <Text variant="bodySmall" color="$inverseOnSurface">
+              <Text role="body" size="small" color="$inverseOnSurface">
                 {label}
               </Text>
             </PlainContainer>
           ) : (
             <RichContainer>
               <YStack gap={4}>
-                <Text variant="titleSmall" color="$onSurface">
+                <Text role="title" size="small" color="$onSurface">
                   {label}
                 </Text>
                 {description && (
-                  <Text variant="bodyMedium" color="$onSurfaceVariant">
+                  <Text role="body" size="medium" color="$onSurfaceVariant">
                     {description}
                   </Text>
                 )}
