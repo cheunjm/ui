@@ -1,5 +1,7 @@
 export { BottomSheet } from "./bottom-sheet";
 export type { BottomSheetProps } from "./bottom-sheet";
+export { Carousel } from "./carousel";
+export type { CarouselProps, CarouselItem, CarouselVariant } from "./carousel";
 export { Dialog } from "./dialog";
 export type { DialogProps } from "./dialog";
 export { NavigationBar } from "./navigation-bar";
