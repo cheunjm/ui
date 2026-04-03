@@ -4,8 +4,16 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [main, develop, stage]
+    branches: [main]
+    paths-ignore:
+      - ".changeset/**"
+      - "CHANGELOG.md"
+      - "**.md"
   pull_request:
+    paths-ignore:
+      - ".changeset/**"
+      - "CHANGELOG.md"
+      - "**.md"
 
 permissions:
   contents: read
