@@ -60,5 +60,5 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AH9QDT2SW\",
-              \"text\": \"${STATUS} — @arami-works/ui\n• Platforms: iOS & Android\n• Profile: ${{ needs.build.outputs.profile }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
+              \"text\": \"${STATUS} — @aramiworks/ui\n• Platforms: iOS & Android\n• Profile: ${{ needs.build.outputs.profile }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
             }"

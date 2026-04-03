@@ -2,13 +2,13 @@ import { ExpoConfig, ConfigContext } from "expo/config";
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: "@arami-works/ui",
-  slug: "arami-works-ui",
-  owner: "arami-works",
+  name: "@aramiworks/ui",
+  slug: "aramiworks-ui",
+  owner: "aramiworks",
   version: "0.0.1",
   orientation: "portrait",
   userInterfaceStyle: "automatic",
-  scheme: "arami-works-ui",
+  scheme: "aramiworks-ui",
   platforms: ["ios", "android", "web"],
   ios: {
     bundleIdentifier: "com.aramiworks.ui.storybook",

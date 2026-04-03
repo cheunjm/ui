@@ -51,5 +51,5 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AH9QDT2SW\",
-              \"text\": \"🔄 *OTA Update published* — @arami-works/ui\n• Channel: ${{ steps.channel.outputs.name }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
+              \"text\": \"🔄 *OTA Update published* — @aramiworks/ui\n• Channel: ${{ steps.channel.outputs.name }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
             }"
