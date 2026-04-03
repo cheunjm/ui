@@ -1,0 +1,32 @@
+name: Changeset Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  statuses: write
+
+jobs:
+  changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for changeset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FILES=$(find .changeset -name "*.md" ! -name "README.md" 2>/dev/null | wc -l | tr -d ' ')
+          if [ "$FILES" -gt 0 ]; then
+            gh api -X POST repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+              -f state="success" \
+              -f context="changeset" \
+              -f description="Changeset detected"
+          else
+            gh api -X POST repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+              -f state="failure" \
+              -f context="changeset" \
+              -f description="No changeset found — add one with npx changeset"
+            exit 1
+          fi
