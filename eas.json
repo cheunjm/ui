@@ -10,9 +10,6 @@
       "channel": "develop",
       "env": {
         "APP_ENV": "develop"
-      },
-      "ios": {
-        "simulator": true
       }
     },
     "stage": {
@@ -45,7 +42,7 @@
     "production": {
       "ios": {
         "appleId": "jaemincheun@gmail.com",
-        "ascAppId": "com.aramiworks.ui.storybook"
+        "ascAppId": "so.arami.ui.storybook"
       }
     }
   }

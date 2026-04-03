@@ -1,5 +1,9 @@
 import { ExpoConfig, ConfigContext } from "expo/config";
 
+const appEnv = process.env.APP_ENV ?? "production";
+const envSuffix = appEnv === "production" ? "" : `.${appEnv}`;
+const bundleId = `so.arami.ui.storybook${envSuffix}`;
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: "@aramiworks/ui",
@@ -11,10 +15,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   scheme: "aramiworks-ui",
   platforms: ["ios", "android", "web"],
   ios: {
-    bundleIdentifier: "com.aramiworks.ui.storybook",
+    bundleIdentifier: bundleId,
   },
   android: {
-    package: "com.aramiworks.ui.storybook",
+    package: bundleId,
   },
   web: {
     bundler: "metro",
