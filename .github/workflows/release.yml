@@ -27,14 +27,10 @@ jobs:
         id: changesets
         with:
           version: npx changeset version
+          publish: npm publish
           title: "chore: version packages"
           commit: "chore: version packages"
           createGithubReleases: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to GitHub Packages
-        if: steps.changesets.outputs.published == 'true'
-        run: npm publish
-        env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
