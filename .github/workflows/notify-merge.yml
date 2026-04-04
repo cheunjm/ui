@@ -24,5 +24,5 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AH9QDT2SW\",
-              \"text\": \"📦 *@arami-works/ui ${{ github.ref_name }} updated*\n• Commit: \`${{ steps.info.outputs.sha }}\` — ${{ steps.info.outputs.message }}\n• Author: ${{ steps.info.outputs.author }}\n• <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|View on GitHub>\"
+              \"text\": \"📦 *@aramiworks/ui ${{ github.ref_name }} updated*\n• Commit: \`${{ steps.info.outputs.sha }}\` — ${{ steps.info.outputs.message }}\n• Author: ${{ steps.info.outputs.author }}\n• <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|View on GitHub>\"
             }"

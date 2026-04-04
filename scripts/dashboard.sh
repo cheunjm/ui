@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# @arami-works/ui — Local Dev Dashboard
+# @aramiworks/ui — Local Dev Dashboard
 # Shows live status of dev services, connected devices, running processes, and service logs.
 # Usage: ./scripts/dashboard.sh [--once]
 
@@ -35,7 +35,7 @@ status_dot() {
 
 render() {
   clear
-  printf "${BOLD}@arami-works/ui — Local Dev Dashboard${RESET}\n"
+  printf "${BOLD}@aramiworks/ui — Local Dev Dashboard${RESET}\n"
   printf "${DIM}%s · refreshing every %ds${RESET}\n\n" "$(date '+%H:%M:%S')" "$INTERVAL"
 
   # --- Services ---

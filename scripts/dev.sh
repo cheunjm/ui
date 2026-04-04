@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# @arami-works/ui — Dev launcher
+# @aramiworks/ui — Dev launcher
 # Sets up a tmux session with:
 #   top pane  (~70%): dashboard + logs
 #   bottom pane (~30%): free (Claude Code, shell, etc.)
