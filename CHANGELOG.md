@@ -1,5 +1,11 @@
 # @aramiworks/ui
 
+## 0.2.1
+
+### Patch Changes
+
+- [#106](https://github.com/aramiworks/ui/pull/106) [`4711cff`](https://github.com/aramiworks/ui/commit/4711cff75d600b6c21e12552ac80a1081459ded2) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix release workflow to publish to GitHub Packages after version bump PR merges.
+
 ## 0.2.0
 
 ### Minor Changes
