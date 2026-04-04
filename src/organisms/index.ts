@@ -12,6 +12,8 @@ export { NavigationDrawer } from "./navigation-drawer";
 export type { NavigationDrawerProps, DrawerDestination, DrawerSection } from "./navigation-drawer";
 export { Snackbar } from "./snackbar";
 export type { SnackbarProps } from "./snackbar";
+export { TimePicker } from "./time-picker";
+export type { TimePickerProps, TimePickerMode, TimePeriod } from "./time-picker";
 export { TopAppBar } from "./top-app-bar";
 export type {
   TopAppBarProps,
