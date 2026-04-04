@@ -2,7 +2,7 @@ name: Notify on Merge
 
 on:
   push:
-    branches: [main, develop, stage]
+    branches: [main]
 
 jobs:
   notify:

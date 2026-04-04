@@ -11,9 +11,9 @@ const Container = styled(View, {
   minWidth: 112,
   maxWidth: 280,
   paddingVertical: 8,
-  shadowColor: "$shadow",
+  shadowColor: "#000",
   shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.3,
+  shadowOpacity: 0.15,
   shadowRadius: 6,
 } as const);
 

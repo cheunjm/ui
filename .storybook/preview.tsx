@@ -55,6 +55,17 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    options: {
+      storySort: {
+        order: [
+          'Atoms',
+          [
+            'Button',
+            ['Overview', 'Anatomy', 'Specs', 'Variants'],
+          ],
+        ],
+      },
+    },
   },
 };
 
