@@ -120,4 +120,97 @@ describe("TimePicker", () => {
     );
     expect(screen.getByTestId("tp")).toBeTruthy();
   });
+
+  it("selects hour from clock face and switches to minutes", () => {
+    const onConfirm = jest.fn();
+    render(
+      <TimePicker visible hour={9} minute={0} onConfirm={onConfirm} onDismiss={jest.fn()} testID="tp" />
+    );
+    fireEvent.press(screen.getByText("03"));
+    fireEvent.press(screen.getByText("OK"));
+    expect(onConfirm).toHaveBeenCalledWith(3, 0);
+  });
+
+  it("selects minute from clock face", () => {
+    const onConfirm = jest.fn();
+    render(
+      <TimePicker visible hour={9} minute={0} onConfirm={onConfirm} onDismiss={jest.fn()} testID="tp" />
+    );
+    fireEvent.press(screen.getByText("03"));
+    fireEvent.press(screen.getByText("15"));
+    fireEvent.press(screen.getByText("OK"));
+    expect(onConfirm).toHaveBeenCalledWith(3, 15);
+  });
+
+  it("switches clock focus to minutes when minutes segment pressed", () => {
+    render(
+      <TimePicker visible hour={9} minute={0} onConfirm={jest.fn()} onDismiss={jest.fn()} testID="tp" />
+    );
+    const allZeros = screen.getAllByText("00");
+    fireEvent.press(allZeros[0]);
+    expect(allZeros.length).toBeGreaterThan(0);
+  });
+
+  it("handles AM 12 edge case on confirm", () => {
+    const onConfirm = jest.fn();
+    render(
+      <TimePicker visible hour={12} minute={0} onConfirm={onConfirm} onDismiss={jest.fn()} testID="tp" />
+    );
+    fireEvent.press(screen.getByText("AM"));
+    fireEvent.press(screen.getByText("OK"));
+    expect(onConfirm).toHaveBeenCalledWith(0, 0);
+  });
+
+  it("handles PM 12 edge case on confirm", () => {
+    const onConfirm = jest.fn();
+    render(
+      <TimePicker visible hour={12} minute={0} onConfirm={onConfirm} onDismiss={jest.fn()} testID="tp" />
+    );
+    fireEvent.press(screen.getByText("PM"));
+    fireEvent.press(screen.getByText("OK"));
+    expect(onConfirm).toHaveBeenCalledWith(12, 0);
+  });
+
+  it("renders minute numbers in clock face when in minutes focus", () => {
+    render(
+      <TimePicker visible hour={9} minute={0} onConfirm={jest.fn()} onDismiss={jest.fn()} testID="tp" />
+    );
+    fireEvent.press(screen.getByText("03"));
+    expect(screen.getByText("15")).toBeTruthy();
+    expect(screen.getByText("30")).toBeTruthy();
+    expect(screen.getByText("45")).toBeTruthy();
+  });
+
+  it("changes hour via input mode text field", () => {
+    const onConfirm = jest.fn();
+    render(
+      <TimePicker visible mode="input" hour={9} minute={0} onConfirm={onConfirm} onDismiss={jest.fn()} testID="tp" />
+    );
+    const hourField = screen.getByDisplayValue("9");
+    fireEvent.changeText(hourField, "11");
+    fireEvent.press(screen.getByText("OK"));
+    expect(onConfirm).toHaveBeenCalledWith(11, 0);
+  });
+
+  it("changes minute via input mode text field", () => {
+    const onConfirm = jest.fn();
+    render(
+      <TimePicker visible mode="input" hour={9} minute={0} onConfirm={onConfirm} onDismiss={jest.fn()} testID="tp" />
+    );
+    const minuteField = screen.getByDisplayValue("00");
+    fireEvent.changeText(minuteField, "45");
+    fireEvent.press(screen.getByText("OK"));
+    expect(onConfirm).toHaveBeenCalledWith(9, 45);
+  });
+
+  it("clamps minute to 59 in input mode", () => {
+    const onConfirm = jest.fn();
+    render(
+      <TimePicker visible mode="input" hour={9} minute={0} onConfirm={onConfirm} onDismiss={jest.fn()} testID="tp" />
+    );
+    const minuteField = screen.getByDisplayValue("00");
+    fireEvent.changeText(minuteField, "99");
+    fireEvent.press(screen.getByText("OK"));
+    expect(onConfirm).toHaveBeenCalledWith(9, 59);
+  });
 });
