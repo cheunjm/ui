@@ -29,6 +29,9 @@
     "test:e2e:ios": "maestro test --platform ios e2e/integration/ e2e/journeys/",
     "test:e2e:android": "maestro test --platform android e2e/integration/ e2e/journeys/"
   },
+  "dependencies": {
+    "expo-updates": "~55.0.16"
+  },
   "peerDependencies": {
     "@gorhom/bottom-sheet": ">=5.0.0",
     "@react-native-community/datetimepicker": ">=8.0.0",
@@ -62,7 +65,6 @@
     "@tamagui/themes": "^1.112.0",
     "expo": "^55.0.9",
     "expo-dev-client": "~55.0.19",
-    "expo-updates": "~55.0.16",
     "react": "19.2.0",
     "react-dom": "19.2.0",
     "react-native": "0.83.4",
