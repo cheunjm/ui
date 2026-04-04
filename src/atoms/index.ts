@@ -36,3 +36,5 @@ export { Text } from "./text";
 export type { TextProps } from "./text";
 export { TextField } from "./text-field";
 export type { TextFieldProps, TextFieldVariant } from "./text-field";
+export { Tooltip } from "./tooltip";
+export type { TooltipProps, TooltipVariant, TooltipPlacement } from "./tooltip";
