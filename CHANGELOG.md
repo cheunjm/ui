@@ -1,4 +1,4 @@
-# @arami-works/ui
+# @aramiworks/ui
 
 ## 0.1.0
 
