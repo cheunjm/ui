@@ -4,8 +4,16 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: [main, develop, stage]
+    branches: [main]
+    paths-ignore:
+      - ".changeset/**"
+      - "CHANGELOG.md"
+      - "**.md"
   pull_request:
+    paths-ignore:
+      - ".changeset/**"
+      - "CHANGELOG.md"
+      - "**.md"
 
 permissions:
   contents: read
@@ -15,7 +23,7 @@ env:
   DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
 jobs:
-  lint-type-build:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +47,7 @@ jobs:
       - name: Typecheck
         run: doppler run -- npm run typecheck
 
-  unit-test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,8 +80,8 @@ jobs:
           name: coverage
           path: coverage/
 
-  chromatic:
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/stage'
+  visual:
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -93,16 +101,15 @@ jobs:
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: storybook:build
-          exitZeroOnChanges: true
           autoAcceptChanges: main
           onlyChanged: true
           skip: ${{ github.event.pull_request.draft }}
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
-  e2e-web:
+  e2e:
     runs-on: ubuntu-latest
-    needs: [lint-type-build, unit-test]
+    needs: [lint, test]
     steps:
       - uses: actions/checkout@v4
 

@@ -2,7 +2,7 @@ name: EAS Update (OTA)
 
 on:
   push:
-    branches: [main, develop, stage]
+    branches: [main]
     paths:
       - 'src/**'
       - 'app.config.ts'
