@@ -1,10 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { view } from "./storybook.requires";
+
+const storage: { [key: string]: string } = {};
 
 const StorybookUI = view.getStorybookUI({
   storage: {
-    getItem: AsyncStorage.getItem,
-    setItem: AsyncStorage.setItem,
+    getItem: async (key: string) => storage[key] ?? null,
+    setItem: async (key: string, value: string) => {
+      storage[key] = value;
+    },
   },
 });
 
