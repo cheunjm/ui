@@ -30,7 +30,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Card/Overview",
+  title: "atoms/card/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

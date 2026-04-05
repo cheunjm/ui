@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Spacer } from "../../spacer";
 
 const meta: Meta<typeof Spacer> = {
-  title: "Atoms/Spacer/Horizontal",
+  title: "atoms/spacer/horizontal",
   component: Spacer,
   argTypes: {
     direction: {

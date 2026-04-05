@@ -1,23 +1,8 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import { YStack } from "tamagui";
 import { TextField } from "../../text-field";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 function FilledExample() {
   const [value, setValue] = useState("");
@@ -129,7 +114,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/TextField/Overview",
+  title: "atoms/text-field/overview",
   component: Overview,
 };
 

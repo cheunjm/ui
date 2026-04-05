@@ -1,23 +1,8 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { YStack, XStack, Text } from "tamagui";
+import { YStack } from "tamagui";
 import { SearchBar } from "../../search-bar";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 function Overview() {
   const [text, setText] = useState("Design system");
@@ -59,7 +44,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Molecules/SearchBar/Overview",
+  title: "molecules/search-bar/overview",
   component: Overview,
 };
 

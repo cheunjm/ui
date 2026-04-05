@@ -6,7 +6,7 @@ const FIGMA_BASE =
   "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=";
 
 const meta: Meta<ButtonProps> = {
-  title: "Atoms/Button/Variants",
+  title: "atoms/button/variants",
   component: Button,
   args: {
     children: "Button",

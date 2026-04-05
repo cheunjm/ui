@@ -58,7 +58,7 @@ function Minimal() {
 }
 
 const meta: Meta = {
-  title: "Templates/DetailTemplate/Overview",
+  title: "templates/detail-template/overview",
   component: WithTopAppBar,
 };
 

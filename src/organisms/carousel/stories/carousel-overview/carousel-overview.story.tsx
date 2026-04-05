@@ -30,7 +30,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/Carousel/Overview",
+  title: "organisms/carousel/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

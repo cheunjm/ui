@@ -47,7 +47,7 @@ function TwoActions() {
 }
 
 const meta: Meta = {
-  title: "Templates/FormTemplate/Overview",
+  title: "templates/form-template/overview",
   component: SingleAction,
 };
 

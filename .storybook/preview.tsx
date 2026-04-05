@@ -1,7 +1,6 @@
 import type { Preview } from "@storybook/react";
 import React from "react";
-import { TamaguiProvider } from "tamagui";
-import config from "../src/tokens/tamagui.config";
+import { UiProvider } from "../src/providers";
 
 const env = (import.meta as any).env?.STORYBOOK_ENV as string | undefined;
 
@@ -40,12 +39,12 @@ function EnvBanner() {
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <TamaguiProvider config={config}>
+      <UiProvider>
         <EnvBanner />
         <div style={{ paddingTop: env && env !== "master" ? 24 : 0 }}>
           <Story />
         </div>
-      </TamaguiProvider>
+      </UiProvider>
     ),
   ],
   parameters: {
@@ -58,10 +57,10 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          'Atoms',
+          'atoms',
           [
-            'Button',
-            ['Overview', 'Anatomy', 'Specs', 'Variants'],
+            'button',
+            ['overview', 'anatomy', 'specs', 'variants'],
           ],
         ],
       },

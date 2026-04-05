@@ -28,7 +28,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Molecules/Menu/Overview",
+  title: "molecules/menu/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

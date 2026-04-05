@@ -68,7 +68,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/Snackbar/Overview",
+  title: "organisms/snackbar/overview",
   component: Overview,
 };
 

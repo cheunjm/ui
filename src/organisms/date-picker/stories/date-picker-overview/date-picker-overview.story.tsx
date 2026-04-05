@@ -26,7 +26,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/DatePicker/Overview",
+  title: "organisms/date-picker/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

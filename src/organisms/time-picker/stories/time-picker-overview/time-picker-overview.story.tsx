@@ -32,7 +32,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/TimePicker/Overview",
+  title: "organisms/time-picker/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

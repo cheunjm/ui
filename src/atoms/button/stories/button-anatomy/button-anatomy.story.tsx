@@ -104,7 +104,7 @@ function Anatomy() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Button/Anatomy",
+  title: "atoms/button/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
   parameters: {

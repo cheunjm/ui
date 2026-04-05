@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import { XStack, YStack } from "tamagui";
 import { FAB } from "../../fab";
 import type { FabSize, FabColor } from "../../fab.type";
+import { SectionLabel } from "../../../../storybook";
 
 const sizes: FabSize[] = ["small", "regular", "large"];
 const colors: FabColor[] = ["primary", "surface", "secondary", "tertiary"];
@@ -18,22 +19,6 @@ const colorLabels: Record<FabColor, string> = {
   secondary: "Secondary",
   tertiary: "Tertiary",
 };
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
 
 function Overview() {
   return (
@@ -94,7 +79,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/FAB/Overview",
+  title: "atoms/fab/overview",
   component: Overview,
 };
 

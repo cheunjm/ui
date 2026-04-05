@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import { XStack, YStack } from "tamagui";
 import { IconButton } from "../../icon-button";
 import type { IconButtonVariant } from "../../icon-button.type";
+import { SectionLabel } from "../../../../storybook";
 
 const variants: IconButtonVariant[] = [
   "standard",
@@ -17,22 +18,6 @@ const variantLabels: Record<IconButtonVariant, string> = {
   outlined: "Outlined",
 };
 
-function VariantLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
-
 function Overview() {
   return (
     <XStack
@@ -46,7 +31,7 @@ function Overview() {
     >
       {variants.map((v) => (
         <YStack key={v} alignItems="center" gap={8}>
-          <VariantLabel label={variantLabels[v]} />
+          <SectionLabel label={variantLabels[v]} />
           <IconButton icon="settings" variant={v} />
         </YStack>
       ))}
@@ -55,7 +40,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/IconButton/Overview",
+  title: "atoms/icon-button/overview",
   component: Overview,
 };
 

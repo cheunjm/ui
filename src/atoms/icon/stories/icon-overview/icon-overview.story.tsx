@@ -75,7 +75,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Icon/Overview",
+  title: "atoms/icon/overview",
   component: Overview,
 };
 

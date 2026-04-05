@@ -64,7 +64,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/TopAppBar/Overview",
+  title: "organisms/top-app-bar/overview",
   component: Overview,
 };
 

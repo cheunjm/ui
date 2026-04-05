@@ -69,7 +69,7 @@ function Specs() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Button/Specs",
+  title: "atoms/button/specs",
   component: Specs,
   tags: ["autodocs", "!dev"],
   parameters: {

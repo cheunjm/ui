@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import { XStack, YStack } from "tamagui";
 import { Button } from "../../button";
 import type { ButtonVariant } from "../../button.type";
+import { SectionLabel } from "../../../../storybook";
 
 const variants: ButtonVariant[] = [
   "filled",
@@ -19,22 +20,6 @@ const variantLabels: Record<ButtonVariant, string> = {
   tonal: "Tonal",
 };
 
-function VariantLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
-
 function Overview() {
   return (
     <XStack
@@ -48,7 +33,7 @@ function Overview() {
     >
       {variants.map((v) => (
         <YStack key={v} alignItems="center" gap={8}>
-          <VariantLabel label={variantLabels[v]} />
+          <SectionLabel label={variantLabels[v]} />
           <Button variant={v}>Button</Button>
         </YStack>
       ))}
@@ -57,7 +42,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Button/Overview",
+  title: "atoms/button/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
   parameters: {

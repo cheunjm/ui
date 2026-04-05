@@ -45,7 +45,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/NavigationDrawer/Overview",
+  title: "organisms/navigation-drawer/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

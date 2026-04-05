@@ -48,7 +48,7 @@ function WithTopAppBar() {
 }
 
 const meta: Meta = {
-  title: "Templates/EmptyStateTemplate/Overview",
+  title: "templates/empty-state-template/overview",
   component: Full,
 };
 

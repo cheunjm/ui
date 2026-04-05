@@ -24,7 +24,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Tooltip/Overview",
+  title: "atoms/tooltip/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

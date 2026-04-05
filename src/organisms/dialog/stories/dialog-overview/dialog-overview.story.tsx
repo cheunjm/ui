@@ -81,7 +81,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/Dialog/Overview",
+  title: "organisms/dialog/overview",
   component: Overview,
 };
 

@@ -1,23 +1,8 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import { XStack, YStack } from "tamagui";
 import { SegmentedButton } from "../../segmented-button";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 function SingleSelectExample() {
   const [selected, setSelected] = useState("day");
@@ -112,7 +97,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/SegmentedButton/Overview",
+  title: "atoms/segmented-button/overview",
   component: Overview,
 };
 

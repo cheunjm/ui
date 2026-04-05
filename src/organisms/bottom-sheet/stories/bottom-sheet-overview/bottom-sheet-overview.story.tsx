@@ -1,9 +1,10 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import { YStack, Text } from "tamagui";
 
 import { BottomSheet } from "../../bottom-sheet";
 import type { BottomSheetVariant } from "../../bottom-sheet.type";
+import { SectionLabel } from "../../../../storybook";
 
 const variants: BottomSheetVariant[] = ["modal", "standard"];
 
@@ -11,22 +12,6 @@ const variantLabels: Record<BottomSheetVariant, string> = {
   modal: "Modal",
   standard: "Standard",
 };
-
-function VariantLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
 
 function SampleContent() {
   return (
@@ -49,7 +34,7 @@ function Overview() {
     <YStack gap={24} padding={24}>
       {/* Standard variant — always visible inline */}
       <YStack gap={8}>
-        <VariantLabel label={variantLabels.standard} />
+        <SectionLabel label={variantLabels.standard} />
         <BottomSheet visible variant="standard">
           <SampleContent />
         </BottomSheet>
@@ -57,7 +42,7 @@ function Overview() {
 
       {/* Modal variant — toggle button */}
       <YStack gap={8}>
-        <VariantLabel label={variantLabels.modal} />
+        <SectionLabel label={variantLabels.modal} />
         <Text
           fontSize={14}
           color="#6750A4"
@@ -79,7 +64,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/BottomSheet/Overview",
+  title: "organisms/bottom-sheet/overview",
   component: Overview,
 };
 
