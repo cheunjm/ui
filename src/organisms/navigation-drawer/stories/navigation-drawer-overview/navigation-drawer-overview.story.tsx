@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View } from "tamagui";
 import { NavigationDrawer } from "../../navigation-drawer";
 import { Button } from "../../../../atoms/button";
