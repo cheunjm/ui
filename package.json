@@ -30,7 +30,6 @@
     "test:e2e:android": "maestro test --platform android e2e/integration/ e2e/journeys/"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0",
     "expo-updates": "~55.0.16"
   },
   "peerDependencies": {
