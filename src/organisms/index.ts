@@ -6,6 +6,8 @@ export { DatePicker } from "./date-picker";
 export type { DatePickerProps, DatePickerMode } from "./date-picker";
 export { Dialog } from "./dialog";
 export type { DialogProps } from "./dialog";
+export { Search } from "./search";
+export type { SearchProps, SearchSuggestion } from "./search";
 export { NavigationBar } from "./navigation-bar";
 export type { NavigationBarProps, NavigationDestination } from "./navigation-bar";
 export { NavigationDrawer } from "./navigation-drawer";
