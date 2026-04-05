@@ -19,12 +19,12 @@
         "APP_ENV": "stage"
       }
     },
-    "production": {
+    "master": {
       "distribution": "store",
-      "channel": "production",
+      "channel": "master",
       "autoIncrement": true,
       "env": {
-        "APP_ENV": "production"
+        "APP_ENV": "master"
       }
     },
     "develop-simulator": {
@@ -39,8 +39,8 @@
         "simulator": true
       }
     },
-    "production-simulator": {
-      "extends": "production",
+    "master-simulator": {
+      "extends": "master",
       "distribution": "internal",
       "ios": {
         "simulator": true
@@ -58,7 +58,7 @@
     }
   },
   "submit": {
-    "production": {
+    "master": {
       "ios": {
         "appleId": "jaemincheun@gmail.com",
         "ascAppId": "so.arami.ui.storybook"

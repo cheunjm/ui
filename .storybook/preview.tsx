@@ -6,7 +6,7 @@ import config from "../src/tokens/tamagui.config";
 const env = (import.meta as any).env?.STORYBOOK_ENV as string | undefined;
 
 function EnvBanner() {
-  if (!env || env === "main") return null;
+  if (!env || env === "master") return null;
 
   const colors: Record<string, { bg: string; text: string }> = {
     develop: { bg: "#FEF3C7", text: "#92400E" },
@@ -42,7 +42,7 @@ const preview: Preview = {
     (Story) => (
       <TamaguiProvider config={config}>
         <EnvBanner />
-        <div style={{ paddingTop: env && env !== "main" ? 24 : 0 }}>
+        <div style={{ paddingTop: env && env !== "master" ? 24 : 0 }}>
           <Story />
         </div>
       </TamaguiProvider>

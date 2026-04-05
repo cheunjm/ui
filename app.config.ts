@@ -1,7 +1,7 @@
 import { ExpoConfig, ConfigContext } from "expo/config";
 
-const appEnv = process.env.APP_ENV ?? "production";
-const envSuffix = appEnv === "production" ? "" : `.${appEnv}`;
+const appEnv = process.env.APP_ENV ?? "master";
+const envSuffix = appEnv === "master" ? "" : `.${appEnv}`;
 const bundleId = `so.arami.ui.storybook${envSuffix}`;
 
 export default ({ config }: ConfigContext): ExpoConfig => ({

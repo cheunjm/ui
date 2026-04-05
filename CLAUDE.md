@@ -20,9 +20,8 @@ npm start          # Expo dev server (press i for iOS, a for Android, w for web)
 
 ## Secrets Management
 
-- **Doppler project**: `cheunjm-ui` with environments `develop` / `stage` / `main`
-- **CI**: `DOPPLER_TOKEN` GitHub secret → `dopplerhq/cli-action@v3` → `doppler run --`
-- **Local**: `DOPPLER_TOKEN=$(op item get "doppler.pt.jaemincheun" --vault "Openclaw" --fields token --reveal)`
+- No Doppler project for this repo (secrets managed via GitHub Actions secrets and 1Password)
+- **EAS environments**: `develop` / `stage` / `master` (set via `APP_ENV` in eas.json profiles)
 
 ## Conventions
 

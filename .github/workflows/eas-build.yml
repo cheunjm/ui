@@ -1,16 +1,38 @@
-name: EAS Build (iOS & Android)
+name: EAS Build
 
 on:
   workflow_dispatch:
+    inputs:
+      profile:
+        description: "EAS build profile"
+        required: true
+        type: choice
+        options:
+          - master
+          - stage
+          - develop
+        default: master
+      platform:
+        description: "Target platform"
+        required: true
+        type: choice
+        options:
+          - all
+          - android
+          - ios
+        default: all
+
+concurrency:
+  group: eas-build-${{ inputs.profile }}-${{ inputs.platform }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      profile: ${{ steps.profile.outputs.name }}
+    timeout-minutes: 45
     strategy:
       matrix:
-        platform: [ios, android]
+        platform: ${{ inputs.platform == 'all' && fromJSON('["android", "ios"]') || fromJSON(format('["{0}"]', inputs.platform)) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,38 +49,31 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Map branch to EAS profile
-        id: profile
-        run: |
-          case "${{ github.ref_name }}" in
-            main)    echo "name=production" >> $GITHUB_OUTPUT ;;
-            stage)   echo "name=stage" >> $GITHUB_OUTPUT ;;
-            develop) echo "name=develop" >> $GITHUB_OUTPUT ;;
-          esac
-
-      - name: Run EAS Build
+      - name: Build
+        id: eas-build
         run: |
           eas build \
+            --profile ${{ inputs.profile }} \
             --platform ${{ matrix.platform }} \
-            --profile ${{ steps.profile.outputs.name }} \
-            --non-interactive
+            --non-interactive \
+            --json | tee /tmp/eas-build-result.json
+          BUILD_URL=$(cat /tmp/eas-build-result.json | jq -r '.[0].buildDetailsPageUrl // empty')
+          echo "build_url=$BUILD_URL" >> "$GITHUB_OUTPUT"
 
-  notify:
-    runs-on: ubuntu-latest
-    needs: [build]
-    if: always()
-    steps:
       - name: Notify Slack
+        if: always()
         run: |
-          if [ "${{ needs.build.result }}" = "success" ]; then
-            STATUS="✅ *EAS Build complete*"
-          else
-            STATUS="❌ *EAS Build failed*"
-          fi
+          STATUS="${{ job.status == 'success' && '✅' || '❌' }}"
+          PLATFORM="${{ matrix.platform }}"
+          PROFILE="${{ inputs.profile }}"
+          BUILD_URL="${{ steps.eas-build.outputs.build_url }}"
+          FALLBACK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          LINK="${BUILD_URL:-$FALLBACK}"
+
           curl -s -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AH9QDT2SW\",
-              \"text\": \"${STATUS} — @aramiworks/ui\n• Platforms: iOS & Android\n• Profile: ${{ needs.build.outputs.profile }}\n• Branch: ${{ github.ref_name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
+              \"text\": \"${STATUS} *EAS Build* — @aramiworks/ui ${PLATFORM} (${PROFILE})\n• <${LINK}|View build>\"
             }"

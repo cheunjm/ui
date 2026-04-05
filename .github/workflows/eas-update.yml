@@ -8,6 +8,16 @@ on:
       - 'app.config.ts'
       - '.ondevice/**'
 
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: "EAS update channel"
+        required: true
+        type: choice
+        options:
+          - develop
+          - stage
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -27,19 +37,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Map branch to channel
+      - name: Resolve channel
         id: channel
         run: |
-          case "${{ github.ref_name }}" in
-            main)    echo "name=production" >> $GITHUB_OUTPUT ;;
-            stage)   echo "name=stage" >> $GITHUB_OUTPUT ;;
-            develop) echo "name=develop" >> $GITHUB_OUTPUT ;;
-          esac
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "name=${{ inputs.channel }}" >> $GITHUB_OUTPUT
+          else
+            echo "name=master" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Read package version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
       - name: Publish OTA update
         run: |
           eas update \
             --channel ${{ steps.channel.outputs.name }} \
-            --message "${{ github.event.head_commit.message }}" \
+            --message "v${{ steps.version.outputs.version }} — ${{ github.event.head_commit.message || 'manual dispatch' }}" \
             --non-interactive
 
