@@ -57,13 +57,3 @@ jobs:
             --message "v${{ steps.version.outputs.version }} — ${{ github.event.head_commit.message || 'manual dispatch' }}" \
             --non-interactive
 
-      - name: Notify Slack
-        if: success()
-        run: |
-          curl -s -X POST https://slack.com/api/chat.postMessage \
-            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"channel\": \"C0AH9QDT2SW\",
-              \"text\": \"🔄 *OTA Update published* — @aramiworks/ui v${{ steps.version.outputs.version }}\n• Channel: ${{ steps.channel.outputs.name }}\n• <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>\"
-            }"
