@@ -10,11 +10,6 @@ const Sheet = styled(View, {
   top: 0,
   bottom: 0,
   backgroundColor: "$surface",
-  elevation: 8,
-  shadowColor: "#000",
-  shadowOffset: { width: -2, height: 0 },
-  shadowOpacity: 0.2,
-  shadowRadius: 8,
 });
 
 const Header = styled(XStack, {
