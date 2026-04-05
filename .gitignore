@@ -16,3 +16,4 @@ android/
 .tamagui/
 coverage/
 logs/
+debug-storybook.log

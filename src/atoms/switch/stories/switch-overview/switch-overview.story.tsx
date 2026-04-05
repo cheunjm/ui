@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack } from "tamagui";
 import { Switch } from "../../switch";
 import { SectionLabel } from "../../../../storybook";

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack, Text } from "tamagui";
 import { TopAppBar } from "../../top-app-bar";
 import type { TopAppBarType } from "../../top-app-bar.type";

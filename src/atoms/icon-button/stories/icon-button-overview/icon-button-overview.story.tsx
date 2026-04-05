@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack } from "tamagui";
 import { IconButton } from "../../icon-button";
 import type { IconButtonVariant } from "../../icon-button.type";
