@@ -1,6 +1,6 @@
 {
   "name": "@aramiworks/ui",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Expo-based design system — Brad Frost atomic design, MD3 interface, Tamagui internals",
   "main": "expo/AppEntry",
   "exports": {
