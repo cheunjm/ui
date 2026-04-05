@@ -83,6 +83,7 @@ function Overview() {
 const meta: Meta = {
   title: "organisms/dialog/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

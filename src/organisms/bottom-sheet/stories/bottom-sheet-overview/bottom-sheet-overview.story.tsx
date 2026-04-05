@@ -66,6 +66,7 @@ function Overview() {
 const meta: Meta = {
   title: "organisms/bottom-sheet/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

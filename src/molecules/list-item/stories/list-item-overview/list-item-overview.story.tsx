@@ -82,6 +82,7 @@ function Overview() {
 const meta: Meta = {
   title: "molecules/list-item/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

@@ -60,6 +60,7 @@ function Minimal() {
 const meta: Meta = {
   title: "templates/detail-template/overview",
   component: WithTopAppBar,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;
