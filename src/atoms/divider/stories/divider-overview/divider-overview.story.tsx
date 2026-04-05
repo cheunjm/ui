@@ -49,6 +49,13 @@ function Overview() {
 const meta: Meta = {
   title: "atoms/divider/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=1-4",
+    },
+  },
 };
 
 export default meta;

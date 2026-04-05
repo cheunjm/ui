@@ -40,6 +40,13 @@ function Overview() {
 const meta: Meta = {
   title: "atoms/badge/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=88-9",
+    },
+  },
 };
 
 export default meta;

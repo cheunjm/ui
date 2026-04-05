@@ -46,6 +46,7 @@ function Overview() {
 const meta: Meta = {
   title: "molecules/search-bar/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

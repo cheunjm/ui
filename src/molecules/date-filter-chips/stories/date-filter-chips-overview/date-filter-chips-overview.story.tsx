@@ -54,6 +54,7 @@ function Overview() {
 const meta: Meta = {
   title: "molecules/date-filter-chips/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

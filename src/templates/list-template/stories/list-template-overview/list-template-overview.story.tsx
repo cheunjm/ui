@@ -128,6 +128,7 @@ function Overview() {
 const meta: Meta = {
   title: "templates/list-template/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;
