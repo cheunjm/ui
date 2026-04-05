@@ -1,5 +1,7 @@
 export { BottomSheet } from "./bottom-sheet";
 export type { BottomSheetProps } from "./bottom-sheet";
+export { SideSheet } from "./side-sheet";
+export type { SideSheetProps } from "./side-sheet";
 export { Carousel } from "./carousel";
 export type { CarouselProps, CarouselItem, CarouselVariant } from "./carousel";
 export { DatePicker } from "./date-picker";
