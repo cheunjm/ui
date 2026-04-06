@@ -78,4 +78,59 @@ describe("Search", () => {
     fireEvent.press(screen.getByTestId("search-back"));
     expect(onBack).toHaveBeenCalled();
   });
+
+  it("fires onClearRecent when Clear all is pressed", () => {
+    const onClearRecent = jest.fn();
+    render(
+      <Search
+        active
+        recentSearches={recentSearches}
+        onClearRecent={onClearRecent}
+        testID="search"
+      />,
+    );
+    fireEvent.press(screen.getByText("Clear all"));
+    expect(onClearRecent).toHaveBeenCalled();
+  });
+
+  it("fires onActiveChange when typing while inactive", () => {
+    const onActiveChange = jest.fn();
+    render(
+      <Search
+        active={false}
+        onActiveChange={onActiveChange}
+        testID="search"
+      />,
+    );
+    fireEvent.changeText(screen.getByTestId("search-bar-input"), "q");
+    expect(onActiveChange).toHaveBeenCalledWith(true);
+  });
+
+  it("fires onSubmit when submitted", () => {
+    const onSubmit = jest.fn();
+    render(<Search onSubmit={onSubmit} testID="search" />);
+    fireEvent(screen.getByTestId("search-bar-input"), "submitEditing");
+    expect(onSubmit).toHaveBeenCalled();
+  });
+
+  it("renders suggestion without icon", () => {
+    const noIconSuggestions = [{ label: "No icon item", onPress: jest.fn() }];
+    render(
+      <Search active suggestions={noIconSuggestions} testID="search" />,
+    );
+    expect(screen.getByText("No icon item")).toBeTruthy();
+  });
+
+  it("shows divider when both recent and suggestions present", () => {
+    render(
+      <Search
+        active
+        recentSearches={recentSearches}
+        suggestions={suggestions}
+        testID="search"
+      />,
+    );
+    expect(screen.getByText("Recent searches")).toBeTruthy();
+    expect(screen.getByText("React Native")).toBeTruthy();
+  });
 });
