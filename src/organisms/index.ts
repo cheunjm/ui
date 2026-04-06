@@ -8,6 +8,8 @@ export { Dialog } from "./dialog";
 export type { DialogProps } from "./dialog";
 export { NavigationBar } from "./navigation-bar";
 export type { NavigationBarProps, NavigationDestination } from "./navigation-bar";
+export { NavigationRail } from "./navigation-rail";
+export type { NavigationRailProps, RailDestination, RailFab } from "./navigation-rail";
 export { NavigationDrawer } from "./navigation-drawer";
 export type { NavigationDrawerProps, DrawerDestination, DrawerSection } from "./navigation-drawer";
 export { Snackbar } from "./snackbar";
