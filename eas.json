@@ -26,35 +26,6 @@
       "env": {
         "APP_ENV": "master"
       }
-    },
-    "develop-simulator": {
-      "extends": "develop",
-      "ios": {
-        "simulator": true
-      }
-    },
-    "stage-simulator": {
-      "extends": "stage",
-      "ios": {
-        "simulator": true
-      }
-    },
-    "master-simulator": {
-      "extends": "master",
-      "distribution": "internal",
-      "ios": {
-        "simulator": true
-      }
-    },
-    "visual-test": {
-      "developmentClient": false,
-      "distribution": "internal",
-      "env": {
-        "APP_ENV": "develop"
-      },
-      "ios": {
-        "simulator": true
-      }
     }
   },
   "submit": {
