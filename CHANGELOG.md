@@ -1,5 +1,33 @@
 # @aramiworks/ui
 
+## 0.3.0
+
+### Minor Changes
+
+- [#114](https://github.com/aramiworks/ui/pull/114) [`1b0b6c9`](https://github.com/aramiworks/ui/commit/1b0b6c9bac336be0478e9c59dcd0cf2a4873db08) Thanks [@cheunjm](https://github.com/cheunjm)! - Add NavigationRail organism — MD3 vertical navigation for tablet/desktop with optional FAB slot and 3–7 destinations.
+
+- [#121](https://github.com/aramiworks/ui/pull/121) [`39babf3`](https://github.com/aramiworks/ui/commit/39babf3b8d7bbdad7dcba4330184431277a12fb2) Thanks [@cheunjm](https://github.com/cheunjm)! - Add UiProvider and OverviewLayout storybook utilities. UiProvider wraps TamaguiProvider so consumer apps never import Tamagui directly. OverviewLayout, SectionLabel, and VariantLabel are shared story layout components for consistent visual documentation across all repos.
+
+### Patch Changes
+
+- [#108](https://github.com/aramiworks/ui/pull/108) [`c0a7b01`](https://github.com/aramiworks/ui/commit/c0a7b01f3c211de45603bb93b262674f5c0680f6) Thanks [@cheunjm](https://github.com/cheunjm)! - Add AsyncStorage to on-device Storybook to persist selected story between sessions.
+
+- [#125](https://github.com/aramiworks/ui/pull/125) [`b142650`](https://github.com/aramiworks/ui/commit/b1426504d15f6048952a0b2b1eb3c8708d052491) Thanks [@cheunjm](https://github.com/cheunjm)! - Add ready_for_review to CI pull_request trigger types so Chromatic runs when a draft PR is converted to ready.
+
+- [#116](https://github.com/aramiworks/ui/pull/116) [`5301153`](https://github.com/aramiworks/ui/commit/530115385d8fa0e830d4f68ff2091fee8a560e2a) Thanks [@cheunjm](https://github.com/cheunjm)! - Add ITSAppUsesNonExemptEncryption to suppress App Store encryption warning.
+
+- [#110](https://github.com/aramiworks/ui/pull/110) [`e696f92`](https://github.com/aramiworks/ui/commit/e696f92ab6adc1aea4e15ec0b41271855e36e55a) Thanks [@cheunjm](https://github.com/cheunjm)! - Standardize EAS environment naming to develop/stage/master across all config and workflows.
+
+- [#111](https://github.com/aramiworks/ui/pull/111) [`35441c7`](https://github.com/aramiworks/ui/commit/35441c73ee67b1908719c6c9e658777bee9e9b65) Thanks [@cheunjm](https://github.com/cheunjm)! - CI cleanup: remove redundant push-to-main trigger, rename jobs to match convention, remove duplicate Slack notification from eas-update.
+
+- [#112](https://github.com/aramiworks/ui/pull/112) [`94f9796`](https://github.com/aramiworks/ui/commit/94f97963b7aeb4049aeaf54cd78d1892d2d313c5) Thanks [@cheunjm](https://github.com/cheunjm)! - Configure Mergify merge queue with explicit check-success conditions and approval-based auto-merge.
+
+- [#122](https://github.com/aramiworks/ui/pull/122) [`5e23991`](https://github.com/aramiworks/ui/commit/5e23991472ecbdc605373170c1671be3d5056c9f) Thanks [@cheunjm](https://github.com/cheunjm)! - Disable Vercel GitHub integration on PRs to prevent bot noise.
+
+- [#118](https://github.com/aramiworks/ui/pull/118) [`b3f41c1`](https://github.com/aramiworks/ui/commit/b3f41c1d3b6acb443aba8132dc6543a787aed146) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Mergify auto-update rule to keep PR branches up-to-date with main.
+
+- [#113](https://github.com/aramiworks/ui/pull/113) [`3ab792a`](https://github.com/aramiworks/ui/commit/3ab792ac59d2ec1c7bfa76a4ca9a2cd71836ac42) Thanks [@cheunjm](https://github.com/cheunjm)! - Replace AsyncStorage with in-memory storage adapter in on-device Storybook to avoid native module dependency.
+
 ## 0.2.1
 
 ### Patch Changes
