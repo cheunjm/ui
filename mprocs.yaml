@@ -1,6 +1,10 @@
 procs:
-  expo:
-    cmd: ["npm", "run", "start"]
+  ios:
+    cmd: ["npx", "expo", "start", "--port", "8082", "--ios"]
+    autostart: true
+
+  android:
+    shell: "cd /Users/jaemincheun/Library/Android/sdk/emulator && ./emulator @Pixel_7_API_35 & sleep 15 && npx expo start --port 8083 --android"
     autostart: true
 
   storybook:

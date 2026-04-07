@@ -24,7 +24,7 @@ function createIconComponent(fontFamily: string) {
         aria-label={accessibilityLabel || name}
         role="img"
         style={{
-          fontFamily,
+          fontFamily: "'Material Icons'",
           fontSize: size,
           color,
           display: "inline-block",
@@ -36,7 +36,7 @@ function createIconComponent(fontFamily: string) {
         }}
         {...props}
       >
-        {name}
+        {name.replace(/-/g, "_")}
       </span>
     );
   }
