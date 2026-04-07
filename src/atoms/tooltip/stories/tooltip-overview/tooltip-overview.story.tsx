@@ -27,7 +27,12 @@ const meta: Meta = {
   title: "atoms/tooltip/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
-  parameters: {},
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=299-2",
+    },
+  },
 };
 
 export default meta;

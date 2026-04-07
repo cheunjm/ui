@@ -79,6 +79,12 @@ const meta: Meta = {
   title: "atoms/card/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=296-60",
+    },
+  },
 };
 
 export default meta;

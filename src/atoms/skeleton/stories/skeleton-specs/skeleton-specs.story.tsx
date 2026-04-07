@@ -46,7 +46,12 @@ const meta: Meta = {
   title: "atoms/skeleton/specs",
   component: Specs,
   tags: ["autodocs", "!dev"],
-  parameters: {},
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=301-65",
+    },
+  },
 };
 
 export default meta;

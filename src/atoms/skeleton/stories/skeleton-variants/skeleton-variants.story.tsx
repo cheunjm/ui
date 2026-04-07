@@ -99,7 +99,12 @@ const meta: Meta = {
   title: "atoms/skeleton/variants",
   component: Variants,
   tags: ["autodocs", "!dev"],
-  parameters: {},
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=301-26",
+    },
+  },
 };
 
 export default meta;

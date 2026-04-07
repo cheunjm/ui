@@ -3,9 +3,15 @@ import { Text } from "tamagui";
 import { Card } from "../../card";
 import type { CardProps } from "../../card.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=";
+
 const meta: Meta<CardProps> = {
   title: "atoms/card/variants",
   component: Card,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}296-31` },
+  },
   args: {
     children: (
       <>

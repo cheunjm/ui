@@ -92,6 +92,12 @@ const meta: Meta = {
   title: "atoms/tooltip/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=300-2",
+    },
+  },
 };
 
 export default meta;

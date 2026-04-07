@@ -65,7 +65,12 @@ const meta: Meta = {
   title: "atoms/skeleton/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
-  parameters: {},
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=301-44",
+    },
+  },
 };
 
 export default meta;

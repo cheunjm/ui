@@ -33,7 +33,12 @@ const meta: Meta = {
   title: "atoms/card/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
-  parameters: {},
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=296-7",
+    },
+  },
 };
 
 export default meta;

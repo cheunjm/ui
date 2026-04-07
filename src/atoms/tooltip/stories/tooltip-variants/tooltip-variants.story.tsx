@@ -3,9 +3,15 @@ import { View, Text } from "tamagui";
 import { Tooltip } from "../../tooltip";
 import type { TooltipProps } from "../../tooltip.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=";
+
 const meta: Meta<TooltipProps> = {
   title: "atoms/tooltip/variants",
   component: Tooltip,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}299-20` },
+  },
   args: {
     children: (
       <View
