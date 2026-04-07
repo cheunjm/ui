@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View } from "tamagui";
 import { NavigationDrawer } from "../../navigation-drawer";
 import { Button } from "../../../../atoms/button";
@@ -45,7 +45,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/NavigationDrawer/Overview",
+  title: "organisms/navigation-drawer/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

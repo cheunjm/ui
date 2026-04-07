@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, View, Text } from "tamagui";
 import { Carousel } from "../../carousel";
 
@@ -30,7 +30,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/Carousel/Overview",
+  title: "organisms/carousel/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

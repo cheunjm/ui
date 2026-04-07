@@ -1,23 +1,8 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { YStack } from "tamagui";
 import { FormField } from "../../form-field";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 function BasicExample() {
   const [value, setValue] = useState("");
@@ -119,8 +104,9 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Molecules/FormField/Overview",
+  title: "molecules/form-field/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

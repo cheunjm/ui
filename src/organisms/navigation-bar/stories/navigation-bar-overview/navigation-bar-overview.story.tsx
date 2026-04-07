@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, Text } from "tamagui";
 import { NavigationBar } from "../../navigation-bar";
 
@@ -47,8 +47,9 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/NavigationBar/Overview",
+  title: "organisms/navigation-bar/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

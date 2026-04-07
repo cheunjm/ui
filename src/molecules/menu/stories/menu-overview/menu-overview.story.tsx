@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View } from "tamagui";
 import { Menu } from "../../menu";
 import { Button } from "../../../../atoms/button";
@@ -28,7 +28,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Molecules/Menu/Overview",
+  title: "molecules/menu/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

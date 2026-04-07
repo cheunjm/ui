@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack, Text, View } from "tamagui";
 
 const specs = [
@@ -69,7 +69,7 @@ function Specs() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Button/Specs",
+  title: "atoms/button/specs",
   component: Specs,
   tags: ["autodocs", "!dev"],
   parameters: {

@@ -1,27 +1,12 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { YStack, XStack, Text, View } from "tamagui";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { YStack, View } from "tamagui";
 import { ListTemplate } from "../../list-template";
 import { TopAppBar } from "../../../../organisms/top-app-bar";
 import { SearchBar } from "../../../../molecules/search-bar";
 import { NavigationBar } from "../../../../organisms/navigation-bar";
 import { ListItem } from "../../../../molecules/list-item";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 const sampleItems = [
   { headline: "Photos", supportingText: "Jan 9, 2024", leadingContent: "image" },
@@ -141,8 +126,9 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Templates/ListTemplate/Overview",
+  title: "templates/list-template/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

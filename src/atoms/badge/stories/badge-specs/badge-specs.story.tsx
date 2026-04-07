@@ -1,0 +1,87 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { XStack, YStack, Text } from "tamagui";
+
+const specs = [
+  { property: "Small size", value: "6 x 6 dp" },
+  { property: "Large size", value: "16 x 16 dp" },
+  { property: "Corner radius", value: "50% (circle)" },
+  { property: "Font", value: "Label Small (11sp)" },
+  { property: "Container color", value: "md.sys.color.error" },
+  { property: "Label color", value: "md.sys.color.on-error" },
+  { property: "Offset X", value: "-4 dp from anchor edge" },
+  { property: "Offset Y", value: "2 dp above anchor edge" },
+];
+
+function SpecRow({
+  property,
+  value,
+  isHeader,
+}: {
+  property: string;
+  value: string;
+  isHeader?: boolean;
+}) {
+  return (
+    <XStack
+      height={36}
+      alignItems="center"
+      borderBottomWidth={1}
+      borderBottomColor="#E0E0E0"
+    >
+      <Text
+        width={160}
+        paddingLeft={16}
+        fontSize={14}
+        fontWeight={isHeader ? "600" : "400"}
+        color="#1C1B1F"
+      >
+        {property}
+      </Text>
+      <Text
+        flex={1}
+        fontSize={14}
+        fontWeight={isHeader ? "600" : "400"}
+        color="#49454F"
+      >
+        {value}
+      </Text>
+    </XStack>
+  );
+}
+
+function Specs() {
+  return (
+    <XStack
+      backgroundColor="#FFFFFF"
+      borderRadius={12}
+      borderWidth={1}
+      borderColor="#E0E0E0"
+      padding={24}
+    >
+      <YStack width={392}>
+        <SpecRow property="Property" value="Value" isHeader />
+        {specs.map((s) => (
+          <SpecRow key={s.property} property={s.property} value={s.value} />
+        ))}
+      </YStack>
+    </XStack>
+  );
+}
+
+const meta: Meta = {
+  title: "atoms/badge/specs",
+  component: Specs,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=146-26",
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj;
+
+export const Default: Story = {};

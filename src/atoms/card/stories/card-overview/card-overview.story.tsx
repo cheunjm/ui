@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, Text } from "tamagui";
 import { Card } from "../../card";
 
@@ -30,9 +30,15 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Card/Overview",
+  title: "atoms/card/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=1-2",
+    },
+  },
 };
 
 export default meta;

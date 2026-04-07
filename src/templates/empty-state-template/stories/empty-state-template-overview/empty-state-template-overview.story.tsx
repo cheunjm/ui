@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, Text } from "tamagui";
 import { EmptyStateTemplate } from "../../empty-state-template";
 import { Button } from "../../../../atoms/button";
@@ -48,8 +48,9 @@ function WithTopAppBar() {
 }
 
 const meta: Meta = {
-  title: "Templates/EmptyStateTemplate/Overview",
+  title: "templates/empty-state-template/overview",
   component: Full,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

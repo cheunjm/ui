@@ -1,22 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { YStack } from "tamagui";
 import { Slider } from "../../slider";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 function Overview() {
   return (
@@ -52,8 +37,15 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Slider/Overview",
+  title: "atoms/slider/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=67-2",
+    },
+  },
 };
 
 export default meta;

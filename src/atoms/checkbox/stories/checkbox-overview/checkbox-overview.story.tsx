@@ -1,22 +1,7 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { XStack, YStack } from "tamagui";
 import { Checkbox } from "../../checkbox";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 function Overview() {
   return (
@@ -63,8 +48,15 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Atoms/Checkbox/Overview",
+  title: "atoms/checkbox/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=64-2",
+    },
+  },
 };
 
 export default meta;

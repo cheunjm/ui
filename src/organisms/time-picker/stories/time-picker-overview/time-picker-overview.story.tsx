@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, Text } from "tamagui";
 import { TimePicker } from "../../time-picker";
 import { Button } from "../../../../atoms/button";
@@ -32,7 +32,7 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/TimePicker/Overview",
+  title: "organisms/time-picker/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
 };

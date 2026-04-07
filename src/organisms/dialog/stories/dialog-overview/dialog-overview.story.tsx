@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, View } from "tamagui";
 import { Button } from "../../../../atoms/button";
 import { Dialog } from "../../dialog";
@@ -81,8 +81,9 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Organisms/Dialog/Overview",
+  title: "organisms/dialog/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

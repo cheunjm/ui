@@ -1,24 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { XStack, YStack, Text } from "tamagui";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { YStack } from "tamagui";
 import { ListItem } from "../../list-item";
 import { Badge } from "../../../../atoms/badge";
 import { Switch } from "../../../../atoms/switch";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 function Overview() {
   return (
@@ -95,8 +80,9 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Molecules/ListItem/Overview",
+  title: "molecules/list-item/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

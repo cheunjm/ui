@@ -4,6 +4,7 @@ name: CI
 on:
   workflow_dispatch:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     paths-ignore:
       - ".changeset/**"
       - "CHANGELOG.md"
@@ -13,51 +14,44 @@ permissions:
   contents: read
   pull-requests: write
 
-env:
-  DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-
 jobs:
   lint-type-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dopplerhq/cli-action@v3
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install dependencies
-        run: doppler run -- npm ci
+        run: npm ci
 
       - name: Audit production dependencies
         run: npm audit --audit-level=critical --omit=dev
 
       - name: Lint
-        run: doppler run -- npm run lint
+        run: npm run lint
 
       - name: Typecheck
-        run: doppler run -- npm run typecheck
+        run: npm run typecheck
 
   unit-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dopplerhq/cli-action@v3
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install dependencies
-        run: doppler run -- npm ci
+        run: npm ci
 
       - name: Run unit tests
-        run: doppler run -- npm test -- --ci --coverage
+        run: npm test -- --ci --coverage
 
       - name: Upload coverage to Codecov
         if: always()
@@ -107,15 +101,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dopplerhq/cli-action@v3
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
       - name: Install dependencies
-        run: doppler run -- npm ci
+        run: npm ci
 
       - name: Install Maestro
         run: |
@@ -129,7 +121,7 @@ jobs:
           sudo chmod +x /usr/bin/google-chrome
 
       - name: Build Storybook
-        run: doppler run -- npm run storybook:build
+        run: npm run storybook:build
 
       - name: Serve Storybook and run E2E
         id: e2e
@@ -138,7 +130,7 @@ jobs:
           npx http-server storybook-static -p 6006 &
           sleep 5
           mkdir -p e2e-results
-          doppler run -- maestro test --platform web --format junit --output e2e-results/results.xml e2e/integration/ e2e/journeys/
+          maestro test --platform web --format junit --output e2e-results/results.xml e2e/integration/ e2e/journeys/
 
       - name: Upload E2E results
         if: always()

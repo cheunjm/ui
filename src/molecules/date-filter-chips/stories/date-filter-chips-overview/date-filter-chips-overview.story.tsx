@@ -1,24 +1,9 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { YStack, XStack, Text } from "tamagui";
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { YStack } from "tamagui";
 import { DateFilterChips } from "../../date-filter-chips";
 import type { DateFilterOption } from "../../date-filter-chips.type";
-
-function SectionLabel({ label }: { label: string }) {
-  return (
-    <XStack
-      backgroundColor="#E8DEF8"
-      borderRadius={14}
-      paddingHorizontal={12}
-      paddingVertical={6}
-      justifyContent="center"
-    >
-      <Text fontSize={12} fontWeight="500" color="#6750A4">
-        {label}
-      </Text>
-    </XStack>
-  );
-}
+import { SectionLabel } from "../../../../storybook";
 
 const dateOptions: DateFilterOption[] = [
   { value: "today", label: "Today" },
@@ -67,8 +52,9 @@ function Overview() {
 }
 
 const meta: Meta = {
-  title: "Molecules/DateFilterChips/Overview",
+  title: "molecules/date-filter-chips/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

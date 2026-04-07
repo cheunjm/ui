@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "../../text";
 
 const meta: Meta<typeof Text> = {
-  title: "Atoms/Text/Headline",
+  title: "atoms/text/headline",
   component: Text,
   argTypes: {
     role: {
