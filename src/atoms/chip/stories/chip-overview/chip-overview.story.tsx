@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack } from "tamagui";
 import { Chip } from "../../chip";
 import { SectionLabel } from "../../../../storybook";
@@ -49,6 +49,13 @@ function Overview() {
 const meta: Meta = {
   title: "atoms/chip/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=209-27",
+    },
+  },
 };
 
 export default meta;

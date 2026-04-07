@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack, Text } from "tamagui";
 import { TopAppBar } from "../../top-app-bar";
 import type { TopAppBarType } from "../../top-app-bar.type";
@@ -66,6 +66,7 @@ function Overview() {
 const meta: Meta = {
   title: "organisms/top-app-bar/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

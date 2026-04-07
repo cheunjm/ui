@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack } from "tamagui";
 import { Checkbox } from "../../checkbox";
 import { SectionLabel } from "../../../../storybook";
@@ -50,6 +50,13 @@ function Overview() {
 const meta: Meta = {
   title: "atoms/checkbox/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=64-2",
+    },
+  },
 };
 
 export default meta;

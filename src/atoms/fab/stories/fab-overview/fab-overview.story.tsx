@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack } from "tamagui";
 import { FAB } from "../../fab";
 import type { FabSize, FabColor } from "../../fab.type";
@@ -81,6 +81,13 @@ function Overview() {
 const meta: Meta = {
   title: "atoms/fab/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=210-22",
+    },
+  },
 };
 
 export default meta;

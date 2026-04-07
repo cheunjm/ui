@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, Text } from "tamagui";
 import { DatePicker } from "../../date-picker";
 import { Button } from "../../../../atoms/button";

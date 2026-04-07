@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack } from "tamagui";
 import { FormField } from "../../form-field";
 import { SectionLabel } from "../../../../storybook";
@@ -106,6 +106,7 @@ function Overview() {
 const meta: Meta = {
   title: "molecules/form-field/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

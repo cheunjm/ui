@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack } from "tamagui";
 import { DateFilterChips } from "../../date-filter-chips";
 import type { DateFilterOption } from "../../date-filter-chips.type";
@@ -54,6 +54,7 @@ function Overview() {
 const meta: Meta = {
   title: "molecules/date-filter-chips/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

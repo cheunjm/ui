@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack } from "tamagui";
 import { Tooltip } from "../../tooltip";
 import { Button } from "../../../button";
@@ -27,6 +27,12 @@ const meta: Meta = {
   title: "atoms/tooltip/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=1-2",
+    },
+  },
 };
 
 export default meta;

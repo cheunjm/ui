@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, Text } from "tamagui";
 import { TopAppBar } from "../../../../organisms/top-app-bar";
 import { DetailTemplate } from "../../detail-template";
@@ -60,6 +60,7 @@ function Minimal() {
 const meta: Meta = {
   title: "templates/detail-template/overview",
   component: WithTopAppBar,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

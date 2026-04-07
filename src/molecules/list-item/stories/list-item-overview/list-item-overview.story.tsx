@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack } from "tamagui";
 import { ListItem } from "../../list-item";
 import { Badge } from "../../../../atoms/badge";
@@ -82,6 +82,7 @@ function Overview() {
 const meta: Meta = {
   title: "molecules/list-item/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

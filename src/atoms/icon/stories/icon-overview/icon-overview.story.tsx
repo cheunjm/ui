@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack, Text } from "tamagui";
 import { Icon } from "../../icon";
 import type { IconSize } from "../../icon.type";
@@ -77,6 +77,13 @@ function Overview() {
 const meta: Meta = {
   title: "atoms/icon/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=52-3",
+    },
+  },
 };
 
 export default meta;

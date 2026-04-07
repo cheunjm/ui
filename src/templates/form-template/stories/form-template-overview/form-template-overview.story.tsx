@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack, XStack } from "tamagui";
 import { FormTemplate } from "../../form-template";
 import { TopAppBar } from "../../../../organisms/top-app-bar";
@@ -49,6 +49,7 @@ function TwoActions() {
 const meta: Meta = {
   title: "templates/form-template/overview",
   component: SingleAction,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

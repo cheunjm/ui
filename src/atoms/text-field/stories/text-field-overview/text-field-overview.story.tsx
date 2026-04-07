@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack } from "tamagui";
 import { TextField } from "../../text-field";
 import { SectionLabel } from "../../../../storybook";
@@ -116,6 +116,13 @@ function Overview() {
 const meta: Meta = {
   title: "atoms/text-field/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=52-2",
+    },
+  },
 };
 
 export default meta;

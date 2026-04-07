@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { YStack } from "tamagui";
 import { SearchBar } from "../../search-bar";
 import { SectionLabel } from "../../../../storybook";
@@ -46,6 +46,7 @@ function Overview() {
 const meta: Meta = {
   title: "molecules/search-bar/overview",
   component: Overview,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;
