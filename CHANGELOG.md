@@ -1,5 +1,31 @@
 # @aramiworks/ui
 
+## 0.4.0
+
+### Minor Changes
+
+- [#109](https://github.com/aramiworks/ui/pull/109) [`24a49f6`](https://github.com/aramiworks/ui/commit/24a49f6b0a1689ef17a47f01de8882d0bede1ce5) Thanks [@cheunjm](https://github.com/cheunjm)! - Add 4-section story structure (Overview, Anatomy, Specs, Variants) with Figma design links across all atoms, molecules, organisms, and templates.
+
+- [#119](https://github.com/aramiworks/ui/pull/119) [`2ad90e1`](https://github.com/aramiworks/ui/commit/2ad90e1f126a627ee2fcd3e825c51860c2f40946) Thanks [@cheunjm](https://github.com/cheunjm)! - Add BottomAppBar organism — MD3 bottom action bar with FAB slot and up to 4 icon button actions.
+
+- [#117](https://github.com/aramiworks/ui/pull/117) [`2562be8`](https://github.com/aramiworks/ui/commit/2562be8b3cf0b3d929ae6bf33f02c61f8beb5d86) Thanks [@cheunjm](https://github.com/cheunjm)! - Add TabBar organism — MD3 primary and secondary tab bars with fixed and scrollable variants.
+
+- [#124](https://github.com/aramiworks/ui/pull/124) [`06f30da`](https://github.com/aramiworks/ui/commit/06f30dac8aef5c8280013013f55bab23a3feba38) Thanks [@cheunjm](https://github.com/cheunjm)! - Upgrade Storybook from v8 to v10 across all packages.
+
+### Patch Changes
+
+- [#128](https://github.com/aramiworks/ui/pull/128) [`92d370c`](https://github.com/aramiworks/ui/commit/92d370cea8ea39624c20871018da15677411f79d) Thanks [@cheunjm](https://github.com/cheunjm)! - Restrict EAS build/update to main branch and sync runtimeVersion from package.json major.minor.
+
+- [#134](https://github.com/aramiworks/ui/pull/134) [`0a10426`](https://github.com/aramiworks/ui/commit/0a10426478522152c30b7a58be9883ecba6a3b91) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix icon font not rendering on Storybook web — correct Material Icons font family name and add ligature settings.
+
+- [#130](https://github.com/aramiworks/ui/pull/130) [`a0e793e`](https://github.com/aramiworks/ui/commit/a0e793e2abdcdd5bf2ff819702a6cca8d079de68) Thanks [@cheunjm](https://github.com/cheunjm)! - Add workflow_dispatch trigger to release workflow for manual triggering.
+
+- [#132](https://github.com/aramiworks/ui/pull/132) [`05d43aa`](https://github.com/aramiworks/ui/commit/05d43aaf1749f14dc9e6dbbdc89d02b30371d12d) Thanks [@cheunjm](https://github.com/cheunjm)! - Bump create-github-app-token to v2 in release workflow to fix PKCS#1 key format support.
+
+- [#133](https://github.com/aramiworks/ui/pull/133) [`285ec79`](https://github.com/aramiworks/ui/commit/285ec797d2c73a333822f1718f7227238e781952) Thanks [@cheunjm](https://github.com/cheunjm)! - Update mprocs dashboard with dedicated ios/android panes and fix expo-vector-icons mock font rendering.
+
+- [#131](https://github.com/aramiworks/ui/pull/131) [`f7abbd4`](https://github.com/aramiworks/ui/commit/f7abbd4a610dda73f949fee03830cb4a2bb48df9) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix Material Icons rendering in Storybook web — load font via preview-head.html and convert hyphenated icon names to underscore format for ligature support.
+
 ## 0.3.0
 
 ### Minor Changes
