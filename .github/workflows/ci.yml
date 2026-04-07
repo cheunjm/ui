@@ -68,8 +68,23 @@ jobs:
           name: coverage
           path: coverage/
 
+  changes:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+
   chromatic:
-    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    needs: [changes]
+    if: (github.event_name == 'pull_request' && needs.changes.outputs.src == 'true') || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
