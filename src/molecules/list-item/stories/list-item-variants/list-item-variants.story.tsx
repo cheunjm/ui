@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ListItem } from "../../list-item";
 import type { ListItemProps } from "../../list-item.type";
 

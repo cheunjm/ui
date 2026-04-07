@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View, Text } from "tamagui";
 import { DetailTemplate } from "../../detail-template";
 import type { DetailTemplateProps } from "../../detail-template.type";

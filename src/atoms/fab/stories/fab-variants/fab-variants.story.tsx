@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FAB } from "../../fab";
 import type { FabProps } from "../../fab.type";
 

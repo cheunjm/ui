@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { RadioButton } from "../../radio-button";
 import type { RadioButtonProps } from "../../radio-button.type";
 

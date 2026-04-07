@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "tamagui";
 import { Dialog } from "../../dialog";
 import type { DialogProps } from "../../dialog.type";

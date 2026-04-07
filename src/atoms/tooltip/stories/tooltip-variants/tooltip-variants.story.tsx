@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View, Text } from "tamagui";
 import { Tooltip } from "../../tooltip";
 import type { TooltipProps } from "../../tooltip.type";

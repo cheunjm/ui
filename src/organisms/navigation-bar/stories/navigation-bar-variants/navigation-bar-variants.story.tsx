@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { NavigationBar } from "../../navigation-bar";
 import type { NavigationBarProps } from "../../navigation-bar.type";
 

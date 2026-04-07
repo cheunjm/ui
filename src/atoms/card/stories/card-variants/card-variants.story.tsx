@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "tamagui";
 import { Card } from "../../card";
 import type { CardProps } from "../../card.type";

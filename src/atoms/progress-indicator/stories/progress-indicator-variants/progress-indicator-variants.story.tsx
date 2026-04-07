@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ProgressIndicator } from "../../progress-indicator";
 import type { ProgressIndicatorProps } from "../../progress-indicator.type";
 

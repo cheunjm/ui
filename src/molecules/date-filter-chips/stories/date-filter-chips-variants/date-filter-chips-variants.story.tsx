@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DateFilterChips } from "../../date-filter-chips";
 import type { DateFilterChipsProps } from "../../date-filter-chips.type";
 

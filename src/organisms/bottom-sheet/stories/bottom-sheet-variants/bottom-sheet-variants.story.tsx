@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View, Text } from "tamagui";
 import { BottomSheet } from "../../bottom-sheet";
 import type { BottomSheetProps } from "../../bottom-sheet.type";

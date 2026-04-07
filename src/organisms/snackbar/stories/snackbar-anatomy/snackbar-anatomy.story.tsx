@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack, Text, View } from "tamagui";
 
 function Callout({ number }: { number: number }) {

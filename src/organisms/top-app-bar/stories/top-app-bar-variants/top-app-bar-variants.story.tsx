@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TopAppBar } from "../../top-app-bar";
 import type { TopAppBarProps } from "../../top-app-bar.type";
 

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { XStack, YStack, Text as TamaguiText } from "tamagui";
 import { Text } from "../../text";
 import type { TextRole } from "../../text.type";

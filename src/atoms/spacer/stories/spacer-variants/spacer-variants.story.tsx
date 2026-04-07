@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Spacer } from "../../spacer";
 import type { SpacerProps } from "../../spacer.type";
 

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Snackbar } from "../../snackbar";
 import type { SnackbarProps } from "../../snackbar.type";
 

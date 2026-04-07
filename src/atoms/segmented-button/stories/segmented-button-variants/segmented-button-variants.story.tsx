@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SegmentedButton } from "../../segmented-button";
 import type { SegmentedButtonProps } from "../../segmented-button.type";
 

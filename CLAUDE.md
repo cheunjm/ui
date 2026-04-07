@@ -20,7 +20,9 @@ npm start          # Expo dev server (press i for iOS, a for Android, w for web)
 
 ## Secrets Management
 
-- No Doppler project for this repo (secrets managed via GitHub Actions secrets and 1Password)
+- **Doppler project**: `ui` with environments `develop` / `stage` / `master`
+- **Local**: `doppler run --project ui --config master -- <command>`
+- **CI**: `DOPPLER_TOKEN` GitHub secret → `dopplerhq/cli-action@v3` → `doppler run --`
 - **EAS environments**: `develop` / `stage` / `master` (set via `APP_ENV` in eas.json profiles)
 
 ## Conventions

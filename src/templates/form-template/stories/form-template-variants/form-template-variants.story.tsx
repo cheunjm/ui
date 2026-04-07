@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { View, Text, XStack } from "tamagui";
 import { FormTemplate } from "../../form-template";
 import type { FormTemplateProps } from "../../form-template.type";
