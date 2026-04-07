@@ -24,7 +24,7 @@ function createIconComponent(fontFamily: string) {
         aria-label={accessibilityLabel || name}
         role="img"
         style={{
-          fontFamily,
+          fontFamily: "'Material Icons'",
           fontSize: size,
           color,
           display: "inline-block",
@@ -32,6 +32,8 @@ function createIconComponent(fontFamily: string) {
           height: size,
           lineHeight: `${size}px`,
           textAlign: "center",
+          fontFeatureSettings: "'liga'",
+          WebkitFontSmoothing: "antialiased" as any,
           ...style,
         }}
         {...props}
