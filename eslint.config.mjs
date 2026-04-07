@@ -33,4 +33,9 @@ export default tseslint.config(js.configs.recommended, ...tseslint.configs.recom
     "coverage/",
     "dist/",
   ],
-}, storybook.configs["flat/recommended"]);
+}, storybook.configs["flat/recommended"], {
+  rules: {
+    // @storybook/react is the standard import for Meta/StoryObj types in Vite-based Storybook
+    "storybook/no-renderer-packages": "off",
+  },
+});
