@@ -1,5 +1,3 @@
-import type { ExpoConfig, ConfigContext } from "expo/config";
-
 const { version } = require("./package.json");
 const [major, minor] = version.split(".");
 
@@ -7,7 +5,8 @@ const appEnv = process.env.APP_ENV ?? "master";
 const envSuffix = appEnv === "master" ? "" : `.${appEnv}`;
 const bundleId = `so.arami.ui.storybook${envSuffix}`;
 
-export default ({ config }: ConfigContext): ExpoConfig => ({
+/** @type {(ctx: import('expo/config').ConfigContext) => import('expo/config').ExpoConfig} */
+module.exports = ({ config }) => ({
   ...config,
   name: "@aramiworks/ui",
   slug: "cheunjm-ui",
