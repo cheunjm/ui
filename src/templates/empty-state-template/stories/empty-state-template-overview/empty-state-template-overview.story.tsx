@@ -50,6 +50,7 @@ function WithTopAppBar() {
 const meta: Meta = {
   title: "templates/empty-state-template/overview",
   component: Full,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;

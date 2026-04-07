@@ -49,6 +49,7 @@ function TwoActions() {
 const meta: Meta = {
   title: "templates/form-template/overview",
   component: SingleAction,
+  tags: ["autodocs", "!dev"],
 };
 
 export default meta;
