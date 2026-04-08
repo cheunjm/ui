@@ -24,7 +24,7 @@ function createIconComponent(fontFamily: string) {
         aria-label={accessibilityLabel || name}
         role="img"
         style={{
-          fontFamily: "'Material Icons'",
+          fontFamily,
           fontSize: size,
           color,
           display: "inline-block",
@@ -33,9 +33,9 @@ function createIconComponent(fontFamily: string) {
           lineHeight: `${size}px`,
           textAlign: "center",
           fontFeatureSettings: "'liga'",
-          WebkitFontSmoothing: "antialiased" as any,
+          WebkitFontSmoothing: "antialiased",
           ...style,
-        }}
+        } as React.CSSProperties}
         {...props}
       >
         {name.replace(/-/g, "_")}
