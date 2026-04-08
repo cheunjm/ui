@@ -67,6 +67,12 @@ const meta: Meta = {
   title: "organisms/time-picker/specs",
   component: Specs,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=13-19",
+    },
+  },
 };
 
 export default meta;

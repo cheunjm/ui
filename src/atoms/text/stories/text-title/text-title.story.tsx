@@ -15,6 +15,12 @@ const meta: Meta<typeof Text> = {
     },
     children: { control: "text" },
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=52-4",
+    },
+  },
 };
 
 export default meta;

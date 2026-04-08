@@ -39,6 +39,12 @@ function Specs() {
 const meta: Meta = {
   title: "Organisms/BottomAppBar/Specs",
   component: Specs,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=1-19",
+    },
+  },
 };
 
 export default meta;

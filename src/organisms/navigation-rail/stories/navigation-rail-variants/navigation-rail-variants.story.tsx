@@ -59,10 +59,16 @@ function Variants() {
   );
 }
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=";
+
 const meta: Meta = {
   title: "Organisms/NavigationRail/Variants",
   component: Variants,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}8-11` },
+  },
 };
 
 export default meta;

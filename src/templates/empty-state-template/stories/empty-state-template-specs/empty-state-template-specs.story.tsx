@@ -68,6 +68,12 @@ const meta: Meta = {
   title: "templates/empty-state-template/specs",
   component: Specs,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/HaGgCBIkDbJ2jVZp0dUFR0/templates?node-id=2-19",
+    },
+  },
 };
 
 export default meta;

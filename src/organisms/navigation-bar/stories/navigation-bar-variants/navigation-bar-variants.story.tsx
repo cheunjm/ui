@@ -2,9 +2,15 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { NavigationBar } from "../../navigation-bar";
 import type { NavigationBarProps } from "../../navigation-bar.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=";
+
 const meta: Meta<NavigationBarProps> = {
   title: "organisms/navigation-bar/variants",
   component: NavigationBar,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}6-11` },
+  },
   args: {
     activeIndex: 0,
     onDestinationPress: () => {},

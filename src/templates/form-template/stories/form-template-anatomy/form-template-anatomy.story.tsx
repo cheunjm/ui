@@ -124,6 +124,12 @@ const meta: Meta = {
   title: "templates/form-template/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/HaGgCBIkDbJ2jVZp0dUFR0/templates?node-id=3-15",
+    },
+  },
 };
 
 export default meta;

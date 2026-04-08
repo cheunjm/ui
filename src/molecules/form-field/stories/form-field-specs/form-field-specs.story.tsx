@@ -34,6 +34,12 @@ const meta: Meta = {
   title: "molecules/form-field/specs",
   component: Specs,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=2-19",
+    },
+  },
 };
 
 export default meta;

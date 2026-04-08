@@ -61,6 +61,12 @@ const meta: Meta = {
   title: "templates/detail-template/overview",
   component: WithTopAppBar,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/HaGgCBIkDbJ2jVZp0dUFR0/templates?node-id=1-7",
+    },
+  },
 };
 
 export default meta;

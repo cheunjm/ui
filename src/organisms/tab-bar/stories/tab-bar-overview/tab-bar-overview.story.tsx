@@ -41,6 +41,12 @@ function Overview() {
 const meta: Meta = {
   title: "Organisms/TabBar/Overview",
   component: Overview,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=12-7",
+    },
+  },
 };
 
 export default meta;

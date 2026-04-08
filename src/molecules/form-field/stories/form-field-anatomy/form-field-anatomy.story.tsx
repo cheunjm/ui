@@ -47,6 +47,12 @@ const meta: Meta = {
   title: "molecules/form-field/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=2-15",
+    },
+  },
 };
 
 export default meta;

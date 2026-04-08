@@ -10,10 +10,16 @@ const options = [
   { value: "1y", label: "1Y" },
 ];
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=";
+
 const meta: Meta<DateFilterChipsProps> = {
   title: "molecules/date-filter-chips/variants",
   component: DateFilterChips,
   args: { options },
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}1-11` },
+  },
 };
 
 export default meta;

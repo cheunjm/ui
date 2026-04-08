@@ -55,6 +55,12 @@ const meta: Meta = {
   title: "molecules/date-filter-chips/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=1-7",
+    },
+  },
 };
 
 export default meta;

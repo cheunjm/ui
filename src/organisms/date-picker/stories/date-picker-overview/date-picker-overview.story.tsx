@@ -29,6 +29,12 @@ const meta: Meta = {
   title: "organisms/date-picker/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=4-7",
+    },
+  },
 };
 
 export default meta;

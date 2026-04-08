@@ -24,9 +24,15 @@ const sampleItems = [
   },
 ];
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=";
+
 const meta: Meta<CarouselProps> = {
   title: "organisms/carousel/variants",
   component: Carousel,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}3-11` },
+  },
   args: {
     items: sampleItems,
   },

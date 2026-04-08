@@ -75,6 +75,12 @@ const meta: Meta = {
   title: "organisms/carousel/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=3-15",
+    },
+  },
 };
 
 export default meta;

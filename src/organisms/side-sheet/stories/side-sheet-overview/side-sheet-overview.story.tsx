@@ -28,6 +28,12 @@ function Overview() {
 const meta: Meta = {
   title: "Organisms/SideSheet/Overview",
   component: Overview,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=10-7",
+    },
+  },
 };
 
 export default meta;

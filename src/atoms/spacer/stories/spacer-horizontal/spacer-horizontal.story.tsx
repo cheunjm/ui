@@ -14,6 +14,12 @@ const meta: Meta<typeof Spacer> = {
       options: [4, 8, 12, 16, 24, 32],
     },
   },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/b79qv459pnXaypgNQfNXuc/atoms?node-id=52-5",
+    },
+  },
 };
 
 export default meta;

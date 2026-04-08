@@ -47,6 +47,12 @@ const meta: Meta = {
   title: "molecules/search-bar/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=5-7",
+    },
+  },
 };
 
 export default meta;

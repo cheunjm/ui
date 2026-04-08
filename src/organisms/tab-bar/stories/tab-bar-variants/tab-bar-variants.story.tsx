@@ -45,9 +45,15 @@ function Variants() {
   );
 }
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=";
+
 const meta: Meta = {
   title: "Organisms/TabBar/Variants",
   component: Variants,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}12-11` },
+  },
 };
 
 export default meta;

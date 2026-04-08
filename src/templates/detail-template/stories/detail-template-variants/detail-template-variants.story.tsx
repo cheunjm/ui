@@ -3,9 +3,15 @@ import { View, Text } from "tamagui";
 import { DetailTemplate } from "../../detail-template";
 import type { DetailTemplateProps } from "../../detail-template.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/HaGgCBIkDbJ2jVZp0dUFR0/templates?node-id=";
+
 const meta: Meta<DetailTemplateProps> = {
   title: "templates/detail-template/variants",
   component: DetailTemplate,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}1-11` },
+  },
 };
 
 export default meta;

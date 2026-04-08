@@ -2,9 +2,15 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchBar } from "../../search-bar";
 import type { SearchBarProps } from "../../search-bar.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=";
+
 const meta: Meta<SearchBarProps> = {
   title: "molecules/search-bar/variants",
   component: SearchBar,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}5-11` },
+  },
 };
 
 export default meta;

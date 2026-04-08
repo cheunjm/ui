@@ -3,9 +3,15 @@ import { View, Text } from "tamagui";
 import { ListTemplate } from "../../list-template";
 import type { ListTemplateProps } from "../../list-template.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/HaGgCBIkDbJ2jVZp0dUFR0/templates?node-id=";
+
 const meta: Meta<ListTemplateProps> = {
   title: "templates/list-template/variants",
   component: ListTemplate,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}4-11` },
+  },
 };
 
 export default meta;

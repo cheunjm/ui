@@ -39,9 +39,15 @@ function Variants() {
   );
 }
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=";
+
 const meta: Meta = {
   title: "Organisms/SideSheet/Variants",
   component: Variants,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}10-11` },
+  },
 };
 
 export default meta;

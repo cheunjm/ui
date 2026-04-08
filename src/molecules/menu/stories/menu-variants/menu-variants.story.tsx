@@ -2,12 +2,18 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Menu } from "../../menu";
 import type { MenuProps } from "../../menu.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=";
+
 const meta: Meta<MenuProps> = {
   title: "molecules/menu/variants",
   component: Menu,
   args: {
     visible: true,
     onDismiss: () => {},
+  },
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}4-11` },
   },
 };
 

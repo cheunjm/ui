@@ -2,10 +2,16 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ListItem } from "../../list-item";
 import type { ListItemProps } from "../../list-item.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=";
+
 const meta: Meta<ListItemProps> = {
   title: "molecules/list-item/variants",
   component: ListItem,
   args: { headline: "List item headline" },
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}3-11` },
+  },
 };
 
 export default meta;

@@ -42,7 +42,17 @@ function Anatomy() {
   );
 }
 
-const meta: Meta = { title: "molecules/search-bar/anatomy", component: Anatomy, tags: ["autodocs", "!dev"] };
+const meta: Meta = {
+  title: "molecules/search-bar/anatomy",
+  component: Anatomy,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=5-15",
+    },
+  },
+};
 export default meta;
 type Story = StoryObj;
 export const Default: Story = {};

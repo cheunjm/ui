@@ -40,6 +40,12 @@ function Anatomy() {
 const meta: Meta = {
   title: "Organisms/SideSheet/Anatomy",
   component: Anatomy,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=10-15",
+    },
+  },
 };
 
 export default meta;

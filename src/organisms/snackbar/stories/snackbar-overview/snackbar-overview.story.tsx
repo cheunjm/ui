@@ -71,6 +71,12 @@ const meta: Meta = {
   title: "organisms/snackbar/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=11-7",
+    },
+  },
 };
 
 export default meta;

@@ -125,6 +125,12 @@ const meta: Meta = {
   title: "Organisms/NavigationRail/Anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=8-15",
+    },
+  },
 };
 
 export default meta;

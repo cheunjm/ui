@@ -75,6 +75,12 @@ const meta: Meta = {
   title: "Organisms/NavigationRail/Specs",
   component: Specs,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=8-19",
+    },
+  },
 };
 
 export default meta;

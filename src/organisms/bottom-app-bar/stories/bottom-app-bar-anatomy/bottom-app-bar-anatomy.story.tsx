@@ -46,6 +46,12 @@ function Anatomy() {
 const meta: Meta = {
   title: "Organisms/BottomAppBar/Anatomy",
   component: Anatomy,
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=1-15",
+    },
+  },
 };
 
 export default meta;

@@ -90,6 +90,12 @@ const meta: Meta = {
   title: "organisms/date-picker/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=4-15",
+    },
+  },
 };
 
 export default meta;

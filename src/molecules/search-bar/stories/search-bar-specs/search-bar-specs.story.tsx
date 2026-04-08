@@ -31,7 +31,17 @@ function Specs() {
   );
 }
 
-const meta: Meta = { title: "molecules/search-bar/specs", component: Specs, tags: ["autodocs", "!dev"] };
+const meta: Meta = {
+  title: "molecules/search-bar/specs",
+  component: Specs,
+  tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=5-19",
+    },
+  },
+};
 export default meta;
 type Story = StoryObj;
 export const Default: Story = {};

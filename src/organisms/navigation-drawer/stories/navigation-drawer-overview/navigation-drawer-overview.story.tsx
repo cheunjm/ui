@@ -48,6 +48,12 @@ const meta: Meta = {
   title: "organisms/navigation-drawer/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=7-7",
+    },
+  },
 };
 
 export default meta;

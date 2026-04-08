@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FormField } from "../../form-field";
 import type { FormFieldProps } from "../../form-field.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=";
+
 const meta: Meta<FormFieldProps> = {
   title: "molecules/form-field/variants",
   component: FormField,
@@ -9,6 +12,9 @@ const meta: Meta<FormFieldProps> = {
     label: "Email",
     variant: "filled",
     value: "user@example.com",
+  },
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}2-11` },
   },
 };
 

@@ -2,9 +2,15 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { NavigationDrawer } from "../../navigation-drawer";
 import type { NavigationDrawerProps } from "../../navigation-drawer.type";
 
+const FIGMA_BASE =
+  "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=";
+
 const meta: Meta<NavigationDrawerProps> = {
   title: "organisms/navigation-drawer/variants",
   component: NavigationDrawer,
+  parameters: {
+    design: { type: "figma", url: `${FIGMA_BASE}7-11` },
+  },
   args: {
     open: true,
     onClose: () => {},

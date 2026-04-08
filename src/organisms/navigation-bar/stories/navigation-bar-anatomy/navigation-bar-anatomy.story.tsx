@@ -129,6 +129,12 @@ const meta: Meta = {
   title: "organisms/navigation-bar/anatomy",
   component: Anatomy,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/9wluFWH1CfEuAf0KjDEUFt/organisms?node-id=6-15",
+    },
+  },
 };
 
 export default meta;

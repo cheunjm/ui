@@ -83,6 +83,12 @@ const meta: Meta = {
   title: "molecules/list-item/overview",
   component: Overview,
   tags: ["autodocs", "!dev"],
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/C0eafJVCn9JsDxhxw0NjFw/molecules?node-id=3-7",
+    },
+  },
 };
 
 export default meta;
