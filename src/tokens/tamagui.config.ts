@@ -1,9 +1,9 @@
 import { createTamagui, createTokens } from "tamagui";
 import { createInterFont } from "@tamagui/font-inter";
 import { shorthands } from "@tamagui/shorthands";
-import { themes } from "@tamagui/themes";
 import { createAnimations } from "@tamagui/animations-react-native";
 import { colors } from "./generated/colors";
+import { darkColors } from "./generated/colors-dark";
 import { spacing } from "./generated/spacing";
 import { fontSize, lineHeight } from "./generated/typography";
 import { radii } from "./generated/radii";
@@ -51,9 +51,25 @@ const tokens = createTokens({
   },
 });
 
+const lightTheme = Object.fromEntries(
+  Object.entries({
+    ...colors,
+    outlineColor: colors.outline,
+    outlineVariantColor: colors.outlineVariant,
+  }).map(([key, value]) => [key, value]),
+);
+
+const darkTheme = Object.fromEntries(
+  Object.entries({
+    ...darkColors,
+    outlineColor: darkColors.outline,
+    outlineVariantColor: darkColors.outlineVariant,
+  }).map(([key, value]) => [key, value]),
+);
+
 const config = createTamagui({
   tokens,
-  themes,
+  themes: { light: lightTheme, dark: darkTheme },
   shorthands,
   animations,
   fonts: {

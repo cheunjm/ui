@@ -1,17 +1,28 @@
 import { render, type RenderOptions } from "@testing-library/react-native";
-import { TamaguiProvider } from "tamagui";
+import { TamaguiProvider, Theme } from "tamagui";
 import type { ReactElement } from "react";
 import config from "./tokens/tamagui.config";
 
-function AllProviders({ children }: { children: React.ReactNode }) {
-  return <TamaguiProvider config={config}>{children}</TamaguiProvider>;
+type CustomRenderOptions = RenderOptions & {
+  theme?: "light" | "dark";
+};
+
+function createWrapper(theme?: "light" | "dark") {
+  return function Wrapper({ children }: { children: React.ReactNode }) {
+    return (
+      <TamaguiProvider config={config}>
+        {theme ? <Theme name={theme}>{children}</Theme> : children}
+      </TamaguiProvider>
+    );
+  };
 }
 
 function renderWithProvider(
   ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">,
+  options?: Omit<CustomRenderOptions, "wrapper">,
 ) {
-  return render(ui, { wrapper: AllProviders, ...options });
+  const { theme, ...renderOptions } = options ?? {};
+  return render(ui, { wrapper: createWrapper(theme), ...renderOptions });
 }
 
 export { renderWithProvider as render };
