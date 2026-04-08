@@ -41,7 +41,6 @@
     "@tamagui/core": ">=1.112.0",
     "@tamagui/font-inter": ">=1.112.0",
     "@tamagui/shorthands": ">=1.112.0",
-    "@tamagui/themes": ">=1.112.0",
     "expo": ">=55.0.0",
     "react": ">=19.0.0",
     "react-native": ">=0.83.0",
