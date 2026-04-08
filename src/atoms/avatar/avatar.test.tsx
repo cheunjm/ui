@@ -65,6 +65,16 @@ describe("Avatar", () => {
     expect(screen.getByTestId("avatar")).toBeTruthy();
   });
 
+  it("accepts token color prop starting with $", () => {
+    render(<Avatar color="$primaryContainer" testID="avatar" />);
+    expect(screen.getByTestId("avatar")).toBeTruthy();
+  });
+
+  it("falls back to icon variant when name is whitespace only", () => {
+    render(<Avatar name="   " testID="avatar" />);
+    expect(screen.getByTestId("avatar-icon")).toBeTruthy();
+  });
+
   it("propagates testID", () => {
     render(<Avatar testID="custom-avatar" />);
     expect(screen.getByTestId("custom-avatar")).toBeTruthy();
