@@ -126,6 +126,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate Storybook requires
+        run: npm run storybook:generate
+
       - name: Export web build
         run: npx expo export --platform web
 
