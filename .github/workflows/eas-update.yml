@@ -1,12 +1,10 @@
 name: EAS Update (OTA)
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
     branches: [main]
-    paths:
-      - 'src/**'
-      - 'app.config.js'
-      - '.ondevice/**'
 
   release:
     types: [published]
@@ -23,14 +21,75 @@ on:
           - master
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_update: ${{ steps.decide.outputs.should_update }}
+      channel: ${{ steps.decide.outputs.channel }}
+    steps:
+      - name: Decide whether to publish OTA
+        id: decide
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const event = context.eventName;
+
+            if (event === 'workflow_dispatch') {
+              core.setOutput('should_update', 'true');
+              core.setOutput('channel', '${{ inputs.channel }}');
+              return;
+            }
+
+            if (event === 'release') {
+              core.setOutput('should_update', 'true');
+              core.setOutput('channel', '');
+              return;
+            }
+
+            // workflow_run: only proceed if CI passed
+            const run = context.payload.workflow_run;
+            if (run.conclusion !== 'success') {
+              console.log(`CI conclusion was ${run.conclusion} — skipping OTA`);
+              core.setOutput('should_update', 'false');
+              return;
+            }
+
+            const commitMsg = run.head_commit.message;
+            if (commitMsg.startsWith('chore: version packages')) {
+              console.log('Version packages commit — skipping OTA');
+              core.setOutput('should_update', 'false');
+              return;
+            }
+
+            // Check if relevant paths changed
+            const { data: commit } = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: run.head_sha,
+            });
+
+            const relevantPrefixes = ['src/', 'app.config.js', '.ondevice/'];
+            const changed = commit.files.some(f =>
+              relevantPrefixes.some(p => f.filename.startsWith(p))
+            );
+
+            if (!changed) {
+              console.log('No relevant paths changed — skipping OTA');
+              core.setOutput('should_update', 'false');
+              return;
+            }
+
+            core.setOutput('should_update', 'true');
+            core.setOutput('channel', 'master');
+
   update:
-    if: >-
-      github.event_name == 'release' ||
-      github.event_name == 'workflow_dispatch' ||
-      (github.ref == 'refs/heads/main' && !startsWith(github.event.head_commit.message, 'chore: version packages'))
+    needs: check
+    if: needs.check.outputs.should_update == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: actions/setup-node@v4
         with:
@@ -61,7 +120,7 @@ jobs:
               echo "name=master" >> "$GITHUB_OUTPUT"
             fi
           else
-            echo "name=master" >> "$GITHUB_OUTPUT"
+            echo "name=${{ needs.check.outputs.channel }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Read package version
@@ -75,5 +134,5 @@ jobs:
         run: |
           eas update \
             --channel ${{ steps.channel.outputs.name }} \
-            --message "v${{ steps.version.outputs.version }} — ${{ github.event.head_commit.message || github.event.release.name || 'manual dispatch' }}" \
+            --message "v${{ steps.version.outputs.version }} — ${{ github.event.workflow_run.head_commit.message || github.event.head_commit.message || github.event.release.name || 'manual dispatch' }}" \
             --non-interactive
