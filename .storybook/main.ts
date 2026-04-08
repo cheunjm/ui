@@ -31,6 +31,10 @@ const config: StorybookConfig = {
       ),
       "@": join(__dirname, "../src"),
     };
+    viteConfig.define = {
+      ...(viteConfig.define || {}),
+      __DEV__: JSON.stringify(false),
+    };
     return viteConfig;
   },
 };
