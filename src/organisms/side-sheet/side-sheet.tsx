@@ -24,11 +24,41 @@ export function SideSheet({
   open,
   onClose,
   children,
+  variant = "modal",
   header,
   side = "right",
   width = 256,
   testID,
 }: SideSheetProps) {
+  const sheetContent = (
+    <Sheet
+      width={width}
+      {...(side === "right" ? { right: 0 } : { left: 0 })}
+      testID={testID}
+    >
+      {header !== undefined && (
+        <Header>
+          <Text role="title" size="large" flex={1}>
+            {header}
+          </Text>
+          <IconButton
+            icon={"close" as any}
+            onPress={onClose}
+            accessibilityLabel="Close"
+            testID={testID ? `${testID}-close` : undefined}
+          />
+        </Header>
+      )}
+      <View flex={1} padding={16}>
+        {children}
+      </View>
+    </Sheet>
+  );
+
+  if (variant === "standard") {
+    return sheetContent;
+  }
+
   return (
     <Modal
       visible={open}
@@ -39,7 +69,13 @@ export function SideSheet({
     >
       <View flex={1}>
         <Pressable
-          style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
           onPress={onClose}
           testID={testID ? `${testID}-scrim` : undefined}
         >
@@ -53,28 +89,7 @@ export function SideSheet({
             opacity={0.32}
           />
         </Pressable>
-        <Sheet
-          width={width}
-          {...(side === "right" ? { right: 0 } : { left: 0 })}
-          testID={testID}
-        >
-          {header !== undefined && (
-            <Header>
-              <Text role="title" size="large" flex={1}>
-                {header}
-              </Text>
-              <IconButton
-                icon={"close" as any}
-                onPress={onClose}
-                accessibilityLabel="Close"
-                testID={testID ? `${testID}-close` : undefined}
-              />
-            </Header>
-          )}
-          <View flex={1} padding={16}>
-            {children}
-          </View>
-        </Sheet>
+        {sheetContent}
       </View>
     </Modal>
   );

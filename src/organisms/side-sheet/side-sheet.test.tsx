@@ -58,4 +58,77 @@ describe("SideSheet", () => {
     );
     expect(screen.getByTestId("sheet")).toBeTruthy();
   });
+
+  describe("standard variant", () => {
+    it("renders content without Modal", () => {
+      render(
+        <SideSheet open onClose={jest.fn()} variant="standard" testID="sheet">
+          <Text>Standard content</Text>
+        </SideSheet>,
+      );
+      expect(screen.getByText("Standard content")).toBeTruthy();
+      expect(screen.queryByTestId("sheet-modal")).toBeNull();
+    });
+
+    it("renders without scrim", () => {
+      render(
+        <SideSheet open onClose={jest.fn()} variant="standard" testID="sheet">
+          <Text>Content</Text>
+        </SideSheet>,
+      );
+      expect(screen.queryByTestId("sheet-scrim")).toBeNull();
+    });
+
+    it("renders header in standard variant", () => {
+      render(
+        <SideSheet
+          open
+          onClose={jest.fn()}
+          variant="standard"
+          header="Settings"
+          testID="sheet"
+        >
+          <Text>Content</Text>
+        </SideSheet>,
+      );
+      expect(screen.getByText("Settings")).toBeTruthy();
+    });
+
+    it("close button works in standard variant", () => {
+      const onClose = jest.fn();
+      render(
+        <SideSheet
+          open
+          onClose={onClose}
+          variant="standard"
+          header="Settings"
+          testID="sheet"
+        >
+          <Text>Content</Text>
+        </SideSheet>,
+      );
+      fireEvent.press(screen.getByTestId("sheet-close"));
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("modal variant (default)", () => {
+    it("renders with Modal", () => {
+      render(
+        <SideSheet open onClose={jest.fn()} testID="sheet">
+          <Text>Modal content</Text>
+        </SideSheet>,
+      );
+      expect(screen.getByTestId("sheet-modal")).toBeTruthy();
+    });
+
+    it("renders scrim", () => {
+      render(
+        <SideSheet open onClose={jest.fn()} testID="sheet">
+          <Text>Content</Text>
+        </SideSheet>,
+      );
+      expect(screen.getByTestId("sheet-scrim")).toBeTruthy();
+    });
+  });
 });

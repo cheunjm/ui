@@ -1,2 +1,2 @@
 export { SideSheet } from "./side-sheet";
-export type { SideSheetProps } from "./side-sheet.type";
+export type { SideSheetProps, SideSheetVariant } from "./side-sheet.type";
