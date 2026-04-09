@@ -11,7 +11,11 @@ export type { SideSheetProps } from "./side-sheet";
 export { Carousel } from "./carousel";
 export type { CarouselProps, CarouselItem, CarouselVariant } from "./carousel";
 export { DatePicker } from "./date-picker";
-export type { DatePickerProps, DatePickerMode } from "./date-picker";
+export type {
+  DatePickerProps,
+  DatePickerMode,
+  DatePickerSelectionMode,
+} from "./date-picker";
 export { Dialog } from "./dialog";
 export type { DialogProps } from "./dialog";
 export { Search } from "./search";

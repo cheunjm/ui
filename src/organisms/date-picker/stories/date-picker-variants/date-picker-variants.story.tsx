@@ -28,3 +28,19 @@ export const Calendar: Story = {
 export const Input: Story = {
   args: { mode: "input" },
 };
+
+export const RangeCalendar: Story = {
+  args: {
+    selectionMode: "range",
+    mode: "calendar",
+    startDate: new Date(2026, 3, 10),
+    endDate: new Date(2026, 3, 20),
+  },
+};
+
+export const RangeInput: Story = {
+  args: {
+    selectionMode: "range",
+    mode: "input",
+  },
+};

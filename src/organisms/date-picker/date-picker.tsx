@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Modal, Pressable } from "react-native";
+import { Modal, Pressable, ScrollView } from "react-native";
 import { styled, View, XStack, YStack } from "tamagui";
-import { Icon } from "../../atoms/icon";
 import { IconButton } from "../../atoms/icon-button";
 import { Text } from "../../atoms/text";
 import { Button } from "../../atoms/button";
@@ -60,10 +59,82 @@ const DayCell = styled(View, {
   alignItems: "center",
 });
 
+const RangeHighlight = styled(View, {
+  name: "DatePickerRangeHighlight",
+  position: "absolute",
+  top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  backgroundColor: "$primaryContainer",
+});
+
+const YearCell = styled(View, {
+  name: "DatePickerYearCell",
+  width: 72,
+  height: 36,
+  borderRadius: 18,
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+type ViewMode = "calendar" | "year";
+
+function sameDay(a: Date, b: Date) {
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
+function isBetween(date: Date, start: Date, end: Date) {
+  const t = date.getTime();
+  return t > start.getTime() && t < end.getTime();
+}
+
+function normalizeRange(a: Date, b: Date): [Date, Date] {
+  return a.getTime() <= b.getTime() ? [a, b] : [b, a];
+}
+
+function formatDate(d: Date) {
+  return `${String(d.getMonth() + 1).padStart(2, "0")}/${String(
+    d.getDate(),
+  ).padStart(2, "0")}/${d.getFullYear()}`;
+}
+
+function parseDate(s: string): Date | null {
+  const parts = s.split("/");
+  if (parts.length === 3) {
+    const parsed = new Date(
+      Number(parts[2]),
+      Number(parts[0]) - 1,
+      Number(parts[1]),
+    );
+    if (!isNaN(parsed.getTime())) return parsed;
+  }
+  return null;
+}
+
+function getYearRange(minDate?: Date, maxDate?: Date) {
+  const currentYear = new Date().getFullYear();
+  const minYear = minDate ? minDate.getFullYear() : currentYear - 100;
+  const maxYear = maxDate ? maxDate.getFullYear() : currentYear + 100;
+  const years: number[] = [];
+  for (let y = minYear; y <= maxYear; y++) {
+    years.push(y);
+  }
+  return years;
+}
+
 export function DatePicker({
   visible,
   value,
+  selectionMode = "single",
+  startDate: startDateProp,
+  endDate: endDateProp,
   onConfirm,
+  onConfirmRange,
   onDismiss,
   mode: initialMode = "calendar",
   minDate,
@@ -74,11 +145,22 @@ export function DatePicker({
   const initial = value ?? today;
 
   const [displayMode, setDisplayMode] = useState<DatePickerMode>(initialMode);
+  const [viewMode, setViewMode] = useState<ViewMode>("calendar");
   const [currentYear, setCurrentYear] = useState(initial.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(initial.getMonth());
   const [selectedDate, setSelectedDate] = useState<Date>(initial);
-  const [inputValue, setInputValue] = useState(
-    `${String(initial.getMonth() + 1).padStart(2, "0")}/${String(initial.getDate()).padStart(2, "0")}/${initial.getFullYear()}`,
+
+  // Range state
+  const [rangeStart, setRangeStart] = useState<Date | undefined>(startDateProp);
+  const [rangeEnd, setRangeEnd] = useState<Date | undefined>(endDateProp);
+
+  // Input state
+  const [inputValue, setInputValue] = useState(formatDate(initial));
+  const [rangeStartInput, setRangeStartInput] = useState(
+    startDateProp ? formatDate(startDateProp) : "",
+  );
+  const [rangeEndInput, setRangeEndInput] = useState(
+    endDateProp ? formatDate(endDateProp) : "",
   );
 
   const cells = buildCalendarGrid(currentYear, currentMonth);
@@ -113,6 +195,7 @@ export function DatePicker({
   }
 
   function isSelected(day: number) {
+    if (selectionMode === "range") return false;
     return (
       day === selectedDate.getDate() &&
       currentMonth === selectedDate.getMonth() &&
@@ -120,23 +203,77 @@ export function DatePicker({
     );
   }
 
+  function handleDayPress(day: number) {
+    const date = new Date(currentYear, currentMonth, day);
+
+    if (selectionMode === "range") {
+      if (!rangeStart || (rangeStart && rangeEnd)) {
+        setRangeStart(date);
+        setRangeEnd(undefined);
+      } else {
+        const [start, end] = normalizeRange(rangeStart, date);
+        setRangeStart(start);
+        setRangeEnd(end);
+      }
+    } else {
+      setSelectedDate(date);
+    }
+  }
+
+  function isRangeStart(day: number) {
+    if (!rangeStart) return false;
+    const d = new Date(currentYear, currentMonth, day);
+    return sameDay(d, rangeStart);
+  }
+
+  function isRangeEnd(day: number) {
+    if (!rangeEnd) return false;
+    const d = new Date(currentYear, currentMonth, day);
+    return sameDay(d, rangeEnd);
+  }
+
+  function isInRange(day: number) {
+    if (!rangeStart || !rangeEnd) return false;
+    const d = new Date(currentYear, currentMonth, day);
+    return isBetween(d, rangeStart, rangeEnd);
+  }
+
   function handleConfirm() {
-    if (displayMode === "input") {
-      const parts = inputValue.split("/");
-      if (parts.length === 3) {
-        const parsed = new Date(
-          Number(parts[2]),
-          Number(parts[0]) - 1,
-          Number(parts[1]),
-        );
-        if (!isNaN(parsed.getTime())) {
-          onConfirm(parsed);
+    if (selectionMode === "range") {
+      if (displayMode === "input") {
+        const start = parseDate(rangeStartInput);
+        const end = parseDate(rangeEndInput);
+        if (start && end && onConfirmRange) {
+          const [s, e] = normalizeRange(start, end);
+          onConfirmRange(s, e);
           return;
         }
+      }
+      if (rangeStart && rangeEnd && onConfirmRange) {
+        onConfirmRange(rangeStart, rangeEnd);
+      }
+      return;
+    }
+
+    if (displayMode === "input") {
+      const parsed = parseDate(inputValue);
+      if (parsed) {
+        onConfirm(parsed);
+        return;
       }
     }
     onConfirm(selectedDate);
   }
+
+  function handleYearSelect(year: number) {
+    setCurrentYear(year);
+    setViewMode("calendar");
+  }
+
+  const years = getYearRange(minDate, maxDate);
+
+  const headerLabel =
+    selectionMode === "range" ? "Select date range" : "Select date";
 
   return (
     <Modal
@@ -163,93 +300,218 @@ export function DatePicker({
               marginBottom={16}
             >
               <Text role="body" size="small" color="$onSurfaceVariant">
-                Select date
+                {headerLabel}
               </Text>
               <IconButton
                 variant="standard"
                 icon={
                   displayMode === "calendar" ? "keyboard" : "calendar_today"
                 }
-                onPress={() =>
+                onPress={() => {
                   setDisplayMode((m) =>
                     m === "calendar" ? "input" : "calendar",
-                  )
-                }
+                  );
+                  setViewMode("calendar");
+                }}
               />
             </XStack>
 
             {displayMode === "calendar" ? (
-              <YStack gap={8}>
-                <XStack justifyContent="space-between" alignItems="center">
-                  <IconButton
-                    variant="standard"
-                    icon="chevron_left"
-                    onPress={prevMonth}
-                  />
-                  <Text role="title" size="small">
-                    {MONTHS[currentMonth]} {currentYear}
-                  </Text>
-                  <IconButton
-                    variant="standard"
-                    icon="chevron_right"
-                    onPress={nextMonth}
-                  />
-                </XStack>
-
-                <XStack justifyContent="space-around">
-                  {DAYS_OF_WEEK.map((d) => (
-                    <View key={d} width={40} alignItems="center">
-                      <Text role="label" size="small" color="$onSurfaceVariant">
-                        {d}
-                      </Text>
+              viewMode === "year" ? (
+                <YStack
+                  gap={8}
+                  testID={testID ? `${testID}-year-grid` : undefined}
+                >
+                  <ScrollView
+                    style={{ maxHeight: 280 }}
+                    showsVerticalScrollIndicator={false}
+                  >
+                    <View
+                      flexWrap="wrap"
+                      flexDirection="row"
+                      justifyContent="center"
+                      gap={8}
+                    >
+                      {years.map((year) => {
+                        const isCurrentYear = year === currentYear;
+                        return (
+                          <Pressable
+                            key={year}
+                            onPress={() => handleYearSelect(year)}
+                          >
+                            <YearCell
+                              backgroundColor={
+                                isCurrentYear ? "$primary" : "transparent"
+                              }
+                              borderWidth={
+                                year === today.getFullYear() && !isCurrentYear
+                                  ? 1
+                                  : 0
+                              }
+                              borderColor="$primary"
+                            >
+                              <Text
+                                role="body"
+                                size="small"
+                                color={
+                                  isCurrentYear ? "$onPrimary" : "$onSurface"
+                                }
+                              >
+                                {year}
+                              </Text>
+                            </YearCell>
+                          </Pressable>
+                        );
+                      })}
                     </View>
-                  ))}
-                </XStack>
-
-                <View flexWrap="wrap" flexDirection="row">
-                  {cells.map((cell, idx) => {
-                    const selected = cell.thisMonth && isSelected(cell.day);
-                    const today_ = cell.thisMonth && isToday(cell.day);
-                    const disabled = cell.thisMonth && isDisabled(cell.day);
-
-                    return (
-                      <Pressable
-                        key={idx}
-                        onPress={() => {
-                          if (cell.thisMonth && !disabled) {
-                            setSelectedDate(
-                              new Date(currentYear, currentMonth, cell.day),
-                            );
-                          }
-                        }}
-                        disabled={!cell.thisMonth || disabled}
-                      >
-                        <DayCell
-                          backgroundColor={
-                            selected ? "$primary" : "transparent"
-                          }
-                          borderWidth={today_ && !selected ? 1 : 0}
-                          borderColor="$primary"
+                  </ScrollView>
+                </YStack>
+              ) : (
+                <YStack gap={8}>
+                  <XStack justifyContent="space-between" alignItems="center">
+                    <IconButton
+                      variant="standard"
+                      icon="chevron_left"
+                      onPress={prevMonth}
+                    />
+                    <Pressable
+                      onPress={() => setViewMode("year")}
+                      testID={testID ? `${testID}-year-toggle` : undefined}
+                      accessibilityHint="Open year selector"
+                    >
+                      <XStack alignItems="center" gap={4}>
+                        <Text role="title" size="small">
+                          {MONTHS[currentMonth]} {currentYear}
+                        </Text>
+                        <Text
+                          role="body"
+                          size="small"
+                          color="$onSurfaceVariant"
                         >
-                          <Text
-                            role="body"
-                            size="medium"
-                            color={
-                              selected
-                                ? "$onPrimary"
-                                : !cell.thisMonth || disabled
+                          ▾
+                        </Text>
+                      </XStack>
+                    </Pressable>
+                    <IconButton
+                      variant="standard"
+                      icon="chevron_right"
+                      onPress={nextMonth}
+                    />
+                  </XStack>
+
+                  <XStack justifyContent="space-around">
+                    {DAYS_OF_WEEK.map((d) => (
+                      <View key={d} width={40} alignItems="center">
+                        <Text
+                          role="label"
+                          size="small"
+                          color="$onSurfaceVariant"
+                        >
+                          {d}
+                        </Text>
+                      </View>
+                    ))}
+                  </XStack>
+
+                  <View flexWrap="wrap" flexDirection="row">
+                    {cells.map((cell, idx) => {
+                      const selected = cell.thisMonth && isSelected(cell.day);
+                      const today_ = cell.thisMonth && isToday(cell.day);
+                      const disabled = cell.thisMonth && isDisabled(cell.day);
+
+                      const rangeStartCell =
+                        selectionMode === "range" &&
+                        cell.thisMonth &&
+                        isRangeStart(cell.day);
+                      const rangeEndCell =
+                        selectionMode === "range" &&
+                        cell.thisMonth &&
+                        isRangeEnd(cell.day);
+                      const inRange =
+                        selectionMode === "range" &&
+                        cell.thisMonth &&
+                        isInRange(cell.day);
+
+                      const isEndpoint = rangeStartCell || rangeEndCell;
+
+                      return (
+                        <Pressable
+                          key={idx}
+                          onPress={() => {
+                            if (cell.thisMonth && !disabled) {
+                              handleDayPress(cell.day);
+                            }
+                          }}
+                          disabled={!cell.thisMonth || disabled}
+                          style={{ position: "relative" }}
+                        >
+                          {inRange && <RangeHighlight />}
+                          {rangeStartCell && (
+                            <RangeHighlight
+                              borderTopLeftRadius={20}
+                              borderBottomLeftRadius={20}
+                              left="50%"
+                            />
+                          )}
+                          {rangeEndCell && (
+                            <RangeHighlight
+                              borderTopRightRadius={20}
+                              borderBottomRightRadius={20}
+                              right="50%"
+                            />
+                          )}
+                          <DayCell
+                            backgroundColor={
+                              isEndpoint
+                                ? "$primary"
+                                : selected
+                                ? "$primary"
+                                : "transparent"
+                            }
+                            borderWidth={
+                              today_ && !selected && !isEndpoint ? 1 : 0
+                            }
+                            borderColor="$primary"
+                          >
+                            <Text
+                              role="body"
+                              size="medium"
+                              color={
+                                isEndpoint || selected
+                                  ? "$onPrimary"
+                                  : !cell.thisMonth || disabled
                                   ? "$onSurfaceVariant"
                                   : "$onSurface"
-                            }
-                            opacity={!cell.thisMonth ? 0.38 : 1}
-                          >
-                            {cell.day}
-                          </Text>
-                        </DayCell>
-                      </Pressable>
-                    );
-                  })}
-                </View>
+                              }
+                              opacity={!cell.thisMonth ? 0.38 : 1}
+                            >
+                              {cell.day}
+                            </Text>
+                          </DayCell>
+                        </Pressable>
+                      );
+                    })}
+                  </View>
+                </YStack>
+              )
+            ) : selectionMode === "range" ? (
+              <YStack
+                gap={16}
+                marginBottom={8}
+                testID={testID ? `${testID}-range-inputs` : undefined}
+              >
+                <TextField
+                  label="Start date"
+                  placeholder="mm/dd/yyyy"
+                  value={rangeStartInput}
+                  onChangeText={setRangeStartInput}
+                />
+                <TextField
+                  label="End date"
+                  placeholder="mm/dd/yyyy"
+                  value={rangeEndInput}
+                  onChangeText={setRangeEndInput}
+                />
               </YStack>
             ) : (
               <YStack gap={16} marginBottom={8}>
