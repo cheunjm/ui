@@ -179,7 +179,7 @@ jobs:
         env:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
-  e2e-web:
+  e2e:
     needs: [paths-filter, lint, typecheck, test]
     if: needs.paths-filter.outputs.code == 'true'
     runs-on: ubuntu-latest
@@ -232,7 +232,7 @@ jobs:
       - test
       - build
       - chromatic
-      - e2e-web
+      - e2e
     if: always()
     steps:
       - name: Check all CI jobs
