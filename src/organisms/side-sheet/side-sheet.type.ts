@@ -4,8 +4,9 @@ import type { ReactNode } from "react";
 export type SideSheetVariant = "modal" | "standard";
 
 export type SideSheetProps = {
+  /** Whether the sheet is visible. Controls Modal visibility for `modal` variant; ignored for `standard` variant (consumer controls rendering). */
   open: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   children: ReactNode;
   /** MD3 side sheet variant. Default: "modal" */
   variant?: SideSheetVariant;
