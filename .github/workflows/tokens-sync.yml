@@ -1,0 +1,106 @@
+name: Token Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every Monday at 09:00 UTC (18:00 KST)
+    - cron: "0 9 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+  actions: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Generate claude-arami bot token
+        id: claude-arami-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.CLAUDE_ARAMI_APP_ID }}
+          private-key: ${{ secrets.CLAUDE_ARAMI_PRIVATE_KEY }}
+
+      - name: Run Claude Code — extract & build tokens
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ steps.claude-arami-token.outputs.token }}
+          direct_prompt: |
+            You are running an automated token sync for the aramiworks/ui design system.
+
+            ## Step 1 — Extract Figma Variables
+
+            Use the `use_figma` tool on the tokens file (fileKey: 81sGJB0y1lYCDY5oB35aBA) to run this Plugin API snippet:
+
+            ```js
+            const collections = await figma.variables.getLocalVariableCollectionsAsync();
+            const result = {};
+            for (const c of collections) {
+              const vars = [];
+              for (const id of c.variableIds) {
+                const v = await figma.variables.getVariableByIdAsync(id);
+                if (!v) continue;
+                vars.push({
+                  name: v.name,
+                  resolvedType: v.resolvedDataType,
+                  description: v.description || "",
+                  value: v.valuesByMode[c.defaultModeId],
+                });
+              }
+              result[c.name] = { name: c.name, modes: c.modes,
+                defaultModeId: c.defaultModeId, variables: vars };
+            }
+            return JSON.stringify(result, null, 2);
+            ```
+
+            Save the JSON output to `/tmp/figma-variables-export.json`.
+
+            ## Step 2 — Run the token pipeline
+
+            ```bash
+            npm ci
+            npx tsx scripts/tokens-fetch.ts --input /tmp/figma-variables-export.json
+            npx tsx scripts/tokens-build.ts
+            ```
+
+            ## Step 3 — Check for changes
+
+            Run `git diff --name-only src/tokens/generated/`. If no files changed, output "No token changes detected" and stop.
+
+            ## Step 4 — Open a PR
+
+            If files changed:
+            1. Create a new branch: `chore/tokens-sync-YYYY-MM-DD` (use today's date)
+            2. Stage only `src/tokens/generated/` files
+            3. Commit with message: `chore(tokens): sync generated tokens from Figma`
+            4. Push the branch
+            5. Open a draft PR with title `chore(tokens): sync generated tokens from Figma` and body:
+               ```
+               ## Type of change
+               - [x] chore
+
+               ## Key changes
+               - Auto-synced design tokens from Figma Variables
+
+               ## Testing done
+               - Pipeline ran successfully, generated files updated
+
+               Automated by Token Sync workflow.
+               ```
+
+          allowed_tools: "Bash(git *),Bash(npm *),Bash(npx *),Bash(gh *),Read,Write,Glob,Grep,mcp__claude_ai_Figma__use_figma"

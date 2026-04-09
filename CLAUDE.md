@@ -48,5 +48,12 @@ npm run tokens:build                 # build .figma-raw/ → src/tokens/generate
 3. **Build** — `npm run tokens:build` generates TypeScript from `.figma-raw/`.
 
 - **Tokens file**: `https://www.figma.com/design/81sGJB0y1lYCDY5oB35aBA/tokens`
-- **FIGMA_ACCESS_TOKEN**: Stored in Doppler (`ui/master`) for future REST API use (requires Enterprise `file_variables:read` scope)
+- **FIGMA_ACCESS_TOKEN**: Stored in Doppler (`ui/master`) and 1Password (`figma.token.claude-code`) for future REST API use (requires Enterprise `file_variables:read` scope)
 - Generated files: `colors.ts`, `spacing.ts`, `typography.ts`, `radii.ts`, `elevation.ts` — DO NOT EDIT manually
+
+### CI Automation
+
+The `tokens-sync.yml` workflow automates the full pipeline:
+- **Triggers**: `workflow_dispatch` (manual) + weekly cron (Mondays 09:00 UTC)
+- **How**: Claude Code action extracts Figma variables via `use_figma` MCP, runs fetch + build, opens a draft PR if generated files changed
+- **Requires**: `ANTHROPIC_API_KEY`, `CLAUDE_ARAMI_APP_ID`, `CLAUDE_ARAMI_PRIVATE_KEY` GitHub secrets
