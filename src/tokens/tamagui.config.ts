@@ -21,11 +21,35 @@ const animations = createAnimations({
     mass: 1,
     stiffness: 200,
   },
+  standardDecelerate: {
+    type: "spring",
+    damping: 22,
+    mass: 1,
+    stiffness: 180,
+  },
+  standardAccelerate: {
+    type: "spring",
+    damping: 24,
+    mass: 1,
+    stiffness: 260,
+  },
   emphasized: {
     type: "spring",
     damping: 15,
     mass: 1,
     stiffness: 150,
+  },
+  emphasizedDecelerate: {
+    type: "spring",
+    damping: 18,
+    mass: 1,
+    stiffness: 120,
+  },
+  emphasizedAccelerate: {
+    type: "spring",
+    damping: 22,
+    mass: 1,
+    stiffness: 280,
   },
 });
 
