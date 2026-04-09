@@ -106,7 +106,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
-              \"channel\": \"C0AH9QDT2SW\",
+              \"channel\": \"C0AJD47H6R4\",
               \"text\": \"${STATUS} *EAS Build* — @aramiworks/ui ${PLATFORM} (${PROFILE})\n• <${LINK}|View build>\"
             }"
 
@@ -149,6 +149,6 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
-              \"channel\": \"C0AH9QDT2SW\",
+              \"channel\": \"C0AJD47H6R4\",
               \"text\": \"${STATUS} *EAS Build* — @aramiworks/ui web (${PROFILE})\n• <${LINK}|View build>\"
             }"
