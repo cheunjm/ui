@@ -59,6 +59,16 @@ function indent(s: string, n = 2): string {
 }
 
 // ── Color builder ────────────────────────────────────────────────────
+
+/** Explicit key order within each group to guarantee stable output. */
+const COLOR_GROUP_ORDER: Record<string, string[]> = {
+  Surface: [
+    "surface", "onSurface", "surfaceVariant", "onSurfaceVariant",
+    "surfaceContainerLowest", "surfaceContainerLow", "surfaceContainer",
+    "surfaceContainerHigh", "surfaceContainerHighest",
+  ],
+};
+
 const COLOR_GROUPS: Array<{ name: string; test: (k: string) => boolean }> = [
   { name: "Primary", test: (k) => /^(primary|onPrimary)/.test(k) },
   { name: "Secondary", test: (k) => /^(secondary|onSecondary)/.test(k) },
@@ -78,10 +88,16 @@ function buildColors(tokens: TokenTree): string {
   const used = new Set<string>();
 
   for (const group of COLOR_GROUPS) {
-    const members = Object.keys(tokens).filter(
+    const matched = Object.keys(tokens).filter(
       (k) => isLeaf(tokens[k]) && group.test(k),
     );
-    if (members.length === 0) continue;
+    if (matched.length === 0) continue;
+
+    // Apply explicit ordering if defined, otherwise keep source order
+    const order = COLOR_GROUP_ORDER[group.name];
+    const members = order
+      ? order.filter((k) => matched.includes(k))
+      : matched;
 
     lines.push(`  // ${group.name}`);
     for (const key of members) {

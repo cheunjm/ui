@@ -37,12 +37,16 @@ npm start          # Expo dev server (press i for iOS, a for Android, w for web)
 Figma Variables (tokens file `81sGJB0y1lYCDY5oB35aBA`) are the source of truth for design tokens. The pipeline fetches variables via the Figma REST API and generates TypeScript files.
 
 ```bash
-npm run tokens:sync             # fetch from Figma + build TypeScript (requires FIGMA_ACCESS_TOKEN)
-npm run tokens:fetch            # fetch only → src/tokens/.figma-raw/*.json
-npm run tokens:build            # build only → src/tokens/generated/*.ts
+npm run tokens:fetch <export.json>   # convert Figma plugin output → src/tokens/.figma-raw/*.json
+npm run tokens:build                 # build .figma-raw/ → src/tokens/generated/*.ts
 ```
 
-- **Fetch** (`scripts/tokens-fetch.ts`): Calls `GET /v1/files/:key/variables/local`, outputs per-collection JSON to `src/tokens/.figma-raw/` (gitignored)
-- **Build** (`scripts/tokens-build.ts`): Reads `.figma-raw/` JSON, generates TypeScript matching the `as const` + type alias pattern
-- **FIGMA_ACCESS_TOKEN**: Stored in Doppler (`ui` project, `master` config). Run locally via `doppler run --project ui --config master -- npm run tokens:sync`
+### Workflow
+
+1. **Extract** — Run the Figma Plugin snippet (see `scripts/tokens-fetch.ts` header) via Claude Code `use_figma` or Figma dev console. Save the JSON output to a file.
+2. **Fetch** — `npm run tokens:fetch <export.json>` normalises the plugin output into `.figma-raw/` (gitignored).
+3. **Build** — `npm run tokens:build` generates TypeScript from `.figma-raw/`.
+
+- **Tokens file**: `https://www.figma.com/design/81sGJB0y1lYCDY5oB35aBA/tokens`
+- **FIGMA_ACCESS_TOKEN**: Stored in Doppler (`ui/master`) for future REST API use (requires Enterprise `file_variables:read` scope)
 - Generated files: `colors.ts`, `spacing.ts`, `typography.ts`, `radii.ts`, `elevation.ts` — DO NOT EDIT manually
