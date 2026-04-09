@@ -27,8 +27,8 @@ export function Avatar({
   const containerSize = sizeConfig.container;
 
   const bgColor = color?.startsWith("$")
-    ? (theme[color.slice(1)]?.val as string) ?? color
-    : color ?? (theme.primaryContainer?.val as string);
+    ? ((theme[color.slice(1)]?.val as string) ?? color)
+    : (color ?? (theme.primaryContainer?.val as string));
 
   const fgColor = theme.onPrimaryContainer?.val as string;
 

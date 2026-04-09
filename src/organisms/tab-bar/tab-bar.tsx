@@ -156,8 +156,8 @@ export function TabBar({
     variant === "secondary"
       ? SecondaryBar
       : hasIcons
-      ? PrimaryBar
-      : PrimaryLabelOnlyBar;
+        ? PrimaryBar
+        : PrimaryLabelOnlyBar;
 
   const content = tabs.map((tab: TabItem, index: number) => {
     const active = index === activeIndex;

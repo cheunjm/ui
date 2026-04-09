@@ -56,8 +56,8 @@ export function Checkbox({
     state === "unchecked" && error
       ? { borderColor }
       : state !== "unchecked" && error
-      ? { backgroundColor: fillColor }
-      : {};
+        ? { backgroundColor: fillColor }
+        : {};
 
   return (
     <Pressable

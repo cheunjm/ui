@@ -13,8 +13,8 @@ export function Icon({
 }: IconProps) {
   const theme = useTheme();
   const resolvedColor = color?.startsWith("$")
-    ? (theme[color.slice(1)]?.val as string) ?? color
-    : color ?? (theme.onSurface?.val as string);
+    ? ((theme[color.slice(1)]?.val as string) ?? color)
+    : (color ?? (theme.onSurface?.val as string));
 
   return (
     <View testID={testID} accessibilityLabel={accessibilityLabel} style={style}>

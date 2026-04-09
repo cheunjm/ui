@@ -261,8 +261,8 @@ function main() {
     const sorted = isTypo
       ? sortTypography(collection.variables)
       : needsSort
-      ? sortBySize(collection.variables)
-      : collection.variables;
+        ? sortBySize(collection.variables)
+        : collection.variables;
 
     const tokens: TokenTree = {};
 

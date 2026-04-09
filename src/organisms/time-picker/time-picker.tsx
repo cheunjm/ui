@@ -153,8 +153,8 @@ export function TimePicker({
             ? 0
             : hour
           : hour === 12
-          ? 12
-          : hour + 12;
+            ? 12
+            : hour + 12;
     }
     onConfirm(h, minute);
   }
