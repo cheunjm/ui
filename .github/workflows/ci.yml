@@ -75,7 +75,7 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-  unit-test:
+  test:
     needs: [paths-filter]
     if: needs.paths-filter.outputs.code == 'true'
     runs-on: ubuntu-latest
@@ -180,7 +180,7 @@ jobs:
           CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
 
   e2e-web:
-    needs: [paths-filter, lint, type-check, unit-test]
+    needs: [paths-filter, lint, type-check, test]
     if: needs.paths-filter.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
@@ -229,7 +229,7 @@ jobs:
       - lint
       - format
       - type-check
-      - unit-test
+      - test
       - build
       - chromatic
       - e2e-web
