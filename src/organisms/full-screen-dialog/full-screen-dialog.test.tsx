@@ -55,4 +55,13 @@ describe("FullScreenDialog", () => {
     render(<FullScreenDialog {...defaultProps} />);
     expect(screen.getByTestId("fsd-header")).toBeTruthy();
   });
+
+  it("does not call onAction when actionDisabled is true", () => {
+    const onAction = jest.fn();
+    render(
+      <FullScreenDialog {...defaultProps} onAction={onAction} actionDisabled />,
+    );
+    fireEvent.press(screen.getByTestId("fsd-action"));
+    expect(onAction).not.toHaveBeenCalled();
+  });
 });
