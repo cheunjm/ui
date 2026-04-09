@@ -6,3 +6,10 @@ export { FormTemplate } from "./form-template";
 export type { FormTemplateProps } from "./form-template";
 export { ListTemplate } from "./list-template";
 export type { ListTemplateProps } from "./list-template";
+export { SettingsTemplate } from "./settings-template";
+export type {
+  SettingsTemplateProps,
+  SettingsSection,
+} from "./settings-template/settings-template.type";
+export { DashboardTemplate } from "./dashboard-template";
+export type { DashboardTemplateProps } from "./dashboard-template/dashboard-template.type";
