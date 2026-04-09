@@ -55,9 +55,9 @@ export function Chip({
   const hasLeadingIcon = !!leadingIcon || isSelected;
 
   const iconColor =
-    (theme.onSurfaceVariant?.val as string) ?? "#49454F";
+    (theme.onSurfaceVariant?.val as string);
   const selectedIconColor =
-    (theme.onSecondaryContainer?.val as string) ?? "#1D192B";
+    (theme.onSecondaryContainer?.val as string);
   const labelColor = isSelected ? selectedIconColor : iconColor;
 
   return (

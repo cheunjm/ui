@@ -41,12 +41,12 @@ export function SegmentedButton({
     Array.isArray(selected) ? selected : [selected],
   );
 
-  const outlineColor = (theme.outline?.val as string) ?? "#79747E";
+  const outlineColor = (theme.outline?.val as string);
   const secondaryContainerColor =
-    (theme.secondaryContainer?.val as string) ?? "#E8DEF8";
+    (theme.secondaryContainer?.val as string);
   const onSecondaryContainerColor =
-    (theme.onSecondaryContainer?.val as string) ?? "#1D192B";
-  const onSurfaceColor = (theme.onSurface?.val as string) ?? "#1C1B1F";
+    (theme.onSecondaryContainer?.val as string);
+  const onSurfaceColor = (theme.onSurface?.val as string);
 
   function handlePress(value: string) {
     if (disabled) return;

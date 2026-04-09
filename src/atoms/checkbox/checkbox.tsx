@@ -46,14 +46,14 @@ export function Checkbox({
   const theme = useTheme();
 
   const fillColor = error
-    ? (theme.error?.val as string) ?? "#B3261E"
+    ? (theme.error?.val as string)
     : undefined;
   const borderColor = error
-    ? (theme.error?.val as string) ?? "#B3261E"
+    ? (theme.error?.val as string)
     : undefined;
   const iconColor = error
-    ? (theme.onError?.val as string) ?? "#FFFFFF"
-    : (theme.onPrimary?.val as string) ?? "#FFFFFF";
+    ? (theme.onError?.val as string)
+    : (theme.onPrimary?.val as string);
 
   const stateOverrides: Record<string, unknown> =
     state === "unchecked" && error

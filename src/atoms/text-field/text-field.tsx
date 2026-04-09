@@ -165,7 +165,7 @@ export function TextField({
     ? (theme.onSurface?.val as string)
     : (theme.onSurface?.val as string);
 
-  const iconColor = (theme.onSurfaceVariant?.val as string) ?? "#49454F";
+  const iconColor = (theme.onSurfaceVariant?.val as string);
 
   const supportText = errorText ?? helperText;
   const supportColor = isError
@@ -176,7 +176,7 @@ export function TextField({
     <TextInput
       value={value}
       placeholder={!label || isFloating ? placeholder : undefined}
-      placeholderTextColor={(theme.onSurfaceVariant?.val as string) ?? "#49454F"}
+      placeholderTextColor={(theme.onSurfaceVariant?.val as string)}
       onChangeText={onChangeText}
       onFocus={handleFocus}
       onBlur={handleBlur}

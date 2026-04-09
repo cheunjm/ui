@@ -27,10 +27,10 @@ export function Avatar({
 
   const bgColor = color?.startsWith("$")
     ? (theme[color.slice(1)]?.val as string) ?? color
-    : color ?? (theme.primaryContainer?.val as string) ?? "#EADDFF";
+    : color ?? (theme.primaryContainer?.val as string);
 
   const fgColor =
-    (theme.onPrimaryContainer?.val as string) ?? "#21005D";
+    (theme.onPrimaryContainer?.val as string);
 
   const initials = name ? extractInitials(name) : "";
   const variant = source ? "image" : initials ? "initials" : "icon";

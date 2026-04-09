@@ -38,9 +38,9 @@ export function SearchBar({
 }: SearchBarProps) {
   const theme = useTheme();
 
-  const inputColor = (theme.onSurface?.val as string) ?? "#1C1B1F";
+  const inputColor = (theme.onSurface?.val as string);
   const placeholderColor =
-    (theme.onSurfaceVariant?.val as string) ?? "#49454F";
+    (theme.onSurfaceVariant?.val as string);
 
   const handleClear = useCallback(() => {
     onChangeText?.("");

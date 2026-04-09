@@ -33,7 +33,7 @@ export function Skeleton({
   }, [opacity]);
 
   const backgroundColor =
-    (theme.surfaceContainerHighest?.val as string) ?? "#E6E1E5";
+    (theme.surfaceContainerHighest?.val as string);
 
   return (
     <Animated.View

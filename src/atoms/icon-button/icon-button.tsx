@@ -59,7 +59,7 @@ export function IconButton({
     resolvedColor = iconColor;
   } else {
     const tokenKey = variantIconColor[variant] ?? "onSurfaceVariant";
-    resolvedColor = (theme[tokenKey]?.val as string) ?? "#49454F";
+    resolvedColor = (theme[tokenKey]?.val as string);
   }
 
   return (

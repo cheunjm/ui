@@ -48,7 +48,7 @@ export function Snackbar({
   if (!visible) return null;
 
   const closeIconColor =
-    (theme.inverseOnSurface?.val as string) ?? "#F4EFF4";
+    (theme.inverseOnSurface?.val as string);
 
   return (
     <Container testID={testID}>

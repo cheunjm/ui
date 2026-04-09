@@ -119,10 +119,10 @@ export function Slider({
     setTrackWidth(e.nativeEvent.layout.width);
   }, []);
 
-  const primaryColor = (theme.primary?.val as string) ?? "#6750A4";
+  const primaryColor = (theme.primary?.val as string);
   const primaryContainerColor =
-    (theme.primaryContainer?.val as string) ?? "#EADDFF";
-  const onPrimaryColor = (theme.onPrimary?.val as string) ?? "#FFFFFF";
+    (theme.primaryContainer?.val as string);
+  const onPrimaryColor = (theme.onPrimary?.val as string);
   const containerOpacity = disabled ? 0.38 : 1;
 
   const tickMarks = useMemo(() => {
