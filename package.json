@@ -30,6 +30,7 @@
     "storybook:build": "storybook build -c .storybook --disable-telemetry",
     "tokens:fetch": "tsx scripts/tokens-fetch.ts --input",
     "tokens:build": "tsx scripts/tokens-build.ts",
+    "tokens:sync": "bash scripts/tokens-sync.sh",
     "test:e2e:web": "maestro test --platform web e2e/integration/ e2e/journeys/",
     "test:e2e:ios": "maestro test --platform ios e2e/integration/ e2e/journeys/",
     "test:e2e:android": "maestro test --platform android e2e/integration/ e2e/journeys/"
