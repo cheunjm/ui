@@ -147,13 +147,14 @@ jobs:
 
       - name: Deploy to Vercel
         id: vercel
+        working-directory: dist
         run: |
-          mkdir -p dist/.vercel
+          mkdir -p .vercel
           jq -n \
             --arg org "${{ secrets.VERCEL_ORG_ID }}" \
             --arg proj "${{ secrets.VERCEL_PROJECT_ID_WEB }}" \
-            '{"orgId":$org,"projectId":$proj}' > dist/.vercel/project.json
-          DEPLOY_URL=$(npx vercel deploy dist/ --yes --prod \
+            '{"orgId":$org,"projectId":$proj}' > .vercel/project.json
+          DEPLOY_URL=$(npx vercel deploy --yes --prod \
             --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
 
