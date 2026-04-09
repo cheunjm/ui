@@ -58,4 +58,20 @@ describe("DashboardTemplate", () => {
     expect(screen.getByText("Stats")).toBeTruthy();
     expect(screen.getByText("Content Below")).toBeTruthy();
   });
+
+  it("does not render grid when summaryCards is undefined", () => {
+    render(<DashboardTemplate testID="dashboard" />);
+    expect(screen.queryByTestId("dashboard-grid")).toBeNull();
+  });
+
+  it("does not render children wrapper when children is undefined", () => {
+    render(<DashboardTemplate testID="dashboard" />);
+    expect(screen.getByTestId("dashboard")).toBeTruthy();
+  });
+
+  it("renders grid without testID", () => {
+    const cards = [<View key="1"><Text>Card</Text></View>];
+    render(<DashboardTemplate summaryCards={cards} />);
+    expect(screen.getByText("Card")).toBeTruthy();
+  });
 });

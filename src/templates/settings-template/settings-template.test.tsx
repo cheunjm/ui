@@ -95,4 +95,43 @@ describe("SettingsTemplate", () => {
     );
     expect(screen.getByTestId("settings-section-0")).toBeTruthy();
   });
+
+  it("renders divider between multiple sections", () => {
+    const multipleSections: SettingsSection[] = [
+      {
+        title: "General",
+        items: [<Text key="1">Item 1</Text>],
+      },
+      {
+        title: "Advanced",
+        items: [<Text key="2">Item 2</Text>],
+      },
+    ];
+    render(<SettingsTemplate sections={multipleSections} />);
+    expect(screen.getByText("General")).toBeTruthy();
+    expect(screen.getByText("Advanced")).toBeTruthy();
+  });
+
+  it("renders section without title", () => {
+    const untitledSections: SettingsSection[] = [
+      {
+        items: [<Text key="1">No Title Item</Text>],
+      },
+    ];
+    render(<SettingsTemplate sections={untitledSections} />);
+    expect(screen.getByText("No Title Item")).toBeTruthy();
+  });
+
+  it("renders collapsible section without testID", () => {
+    const collapsibleSections: SettingsSection[] = [
+      {
+        title: "Theme",
+        items: [<Text key="1">Dark Mode</Text>],
+        collapsible: true,
+      },
+    ];
+    render(<SettingsTemplate sections={collapsibleSections} />);
+    expect(screen.getByText("Theme")).toBeTruthy();
+    expect(screen.getByText("Dark Mode")).toBeTruthy();
+  });
 });
