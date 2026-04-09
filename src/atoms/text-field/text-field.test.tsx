@@ -62,7 +62,10 @@ describe("TextField", () => {
 
   it("forwards accessibilityHint to input", () => {
     render(
-      <TextField accessibilityHint="Enter your email address" testID="hint-test" />,
+      <TextField
+        accessibilityHint="Enter your email address"
+        testID="hint-test"
+      />,
     );
     expect(screen.getByTestId("hint-test-input").props.accessibilityHint).toBe(
       "Enter your email address",

@@ -43,7 +43,10 @@ describe("RadioButton", () => {
 
   it("forwards accessibilityHint", () => {
     render(
-      <RadioButton accessibilityHint="Selects this option" testID="hint-test" />,
+      <RadioButton
+        accessibilityHint="Selects this option"
+        testID="hint-test"
+      />,
     );
     expect(screen.getByTestId("hint-test").props.accessibilityHint).toBe(
       "Selects this option",

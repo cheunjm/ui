@@ -54,9 +54,7 @@ describe("Switch", () => {
   });
 
   it("forwards accessibilityHint", () => {
-    render(
-      <Switch accessibilityHint="Toggles dark mode" testID="hint-test" />,
-    );
+    render(<Switch accessibilityHint="Toggles dark mode" testID="hint-test" />);
     expect(screen.getByTestId("hint-test").props.accessibilityHint).toBe(
       "Toggles dark mode",
     );

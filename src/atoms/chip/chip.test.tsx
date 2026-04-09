@@ -77,7 +77,11 @@ describe("Chip", () => {
 
   it("forwards accessibilityHint", () => {
     render(
-      <Chip label="Filter" accessibilityHint="Toggles the filter" testID="hint-test" />,
+      <Chip
+        label="Filter"
+        accessibilityHint="Toggles the filter"
+        testID="hint-test"
+      />,
     );
     expect(screen.getByTestId("hint-test").props.accessibilityHint).toBe(
       "Toggles the filter",
