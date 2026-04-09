@@ -47,7 +47,7 @@ export function NavigationDrawer({
     translateX.value = withTiming(open ? 0 : -DRAWER_WIDTH, {
       duration: 250,
     });
-  }, [open]);
+  }, [open, translateX]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],

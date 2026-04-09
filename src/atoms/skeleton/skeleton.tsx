@@ -27,7 +27,7 @@ export function Skeleton({
       ),
       -1,
     );
-  }, []);
+  }, [opacity]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,

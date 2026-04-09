@@ -1,23 +1,6 @@
 import { render, screen, fireEvent } from "@/test-utils";
 import { NavigationDrawer } from "./navigation-drawer";
 
-jest.mock("react-native-reanimated", () => {
-  const { View } = require("react-native");
-  return {
-    __esModule: true,
-    default: {
-      View,
-      createAnimatedComponent: (c: any) => c,
-      call: () => {},
-    },
-    useSharedValue: (init: any) => ({ value: init }),
-    useAnimatedStyle: (fn: any) => fn(),
-    withTiming: (val: any) => val,
-    withSpring: (val: any) => val,
-    Easing: { linear: (v: any) => v },
-  };
-});
-
 const sections = [
   {
     header: "Main",
