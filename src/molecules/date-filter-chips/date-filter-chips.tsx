@@ -17,6 +17,7 @@ export function DateFilterChips({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ paddingHorizontal: 16 }}
       accessibilityLabel={accessibilityLabel}
+      accessibilityRole="radiogroup"
       testID={testID}
     >
       <XStack gap={8}>

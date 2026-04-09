@@ -40,4 +40,18 @@ describe("ProgressIndicator", () => {
     const el = screen.getByTestId("progress");
     expect(el.props.accessibilityValue.now).toBe(100);
   });
+
+  it("has correct accessibility role", () => {
+    render(<ProgressIndicator testID="a11y-progress" />);
+    const element = screen.getByTestId("a11y-progress");
+    expect(element.props.accessibilityRole).toBe("progressbar");
+  });
+
+  it("has correct accessibility value for determinate mode", () => {
+    render(<ProgressIndicator mode="determinate" progress={0.75} testID="a11y-progress" />);
+    const element = screen.getByTestId("a11y-progress");
+    expect(element.props.accessibilityValue).toEqual(
+      expect.objectContaining({ min: 0, max: 100, now: 75 }),
+    );
+  });
 });

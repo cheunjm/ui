@@ -42,4 +42,18 @@ describe("Slider", () => {
     render(<Slider testID="custom-slider" />);
     expect(screen.getByTestId("custom-slider")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<Slider testID="a11y-slider" />);
+    const element = screen.getByTestId("a11y-slider");
+    expect(element.props.accessibilityRole).toBe("adjustable");
+  });
+
+  it("has correct accessibility value", () => {
+    render(<Slider value={50} min={0} max={100} testID="a11y-slider" />);
+    const element = screen.getByTestId("a11y-slider");
+    expect(element.props.accessibilityValue).toEqual(
+      expect.objectContaining({ min: 0, max: 100, now: 50 }),
+    );
+  });
 });

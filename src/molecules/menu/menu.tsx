@@ -30,7 +30,7 @@ export function Menu({ visible, onDismiss, items, testID }: MenuProps) {
         onPress={onDismiss}
       >
         <Pressable onPress={(e) => e.stopPropagation()}>
-          <Container testID={testID}>
+          <Container testID={testID} accessibilityRole="menu">
             <YStack>
               {items.map((item) => (
                 <Pressable
@@ -48,6 +48,8 @@ export function Menu({ visible, onDismiss, items, testID }: MenuProps) {
                     paddingVertical: 12,
                     opacity: item.disabled ? 0.38 : pressed ? 0.7 : 1,
                   })}
+                  accessibilityRole="menuitem"
+                  accessibilityState={item.disabled ? { disabled: true } : undefined}
                   testID={`${testID}-item-${item.key}`}
                 >
                   {item.leadingIcon && (

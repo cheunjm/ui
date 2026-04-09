@@ -47,6 +47,14 @@ const StyledButton = styled(TamaguiButton, {
   },
 } as const);
 
-export function Button({ variant = "filled", ...props }: ButtonProps) {
-  return <StyledButton variant={variant as any} {...props} />;
+export function Button({ variant = "filled", disabled, ...props }: ButtonProps) {
+  return (
+    <StyledButton
+      variant={variant as any}
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityState={disabled ? { disabled: true } : undefined}
+      {...props}
+    />
+  );
 }

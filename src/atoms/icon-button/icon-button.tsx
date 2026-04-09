@@ -47,6 +47,7 @@ export function IconButton({
   variant = "standard",
   iconSize = 24,
   iconColor,
+  accessibilityLabel,
   ...props
 }: IconButtonProps) {
   const theme = useTheme();
@@ -63,7 +64,12 @@ export function IconButton({
   }
 
   return (
-    <StyledIconButton variant={variant as any} {...props}>
+    <StyledIconButton
+      variant={variant as any}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      {...props}
+    >
       <MaterialIcons name={icon as any} size={iconSize} color={resolvedColor} />
     </StyledIconButton>
   );

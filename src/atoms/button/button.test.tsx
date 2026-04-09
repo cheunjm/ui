@@ -39,4 +39,18 @@ describe("Button", () => {
     render(<Button testID="custom-button">Test</Button>);
     expect(screen.getByTestId("custom-button")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<Button testID="a11y-btn">OK</Button>);
+    const element = screen.getByTestId("a11y-btn");
+    expect(element.props.accessibilityRole).toBe("button");
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<Button disabled testID="a11y-btn">Disabled</Button>);
+    const element = screen.getByTestId("a11y-btn");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

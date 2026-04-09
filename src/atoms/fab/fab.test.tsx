@@ -46,4 +46,16 @@ describe("FAB", () => {
     render(<FAB icon="add" testID="custom-fab" />);
     expect(screen.getByTestId("custom-fab")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<FAB icon="add" testID="a11y-fab" />);
+    const element = screen.getByTestId("a11y-fab");
+    expect(element.props.accessibilityRole).toBe("button");
+  });
+
+  it("forwards accessibilityLabel", () => {
+    render(<FAB icon="add" accessibilityLabel="Add item" testID="a11y-fab" />);
+    const element = screen.getByTestId("a11y-fab");
+    expect(element.props.accessibilityLabel).toBe("Add item");
+  });
 });

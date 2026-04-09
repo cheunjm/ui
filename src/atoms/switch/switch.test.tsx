@@ -46,4 +46,26 @@ describe("Switch", () => {
     render(<Switch testID="custom-switch" />);
     expect(screen.getByTestId("custom-switch")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<Switch testID="a11y-switch" />);
+    const element = screen.getByTestId("a11y-switch");
+    expect(element.props.accessibilityRole).toBe("switch");
+  });
+
+  it("has correct accessibility state when selected", () => {
+    render(<Switch selected testID="a11y-switch" />);
+    const element = screen.getByTestId("a11y-switch");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ checked: true }),
+    );
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<Switch disabled testID="a11y-switch" />);
+    const element = screen.getByTestId("a11y-switch");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

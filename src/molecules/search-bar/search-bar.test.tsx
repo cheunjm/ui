@@ -63,4 +63,16 @@ describe("SearchBar", () => {
     expect(screen.getByTestId("sb-trailing")).toBeTruthy();
     expect(screen.queryByTestId("sb-clear")).toBeNull();
   });
+
+  it("has search accessibility role on container", () => {
+    render(<SearchBar testID="a11y-sb" />);
+    const element = screen.getByTestId("a11y-sb");
+    expect(element.props.accessibilityRole).toBe("search");
+  });
+
+  it("forwards accessibilityLabel to container", () => {
+    render(<SearchBar accessibilityLabel="Search items" testID="a11y-sb" />);
+    const element = screen.getByTestId("a11y-sb");
+    expect(element.props.accessibilityLabel).toBe("Search items");
+  });
 });

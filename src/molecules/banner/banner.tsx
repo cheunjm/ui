@@ -55,7 +55,7 @@ export function Banner({
 
   return (
     <Animated.View style={animatedStyle} testID={testID}>
-      <Container>
+      <Container accessibilityRole="alert" accessibilityLiveRegion="polite">
         <ContentRow>
           {icon ? (
             <Icon name={icon} size={24} color="$onSurface" testID={testID ? `${testID}-icon` : undefined} />

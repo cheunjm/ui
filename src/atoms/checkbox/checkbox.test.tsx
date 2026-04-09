@@ -42,4 +42,26 @@ describe("Checkbox", () => {
     render(<Checkbox testID="custom-cb" />);
     expect(screen.getByTestId("custom-cb")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<Checkbox testID="a11y-cb" />);
+    const element = screen.getByTestId("a11y-cb");
+    expect(element.props.accessibilityRole).toBe("checkbox");
+  });
+
+  it("has correct accessibility state when checked", () => {
+    render(<Checkbox state="checked" testID="a11y-cb" />);
+    const element = screen.getByTestId("a11y-cb");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ checked: true }),
+    );
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<Checkbox disabled testID="a11y-cb" />);
+    const element = screen.getByTestId("a11y-cb");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

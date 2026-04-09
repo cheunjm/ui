@@ -91,4 +91,18 @@ describe("Banner", () => {
     expect(screen.getByText("B")).toBeTruthy();
     expect(screen.queryByText("C")).toBeNull();
   });
+
+  it("has alert accessibility role on container", () => {
+    render(<Banner message="Alert" testID="a11y-banner" />);
+    const banner = screen.getByTestId("a11y-banner");
+    const container = banner.children[0];
+    expect(container.props.accessibilityRole).toBe("alert");
+  });
+
+  it("has polite live region on container", () => {
+    render(<Banner message="Alert" testID="a11y-banner" />);
+    const banner = screen.getByTestId("a11y-banner");
+    const container = banner.children[0];
+    expect(container.props.accessibilityLiveRegion).toBe("polite");
+  });
 });

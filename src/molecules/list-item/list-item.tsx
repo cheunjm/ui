@@ -94,7 +94,8 @@ export function ListItem({
         onPress={disabled ? undefined : onPress}
         disabled={disabled}
         accessibilityLabel={accessibilityLabel}
-        accessibilityRole="button"
+        accessibilityRole={onPress ? "button" : undefined}
+        accessibilityState={disabled ? { disabled: true } : undefined}
         style={{ opacity: disabled ? 0.38 : 1 }}
       >
         <Row minHeight={minHeight}>

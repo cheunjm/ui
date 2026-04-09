@@ -66,6 +66,7 @@ export function Chip({
       disabled={disabled}
       accessibilityLabel={accessibilityLabel}
       accessibilityRole="button"
+      accessibilityState={{ selected: isSelected, disabled }}
       testID={testID}
     >
       <StyledChipContainer

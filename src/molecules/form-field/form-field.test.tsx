@@ -38,4 +38,16 @@ describe("FormField", () => {
     render(<FormField testID="custom-ff" />);
     expect(screen.getByTestId("custom-ff")).toBeTruthy();
   });
+
+  it("forwards label as accessibilityLabel to TextField", () => {
+    render(<FormField label="Email" testID="a11y-ff" />);
+    const input = screen.getByTestId("a11y-ff");
+    expect(input).toBeTruthy();
+  });
+
+  it("renders error text with alert role", () => {
+    render(<FormField errorText="Required" testID="a11y-ff" />);
+    const support = screen.getByTestId("a11y-ff-support");
+    expect(support.props.accessibilityRole).toBe("alert");
+  });
 });

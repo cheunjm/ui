@@ -30,4 +30,18 @@ describe("Card", () => {
     fireEvent.press(screen.getByTestId("card"));
     expect(onPress).not.toHaveBeenCalled();
   });
+
+  it("has button accessibility role when interactive", () => {
+    render(<Card onPress={jest.fn()} testID="card">Content</Card>);
+    const element = screen.getByTestId("card");
+    expect(element.props.accessibilityRole).toBe("button");
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<Card onPress={jest.fn()} disabled testID="card">Content</Card>);
+    const element = screen.getByTestId("card");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

@@ -50,6 +50,8 @@ export function Card({
         onPress={onPress}
         disabled={disabled}
         testID={testID}
+        accessibilityRole="button"
+        accessibilityState={{ disabled }}
         style={({ pressed }) => ({ opacity: disabled ? 0.38 : pressed ? 0.9 : 1 })}
       >
         {({ pressed }) => (

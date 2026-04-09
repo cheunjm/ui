@@ -106,4 +106,30 @@ describe("SegmentedButton", () => {
     );
     expect(screen.getByTestId("custom-seg")).toBeTruthy();
   });
+
+  it("has tablist accessibility role on group", () => {
+    render(
+      <SegmentedButton segments={segments} selected="day" testID="a11y-seg" />,
+    );
+    const element = screen.getByTestId("a11y-seg");
+    expect(element.props.accessibilityRole).toBe("tablist");
+  });
+
+  it("has tab accessibility role on each segment", () => {
+    render(
+      <SegmentedButton segments={segments} selected="day" testID="a11y-seg" />,
+    );
+    const segment = screen.getByTestId("a11y-seg-segment-day");
+    expect(segment.props.accessibilityRole).toBe("tab");
+  });
+
+  it("has correct accessibility state on selected segment", () => {
+    render(
+      <SegmentedButton segments={segments} selected="day" testID="a11y-seg" />,
+    );
+    const segment = screen.getByTestId("a11y-seg-segment-day");
+    expect(segment.props.accessibilityState).toEqual(
+      expect.objectContaining({ selected: true }),
+    );
+  });
 });

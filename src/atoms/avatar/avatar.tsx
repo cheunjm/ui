@@ -18,6 +18,7 @@ export function Avatar({
   icon = "person",
   size = "medium",
   color,
+  accessibilityLabel,
   testID,
   ...props
 }: AvatarProps) {
@@ -38,6 +39,8 @@ export function Avatar({
   return (
     <View
       testID={testID}
+      accessibilityRole="image"
+      accessibilityLabel={accessibilityLabel ?? name}
       width={containerSize}
       height={containerSize}
       borderRadius={containerSize / 2}

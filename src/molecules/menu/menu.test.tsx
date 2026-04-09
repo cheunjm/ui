@@ -45,4 +45,30 @@ describe("Menu", () => {
     fireEvent.press(screen.getByTestId("menu-item-d"));
     expect(onPress).not.toHaveBeenCalled();
   });
+
+  it("has menu accessibility role on container", () => {
+    render(
+      <Menu visible onDismiss={jest.fn()} items={items} testID="a11y-menu" />
+    );
+    const element = screen.getByTestId("a11y-menu");
+    expect(element.props.accessibilityRole).toBe("menu");
+  });
+
+  it("has menuitem accessibility role on items", () => {
+    render(
+      <Menu visible onDismiss={jest.fn()} items={items} testID="a11y-menu" />
+    );
+    const item = screen.getByTestId("a11y-menu-item-edit");
+    expect(item.props.accessibilityRole).toBe("menuitem");
+  });
+
+  it("has correct accessibility state on disabled item", () => {
+    render(
+      <Menu visible onDismiss={jest.fn()} items={items} testID="a11y-menu" />
+    );
+    const item = screen.getByTestId("a11y-menu-item-disabled");
+    expect(item.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

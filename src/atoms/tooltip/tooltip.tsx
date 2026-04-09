@@ -63,7 +63,7 @@ export function Tooltip({
         {children}
       </RNView>
       {visible && (
-        <RNView style={tooltipStyle}>
+        <RNView style={tooltipStyle} accessibilityRole={"tooltip" as any}>
           {variant === "plain" ? (
             <PlainContainer>
               <Text role="body" size="small" color="$inverseOnSurface">

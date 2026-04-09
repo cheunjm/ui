@@ -75,4 +75,26 @@ describe("Chip", () => {
     render(<Chip label="Custom" testID="custom-chip" />);
     expect(screen.getByTestId("custom-chip")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<Chip label="Test" testID="a11y-chip" />);
+    const element = screen.getByTestId("a11y-chip");
+    expect(element.props.accessibilityRole).toBe("button");
+  });
+
+  it("has correct accessibility state for selected filter chip", () => {
+    render(<Chip label="Filter" type="filter" selected testID="a11y-chip" />);
+    const element = screen.getByTestId("a11y-chip");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ selected: true }),
+    );
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<Chip label="Disabled" disabled testID="a11y-chip" />);
+    const element = screen.getByTestId("a11y-chip");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

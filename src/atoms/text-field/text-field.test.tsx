@@ -53,4 +53,24 @@ describe("TextField", () => {
     render(<TextField testID="custom-tf" />);
     expect(screen.getByTestId("custom-tf")).toBeTruthy();
   });
+
+  it("forwards accessibilityLabel to input", () => {
+    render(<TextField accessibilityLabel="Email address" testID="a11y-tf" />);
+    const input = screen.getByTestId("a11y-tf-input");
+    expect(input.props.accessibilityLabel).toBe("Email address");
+  });
+
+  it("defaults accessibilityLabel to label prop", () => {
+    render(<TextField label="Email" testID="a11y-tf" />);
+    const input = screen.getByTestId("a11y-tf-input");
+    expect(input.props.accessibilityLabel).toBe("Email");
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<TextField disabled testID="a11y-tf" />);
+    const input = screen.getByTestId("a11y-tf-input");
+    expect(input.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

@@ -53,4 +53,10 @@ describe("DateFilterChips", () => {
     render(<DateFilterChips options={options} testID="custom-filter" />);
     expect(screen.getByTestId("custom-filter")).toBeTruthy();
   });
+
+  it("has radiogroup accessibility role on container", () => {
+    render(<DateFilterChips options={options} testID="a11y-filter" />);
+    const element = screen.getByTestId("a11y-filter");
+    expect(element.props.accessibilityRole).toBe("radiogroup");
+  });
 });

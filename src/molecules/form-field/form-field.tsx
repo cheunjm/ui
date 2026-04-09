@@ -33,7 +33,11 @@ export function FormField({
         </Text>
       ) : null}
 
-      <TextField {...textFieldProps} error={isError} />
+      <TextField
+        {...textFieldProps}
+        error={isError}
+        accessibilityLabel={textFieldProps.accessibilityLabel ?? label}
+      />
 
       {hasBottomRow ? (
         <XStack justifyContent="space-between">
@@ -43,6 +47,8 @@ export function FormField({
               size="small"
               color={isError ? "$error" : "$onSurfaceVariant"}
               flex={1}
+              accessibilityLiveRegion={isError ? "polite" : undefined}
+              accessibilityRole={isError ? "alert" : undefined}
               testID={testID ? `${testID}-support` : undefined}
             >
               {supportText}

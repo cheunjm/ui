@@ -32,4 +32,22 @@ describe("Badge", () => {
     render(<Badge testID="custom-badge" />);
     expect(screen.getByTestId("custom-badge")).toBeTruthy();
   });
+
+  it("has accessibility role text for large badge", () => {
+    render(<Badge size="large" count={3} testID="a11y-badge" />);
+    const element = screen.getByTestId("a11y-badge");
+    expect(element.props.accessibilityRole).toBe("text");
+  });
+
+  it("has default accessibility label for large badge with count", () => {
+    render(<Badge size="large" count={3} testID="a11y-badge" />);
+    const element = screen.getByTestId("a11y-badge");
+    expect(element.props.accessibilityLabel).toBe("3 notifications");
+  });
+
+  it("forwards custom accessibilityLabel", () => {
+    render(<Badge size="large" count={5} accessibilityLabel="5 unread" testID="a11y-badge" />);
+    const element = screen.getByTestId("a11y-badge");
+    expect(element.props.accessibilityLabel).toBe("5 unread");
+  });
 });

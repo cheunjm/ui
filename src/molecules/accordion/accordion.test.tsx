@@ -95,6 +95,30 @@ describe("AccordionItem", () => {
     );
     expect(screen.getByTestId("my-accordion-item")).toBeTruthy();
   });
+
+  it("has button accessibility role on header", () => {
+    render(
+      <AccordionItem title="Section" testID="a11y-item">
+        <Text>Content</Text>
+      </AccordionItem>,
+    );
+    const item = screen.getByTestId("a11y-item");
+    const pressable = item.children[0];
+    expect(pressable.props.accessibilityRole).toBe("button");
+  });
+
+  it("has correct accessibility state when expanded", () => {
+    render(
+      <AccordionItem title="Section" expanded testID="a11y-item">
+        <Text>Content</Text>
+      </AccordionItem>,
+    );
+    const item = screen.getByTestId("a11y-item");
+    const pressable = item.children[0];
+    expect(pressable.props.accessibilityState).toEqual(
+      expect.objectContaining({ expanded: true }),
+    );
+  });
 });
 
 describe("Accordion", () => {

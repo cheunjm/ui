@@ -187,6 +187,7 @@ export function TextField({
       secureTextEntry={secureTextEntry}
       multiline={multiline}
       accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityState={disabled ? { disabled: true } : undefined}
       style={{
         flex: 1,
         fontSize: 16,

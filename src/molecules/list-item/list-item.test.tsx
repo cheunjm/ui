@@ -73,4 +73,20 @@ describe("ListItem", () => {
     render(<ListItem headline="Custom" testID="custom-list-item" />);
     expect(screen.getByTestId("custom-list-item")).toBeTruthy();
   });
+
+  it("has button accessibility role when interactive", () => {
+    render(<ListItem headline="Press" onPress={jest.fn()} testID="a11y-li" />);
+    const item = screen.getByTestId("a11y-li");
+    const pressable = item.children[0];
+    expect(pressable.props.accessibilityRole).toBe("button");
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<ListItem headline="Disabled" disabled onPress={jest.fn()} testID="a11y-li" />);
+    const item = screen.getByTestId("a11y-li");
+    const pressable = item.children[0];
+    expect(pressable.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

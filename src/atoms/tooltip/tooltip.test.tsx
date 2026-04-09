@@ -134,4 +134,17 @@ describe("Tooltip", () => {
     fireEvent(wrapper, "touchStart");
     expect(screen.getByText("Right")).toBeTruthy();
   });
+
+  it("has tooltip accessibility role on content", () => {
+    render(
+      <Tooltip label="Help" testID="a11y-tooltip">
+        <Text>Trigger</Text>
+      </Tooltip>
+    );
+    const wrapper = screen.getByTestId("a11y-tooltip").children[0];
+    fireEvent(wrapper, "touchStart");
+    const tooltipContainer = screen.getByTestId("a11y-tooltip");
+    const tooltipContent = tooltipContainer.children[1];
+    expect(tooltipContent.props.accessibilityRole).toBe("tooltip");
+  });
 });

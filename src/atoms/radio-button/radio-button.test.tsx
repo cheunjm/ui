@@ -34,4 +34,26 @@ describe("RadioButton", () => {
     render(<RadioButton testID="custom-radio" />);
     expect(screen.getByTestId("custom-radio")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<RadioButton testID="a11y-radio" />);
+    const element = screen.getByTestId("a11y-radio");
+    expect(element.props.accessibilityRole).toBe("radio");
+  });
+
+  it("has correct accessibility state when selected", () => {
+    render(<RadioButton selected testID="a11y-radio" />);
+    const element = screen.getByTestId("a11y-radio");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ checked: true }),
+    );
+  });
+
+  it("has correct accessibility state when disabled", () => {
+    render(<RadioButton disabled testID="a11y-radio" />);
+    const element = screen.getByTestId("a11y-radio");
+    expect(element.props.accessibilityState).toEqual(
+      expect.objectContaining({ disabled: true }),
+    );
+  });
 });

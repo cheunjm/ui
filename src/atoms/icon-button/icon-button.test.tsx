@@ -49,4 +49,16 @@ describe("IconButton", () => {
     render(<IconButton icon="home" testID="custom-ib" />);
     expect(screen.getByTestId("custom-ib")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<IconButton icon="close" testID="a11y-ib" />);
+    const element = screen.getByTestId("a11y-ib");
+    expect(element.props.accessibilityRole).toBe("button");
+  });
+
+  it("forwards accessibilityLabel", () => {
+    render(<IconButton icon="close" accessibilityLabel="Close" testID="a11y-ib" />);
+    const element = screen.getByTestId("a11y-ib");
+    expect(element.props.accessibilityLabel).toBe("Close");
+  });
 });

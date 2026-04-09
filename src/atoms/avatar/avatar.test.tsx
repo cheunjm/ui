@@ -79,4 +79,22 @@ describe("Avatar", () => {
     render(<Avatar testID="custom-avatar" />);
     expect(screen.getByTestId("custom-avatar")).toBeTruthy();
   });
+
+  it("has correct accessibility role", () => {
+    render(<Avatar testID="a11y-avatar" />);
+    const element = screen.getByTestId("a11y-avatar");
+    expect(element.props.accessibilityRole).toBe("image");
+  });
+
+  it("defaults accessibilityLabel to name prop", () => {
+    render(<Avatar name="John Doe" testID="a11y-avatar" />);
+    const element = screen.getByTestId("a11y-avatar");
+    expect(element.props.accessibilityLabel).toBe("John Doe");
+  });
+
+  it("forwards custom accessibilityLabel over name", () => {
+    render(<Avatar name="John Doe" accessibilityLabel="User avatar" testID="a11y-avatar" />);
+    const element = screen.getByTestId("a11y-avatar");
+    expect(element.props.accessibilityLabel).toBe("User avatar");
+  });
 });
