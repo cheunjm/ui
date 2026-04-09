@@ -1,8 +1,6 @@
 name: Greptile Response
 
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
   pull_request_review:
     types: [submitted]
 
