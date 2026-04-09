@@ -123,4 +123,35 @@ describe("Dialog", () => {
     render(<Dialog visible testID="custom-dialog" />);
     expect(screen.getByTestId("custom-dialog")).toBeTruthy();
   });
+
+  describe("scrollable body", () => {
+    it("renders body as Text when scrollable is false", () => {
+      render(
+        <Dialog visible testID="dialog">
+          Short content
+        </Dialog>,
+      );
+      expect(screen.getByTestId("dialog-body")).toBeTruthy();
+      expect(screen.getByText("Short content")).toBeTruthy();
+    });
+
+    it("renders body in ScrollView when scrollable is true", () => {
+      const { toJSON } = render(
+        <Dialog visible scrollable testID="dialog">
+          <>{`Long scrollable content`}</>
+        </Dialog>,
+      );
+      expect(screen.getByTestId("dialog-body")).toBeTruthy();
+      expect(toJSON()).toBeTruthy();
+    });
+
+    it("defaults to non-scrollable", () => {
+      render(
+        <Dialog visible testID="dialog">
+          Default body
+        </Dialog>,
+      );
+      expect(screen.getByText("Default body")).toBeTruthy();
+    });
+  });
 });

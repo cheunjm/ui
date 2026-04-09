@@ -159,8 +159,8 @@ export function TextField({
   const labelColor = isError
     ? (theme.error?.val as string)
     : isFocused
-      ? (theme.primary?.val as string)
-      : (theme.onSurfaceVariant?.val as string);
+    ? (theme.primary?.val as string)
+    : (theme.onSurfaceVariant?.val as string);
 
   const inputColor = disabled
     ? (theme.onSurface?.val as string)

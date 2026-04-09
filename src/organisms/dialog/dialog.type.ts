@@ -17,6 +17,8 @@ export type DialogProps = {
   onConfirm?: () => void;
   /** Callback when dialog is dismissed (scrim tap or dismiss button) */
   onDismiss?: () => void;
+  /** Whether body content is scrollable. Default: false */
+  scrollable?: boolean;
   /** Test ID for testing */
   testID?: string;
 };

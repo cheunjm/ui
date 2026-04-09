@@ -1,4 +1,4 @@
-import { Modal, Pressable } from "react-native";
+import { Modal, Pressable, ScrollView } from "react-native";
 import { styled, View, XStack, YStack } from "tamagui";
 import { Icon } from "../../atoms/icon";
 import { Text } from "../../atoms/text";
@@ -31,6 +31,7 @@ export function Dialog({
   dismissLabel = "Cancel",
   onConfirm,
   onDismiss,
+  scrollable = false,
   testID,
 }: DialogProps) {
   return (
@@ -72,16 +73,24 @@ export function Dialog({
                   </Text>
                 )}
 
-                {children && (
-                  <Text
-                    role="body"
-                    size="medium"
-                    color="$onSurfaceVariant"
-                    testID={testID ? `${testID}-body` : undefined}
-                  >
-                    {children}
-                  </Text>
-                )}
+                {children &&
+                  (scrollable ? (
+                    <ScrollView
+                      style={{ maxHeight: 300 }}
+                      testID={testID ? `${testID}-body` : undefined}
+                    >
+                      {children}
+                    </ScrollView>
+                  ) : (
+                    <Text
+                      role="body"
+                      size="medium"
+                      color="$onSurfaceVariant"
+                      testID={testID ? `${testID}-body` : undefined}
+                    >
+                      {children}
+                    </Text>
+                  ))}
 
                 <XStack justifyContent="flex-end" gap={8}>
                   {onDismiss && (
