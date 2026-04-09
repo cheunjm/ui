@@ -1,4 +1,4 @@
-import { render, screen } from "@/test-utils";
+import { render, screen, fireEvent } from "@/test-utils";
 import { Badge } from "./badge";
 
 describe("Badge", () => {
@@ -56,5 +56,47 @@ describe("Badge", () => {
     );
     const element = screen.getByTestId("a11y-badge");
     expect(element.props.accessibilityLabel).toBe("5 unread");
+  });
+
+  describe("count formatting", () => {
+    it("displays exact count at 999", () => {
+      render(<Badge size="large" count={999} testID="badge" />);
+      expect(screen.getByText("999")).toBeTruthy();
+    });
+
+    it("caps count at 999+ for 1000", () => {
+      render(<Badge size="large" count={1000} testID="badge" />);
+      expect(screen.getByText("999+")).toBeTruthy();
+    });
+
+    it("displays zero count", () => {
+      render(<Badge size="large" count={0} testID="badge" />);
+      expect(screen.getByText("0")).toBeTruthy();
+    });
+
+    it("displays single digit count", () => {
+      render(<Badge size="large" count={1} testID="badge" />);
+      expect(screen.getByText("1")).toBeTruthy();
+    });
+
+    it("generates accessibility label with 999+ for overflow", () => {
+      render(<Badge size="large" count={5000} testID="badge" />);
+      const element = screen.getByTestId("badge");
+      expect(element.props.accessibilityLabel).toBe("999+ notifications");
+    });
+  });
+
+  describe("small dot variant", () => {
+    it("does not render text content", () => {
+      const { toJSON } = render(<Badge size="small" testID="badge" />);
+      const tree = JSON.stringify(toJSON());
+      expect(tree).not.toContain("BadgeText");
+    });
+
+    it("has no accessibility role", () => {
+      render(<Badge size="small" testID="badge" />);
+      const element = screen.getByTestId("badge");
+      expect(element.props.accessibilityRole).toBeUndefined();
+    });
   });
 });

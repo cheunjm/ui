@@ -1,5 +1,6 @@
-import { render, screen } from "@/test-utils";
+import { render, screen, fireEvent } from "@/test-utils";
 import { Avatar } from "./avatar";
+import { AVATAR_SIZES } from "./avatar.const";
 
 describe("Avatar", () => {
   it("renders image variant when source is provided", () => {
@@ -102,6 +103,58 @@ describe("Avatar", () => {
     );
     const element = screen.getByTestId("a11y-avatar");
     expect(element.props.accessibilityLabel).toBe("User avatar");
+  });
+
+  describe("size rendering", () => {
+    it("renders small size with correct container dimensions", () => {
+      render(<Avatar size="small" testID="avatar" />);
+      const element = screen.getByTestId("avatar");
+      expect(element.props.style).toEqual(
+        expect.objectContaining({
+          width: AVATAR_SIZES.small.container,
+          height: AVATAR_SIZES.small.container,
+        }),
+      );
+    });
+
+    it("renders medium size with correct container dimensions", () => {
+      render(<Avatar size="medium" testID="avatar" />);
+      const element = screen.getByTestId("avatar");
+      expect(element.props.style).toEqual(
+        expect.objectContaining({
+          width: AVATAR_SIZES.medium.container,
+          height: AVATAR_SIZES.medium.container,
+        }),
+      );
+    });
+
+    it("renders large size with correct container dimensions", () => {
+      render(<Avatar size="large" testID="avatar" />);
+      const element = screen.getByTestId("avatar");
+      expect(element.props.style).toEqual(
+        expect.objectContaining({
+          width: AVATAR_SIZES.large.container,
+          height: AVATAR_SIZES.large.container,
+        }),
+      );
+    });
+  });
+
+  describe("initials extraction", () => {
+    it("extracts initials from three-word name", () => {
+      render(<Avatar name="John Michael Doe" testID="avatar" />);
+      expect(screen.getByText("JD")).toBeTruthy();
+    });
+
+    it("extracts single initial from one-word name", () => {
+      render(<Avatar name="Madonna" testID="avatar" />);
+      expect(screen.getByText("M")).toBeTruthy();
+    });
+
+    it("handles name with extra whitespace", () => {
+      render(<Avatar name="  Jane   Doe  " testID="avatar" />);
+      expect(screen.getByText("JD")).toBeTruthy();
+    });
   });
 
   describe("dark mode", () => {
