@@ -114,7 +114,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AJD47H6R4\",
-              \"text\": \"${STATUS} *EAS Build* — @aramiworks/ui ${PLATFORM} (${PROFILE})\n• <${LINK}|View on Expo>\"
+              \"text\": \"${STATUS} *@aramiworks/ui Build*\n• Platform: ${PLATFORM^}\n• Profile: ${PROFILE}\n• <${LINK}|View on Expo>\"
             }"
 
   web:
@@ -157,5 +157,5 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AJD47H6R4\",
-              \"text\": \"${STATUS} *EAS Build* — @aramiworks/ui web (${PROFILE})\n• <${LINK}|View build>\"
+              \"text\": \"${STATUS} *@aramiworks/ui Build*\n• Platform: Web\n• Profile: ${PROFILE}\n• <${LINK}|View build>\"
             }"
