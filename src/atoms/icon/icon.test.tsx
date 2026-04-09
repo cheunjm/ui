@@ -46,4 +46,11 @@ describe("Icon", () => {
       unmount();
     });
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<Icon name="home" testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

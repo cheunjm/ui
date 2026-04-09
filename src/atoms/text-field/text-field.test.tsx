@@ -73,4 +73,11 @@ describe("TextField", () => {
       expect.objectContaining({ disabled: true }),
     );
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<TextField testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

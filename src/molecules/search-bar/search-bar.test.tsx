@@ -73,4 +73,11 @@ describe("SearchBar", () => {
     const element = screen.getByTestId("a11y-sb");
     expect(element.props.accessibilityLabel).toBe("Search items");
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<SearchBar testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

@@ -27,4 +27,11 @@ describe("Skeleton", () => {
     );
     expect(toJSON()).toBeTruthy();
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<Skeleton testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

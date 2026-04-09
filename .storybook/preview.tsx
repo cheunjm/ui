@@ -37,15 +37,32 @@ function EnvBanner() {
 }
 
 const preview: Preview = {
+  globalTypes: {
+    theme: {
+      description: "Theme mode",
+      toolbar: {
+        title: "Theme",
+        icon: "paintbrush",
+        items: [
+          { value: "light", title: "Light", icon: "sun" },
+          { value: "dark", title: "Dark", icon: "moon" },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
   decorators: [
-    (Story) => (
-      <UiProvider>
-        <EnvBanner />
-        <div style={{ paddingTop: env && env !== "master" ? 24 : 0 }}>
-          <Story />
-        </div>
-      </UiProvider>
-    ),
+    (Story, context) => {
+      const theme = context.globals.theme || "light";
+      return (
+        <UiProvider defaultTheme={theme}>
+          <EnvBanner />
+          <div style={{ paddingTop: env && env !== "master" ? 24 : 0 }}>
+            <Story />
+          </div>
+        </UiProvider>
+      );
+    },
   ],
   parameters: {
     controls: {
@@ -59,6 +76,8 @@ const preview: Preview = {
         order: [
           "atoms",
           [
+            "avatar",
+            ["overview", "anatomy", "specs", "variants"],
             "badge",
             ["overview", "anatomy", "specs", "variants"],
             "button",
@@ -100,6 +119,10 @@ const preview: Preview = {
           ],
           "molecules",
           [
+            "accordion",
+            ["overview", "anatomy", "specs", "variants"],
+            "banner",
+            ["overview", "anatomy", "specs", "variants"],
             "date-filter-chips",
             ["overview", "anatomy", "specs", "variants"],
             "form-field",
@@ -134,6 +157,8 @@ const preview: Preview = {
           ],
           "templates",
           [
+            "dashboard-template",
+            ["overview", "anatomy", "specs", "variants"],
             "detail-template",
             ["overview", "anatomy", "specs", "variants"],
             "empty-state-template",
@@ -141,6 +166,8 @@ const preview: Preview = {
             "form-template",
             ["overview", "anatomy", "specs", "variants"],
             "list-template",
+            ["overview", "anatomy", "specs", "variants"],
+            "settings-template",
             ["overview", "anatomy", "specs", "variants"],
           ],
         ],

@@ -117,4 +117,11 @@ describe("Snackbar", () => {
     expect(screen.getByTestId("snackbar-action")).toBeTruthy();
     expect(screen.getByTestId("snackbar-close")).toBeTruthy();
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<Snackbar visible message="Test" testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

@@ -68,4 +68,11 @@ describe("Switch", () => {
       expect.objectContaining({ disabled: true }),
     );
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<Switch testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

@@ -56,4 +56,11 @@ describe("IconButton", () => {
     const element = screen.getByTestId("a11y-ib");
     expect(element.props.accessibilityLabel).toBe("Close");
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<IconButton icon="close" testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

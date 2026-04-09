@@ -103,4 +103,11 @@ describe("Avatar", () => {
     const element = screen.getByTestId("a11y-avatar");
     expect(element.props.accessibilityLabel).toBe("User avatar");
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<Avatar testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

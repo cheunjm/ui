@@ -56,4 +56,11 @@ describe("Slider", () => {
       expect.objectContaining({ min: 0, max: 100, now: 50 }),
     );
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<Slider testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

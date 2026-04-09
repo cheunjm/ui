@@ -62,4 +62,11 @@ describe("Checkbox", () => {
       expect.objectContaining({ disabled: true }),
     );
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<Checkbox testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });

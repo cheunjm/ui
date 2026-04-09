@@ -54,4 +54,11 @@ describe("FAB", () => {
     const element = screen.getByTestId("a11y-fab");
     expect(element.props.accessibilityLabel).toBe("Add item");
   });
+
+  describe("dark mode", () => {
+    it("renders in dark theme without crashing", () => {
+      render(<FAB icon="add" testID="dark-test" />, { theme: "dark" });
+      expect(screen.getByTestId("dark-test")).toBeTruthy();
+    });
+  });
 });
