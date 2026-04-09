@@ -1,5 +1,11 @@
-import { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import { useEffect } from "react";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 import { useTheme } from "tamagui";
 import type { SkeletonProps } from "./skeleton.type";
 
@@ -11,26 +17,21 @@ export function Skeleton({
   testID,
 }: SkeletonProps) {
   const theme = useTheme();
-  const opacity = useRef(new Animated.Value(1)).current;
+  const opacity = useSharedValue(1);
 
   useEffect(() => {
-    const pulse = Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacity, {
-          toValue: 0.3,
-          duration: 700,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 700,
-          useNativeDriver: true,
-        }),
-      ]),
+    opacity.value = withRepeat(
+      withSequence(
+        withTiming(0.3, { duration: 700 }),
+        withTiming(1, { duration: 700 }),
+      ),
+      -1,
     );
-    pulse.start();
-    return () => pulse.stop();
   }, [opacity]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
 
   const backgroundColor = theme.surfaceContainerHighest?.val as string;
 
@@ -44,8 +45,8 @@ export function Skeleton({
           height: height as any,
           borderRadius,
           backgroundColor,
-          opacity,
         },
+        animatedStyle,
         style,
       ]}
     />

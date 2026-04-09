@@ -1,5 +1,10 @@
-import { useEffect, useRef } from "react";
-import { Animated, Modal, Pressable } from "react-native";
+import { useEffect } from "react";
+import { Modal, Pressable } from "react-native";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 import { styled, View, YStack } from "tamagui";
 import { Icon } from "../../atoms/icon";
 import { Text } from "../../atoms/text";
@@ -36,15 +41,17 @@ export function NavigationDrawer({
   header,
   testID,
 }: NavigationDrawerProps) {
-  const translateX = useRef(new Animated.Value(-DRAWER_WIDTH)).current;
+  const translateX = useSharedValue(-DRAWER_WIDTH);
 
   useEffect(() => {
-    Animated.timing(translateX, {
-      toValue: open ? 0 : -DRAWER_WIDTH,
+    translateX.value = withTiming(open ? 0 : -DRAWER_WIDTH, {
       duration: 250,
-      useNativeDriver: true,
-    }).start();
+    });
   }, [open, translateX]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: translateX.value }],
+  }));
 
   return (
     <Modal
@@ -55,7 +62,7 @@ export function NavigationDrawer({
       testID={testID}
     >
       <View flex={1} flexDirection="row">
-        <Animated.View style={{ transform: [{ translateX }] }}>
+        <Animated.View style={animatedStyle}>
           <DrawerContainer>
             {header && (
               <View paddingHorizontal={16} paddingBottom={8}>
