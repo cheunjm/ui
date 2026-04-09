@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { TextInput } from "react-native";
+import { TextInput, View as RNView } from "react-native";
 import { styled, View, useTheme } from "tamagui";
 import { Icon } from "../../atoms/icon";
 import { IconButton } from "../../atoms/icon-button";
@@ -67,36 +67,38 @@ export function SearchBar({
   ) : null;
 
   return (
-    <PillContainer
-      isDisabled={disabled ? true : undefined}
+    <RNView
       testID={testID}
+      accessible
+      accessibilityRole="search"
       accessibilityLabel={accessibilityLabel ?? placeholder}
       accessibilityHint={accessibilityHint}
-      accessibilityRole="search"
     >
-      <View marginRight={12}>
-        <Icon name={leadingIcon} size={24} color="$onSurface" />
-      </View>
+      <PillContainer isDisabled={disabled ? true : undefined}>
+        <View marginRight={12}>
+          <Icon name={leadingIcon} size={24} color="$onSurface" />
+        </View>
 
-      <TextInput
-        value={value}
-        placeholder={placeholder}
-        placeholderTextColor={placeholderColor}
-        onChangeText={onChangeText}
-        onSubmitEditing={onSubmit}
-        editable={!disabled}
-        style={{
-          flex: 1,
-          fontSize: 16,
-          lineHeight: 24,
-          color: inputColor,
-          paddingVertical: 0,
-          paddingHorizontal: 0,
-        }}
-        testID={testID ? `${testID}-input` : undefined}
-      />
+        <TextInput
+          value={value}
+          placeholder={placeholder}
+          placeholderTextColor={placeholderColor}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSubmit}
+          editable={!disabled}
+          style={{
+            flex: 1,
+            fontSize: 16,
+            lineHeight: 24,
+            color: inputColor,
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+          }}
+          testID={testID ? `${testID}-input` : undefined}
+        />
 
-      {trailingElement}
-    </PillContainer>
+        {trailingElement}
+      </PillContainer>
+    </RNView>
   );
 }
