@@ -1,20 +1,17 @@
 name: Greptile Response
 
 on:
-  workflow_call:
-    secrets:
-      CLAUDE_CODE_OAUTH_TOKEN:
-        required: true
-      CLAUDE_ARAMI_APP_ID:
-        required: true
-      CLAUDE_ARAMI_PRIVATE_KEY:
-        required: true
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+
+concurrency:
+  group: greptile-response-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   respond:
-    if: >
-      github.event.review.user.login == 'greptile-apps[bot]' &&
-      github.event.review.state == 'commented'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -22,13 +19,55 @@ jobs:
       issues: write
       id-token: write
       actions: read
+      statuses: write
     steps:
+      - name: Check if Greptile review
+        id: is-greptile
+        run: |
+          if [ "${{ github.event.review.user.login }}" = "greptile-apps[bot]" ] && \
+             [ "${{ github.event.review.state }}" = "commented" ]; then
+            echo "is_greptile=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_greptile=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.CLAUDE_ARAMI_APP_ID }}
+          private-key: ${{ secrets.CLAUDE_ARAMI_PRIVATE_KEY }}
+
+      - name: Set status — no review pending
+        if: steps.is-greptile.outputs.is_greptile != 'true'
+        run: |
+          gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=success \
+            -f context="Greptile Response" \
+            -f description="No Greptile review to process" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: Set status — pending response
+        if: steps.is-greptile.outputs.is_greptile == 'true'
+        run: |
+          gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=failure \
+            -f context="Greptile Response" \
+            -f description="Pending Claude response to Greptile review" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
       - name: Checkout repository
+        if: steps.is-greptile.outputs.is_greptile == 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Skip if last commit was from Claude
+        if: steps.is-greptile.outputs.is_greptile == 'true'
         id: skip-check
         run: |
           last_author=$(git log -1 --pretty=format:'%ae')
@@ -38,22 +77,26 @@ jobs:
             echo "skip=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Generate GitHub App token
-        if: steps.skip-check.outputs.skip != 'true'
-        id: app-token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ secrets.CLAUDE_ARAMI_APP_ID }}
-          private-key: ${{ secrets.CLAUDE_ARAMI_PRIVATE_KEY }}
+      - name: Set status — skipped
+        if: steps.is-greptile.outputs.is_greptile == 'true' && steps.skip-check.outputs.skip == 'true'
+        run: |
+          gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=success \
+            -f context="Greptile Response" \
+            -f description="Skipped — last commit from Claude" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Run Claude Code
-        if: steps.skip-check.outputs.skip != 'true'
+        if: steps.is-greptile.outputs.is_greptile == 'true' && steps.skip-check.outputs.skip != 'true'
+        id: claude-code
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           github_token: ${{ steps.app-token.outputs.token }}
           allowed_bots: "greptile-apps"
-          claude_args: '--allowedTools "mcp__github,Bash(gh api:*),Bash(gh pr:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*)"'
+          claude_args: '--allowedTools "mcp__github,Edit,Bash(gh api:*),Bash(gh pr:*),Bash(git diff:*),Bash(git log:*),Bash(git show:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*)"'
           prompt: |
             Greptile (an automated code review bot) just submitted a review on this PR.
             Your job is to evaluate each of Greptile's inline comments and respond.
@@ -96,3 +139,25 @@ jobs:
             - If there are no actionable comments (all praise or LGTM), post a one-line summary: "Greptile review: no actionable items."
             - Keep replies concise. No preamble, no emoji.
             - If you are unsure whether a fix is correct, reply asking the PR author to verify instead of making the change.
+
+      - name: Set status — responded
+        if: steps.is-greptile.outputs.is_greptile == 'true' && steps.skip-check.outputs.skip != 'true'
+        run: |
+          gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=success \
+            -f context="Greptile Response" \
+            -f description="Claude responded to Greptile review" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: Set status — failed
+        if: failure() && steps.is-greptile.outputs.is_greptile == 'true'
+        run: |
+          gh api repos/${{ github.repository }}/statuses/${{ github.event.pull_request.head.sha }} \
+            -f state=failure \
+            -f context="Greptile Response" \
+            -f description="Claude failed to respond — check workflow logs" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
