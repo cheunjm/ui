@@ -145,32 +145,16 @@ jobs:
           name: web-build-${{ needs.resolve-params.outputs.profile }}
           path: dist/
 
-      - name: Deploy to Vercel
-        id: vercel
-        working-directory: dist
-        run: |
-          mkdir -p .vercel
-          jq -n \
-            --arg org "${{ secrets.VERCEL_ORG_ID }}" \
-            --arg proj "${{ secrets.VERCEL_PROJECT_ID_WEB }}" \
-            '{"orgId":$org,"projectId":$proj}' > .vercel/project.json
-          DEPLOY_URL=$(npx vercel deploy --yes --prod \
-            --token=${{ secrets.VERCEL_TOKEN }})
-          echo "url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
-
       - name: Notify Slack
         if: always()
         run: |
           STATUS="${{ job.status == 'success' && '✅' || '❌' }}"
           PROFILE="${{ needs.resolve-params.outputs.profile }}"
-          DEPLOY_URL="${{ steps.vercel.outputs.url }}"
-          FALLBACK="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          LINK="${DEPLOY_URL:-$FALLBACK}"
 
           curl -s -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AJD47H6R4\",
-              \"text\": \"${STATUS} *@aramiworks/ui Build*\n🌐 Platform: Web\n🎯 Profile: ${PROFILE}\n🔗 <${LINK}|View on Vercel>\"
+              \"text\": \"${STATUS} *@aramiworks/ui Build*\n🌐 Platform: Web\n🎯 Profile: ${PROFILE}\n🔗 <https://storybook.ui.arami.so|storybook.ui.arami.so>\"
             }"
