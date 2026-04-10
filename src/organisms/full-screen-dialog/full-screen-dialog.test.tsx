@@ -64,4 +64,18 @@ describe("FullScreenDialog", () => {
     fireEvent.press(screen.getByTestId("fsd-action"));
     expect(onAction).not.toHaveBeenCalled();
   });
+
+  it("renders without testID", () => {
+    const { title, actionLabel, onAction, onClose } = defaultProps;
+    render(
+      <FullScreenDialog
+        visible
+        title={title}
+        actionLabel={actionLabel}
+        onAction={onAction}
+        onClose={onClose}
+      />,
+    );
+    expect(screen.getByText("Edit Profile")).toBeTruthy();
+  });
 });
