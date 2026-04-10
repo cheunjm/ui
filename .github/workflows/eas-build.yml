@@ -172,6 +172,7 @@ jobs:
           echo "deploy_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
           if [ "$PROFILE" != "master" ]; then
             npx vercel alias "$DEPLOY_URL" "${{ steps.domain.outputs.url }}" \
+              --scope=aramiworks \
               --token=${{ secrets.VERCEL_TOKEN }}
           fi
 
