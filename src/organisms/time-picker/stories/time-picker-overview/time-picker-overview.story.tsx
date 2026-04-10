@@ -11,7 +11,10 @@ function Overview() {
 
   const h12 = hour % 12 || 12;
   const period = hour < 12 ? "AM" : "PM";
-  const display = `${String(h12).padStart(2, "0")}:${String(minute).padStart(2, "0")} ${period}`;
+  const display = `${String(h12).padStart(2, "0")}:${String(minute).padStart(
+    2,
+    "0",
+  )} ${period}`;
 
   return (
     <YStack gap={16} padding={32} alignItems="center">

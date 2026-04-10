@@ -170,4 +170,284 @@ describe("DatePicker", () => {
     const result = onConfirm.mock.calls[0][0];
     expect(result).toBeInstanceOf(Date);
   });
+
+  describe("range selection", () => {
+    it("renders with range header label", () => {
+      render(
+        <DatePicker
+          visible
+          selectionMode="range"
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      expect(screen.getByText("Select date range")).toBeTruthy();
+    });
+
+    it("renders two input fields in range input mode", () => {
+      render(
+        <DatePicker
+          visible
+          selectionMode="range"
+          mode="input"
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      expect(screen.getByText("Start date")).toBeTruthy();
+      expect(screen.getByText("End date")).toBeTruthy();
+    });
+
+    it("calls onConfirmRange from range input mode", () => {
+      const onConfirmRange = jest.fn();
+      render(
+        <DatePicker
+          visible
+          selectionMode="range"
+          mode="input"
+          startDate={new Date(2026, 3, 10)}
+          endDate={new Date(2026, 3, 20)}
+          onConfirm={jest.fn()}
+          onConfirmRange={onConfirmRange}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByText("OK"));
+      expect(onConfirmRange).toHaveBeenCalledWith(
+        expect.any(Date),
+        expect.any(Date),
+      );
+    });
+
+    it("single mode still shows Select date label", () => {
+      render(
+        <DatePicker
+          visible
+          selectionMode="single"
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      expect(screen.getByText("Select date")).toBeTruthy();
+    });
+
+    it("single mode still calls onConfirm", () => {
+      const onConfirm = jest.fn();
+      render(
+        <DatePicker
+          visible
+          selectionMode="single"
+          onConfirm={onConfirm}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByText("OK"));
+      expect(onConfirm).toHaveBeenCalledWith(expect.any(Date));
+    });
+  });
+
+  describe("month navigation", () => {
+    it("navigates to previous month", () => {
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-prev-month"));
+      expect(screen.getByText("March 2026")).toBeTruthy();
+    });
+
+    it("navigates to next month", () => {
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-next-month"));
+      expect(screen.getByText("May 2026")).toBeTruthy();
+    });
+
+    it("wraps from January to December of previous year", () => {
+      const date = new Date(2026, 0, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-prev-month"));
+      expect(screen.getByText("December 2025")).toBeTruthy();
+    });
+
+    it("wraps from December to January of next year", () => {
+      const date = new Date(2026, 11, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-next-month"));
+      expect(screen.getByText("January 2027")).toBeTruthy();
+    });
+  });
+
+  describe("mode toggle", () => {
+    it("switches from calendar to input mode", () => {
+      render(
+        <DatePicker
+          visible
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-mode-toggle"));
+      expect(screen.getByText("Date")).toBeTruthy();
+    });
+
+    it("switches from input to calendar mode", () => {
+      render(
+        <DatePicker
+          visible
+          mode="input"
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-mode-toggle"));
+      expect(screen.getByText("Su")).toBeTruthy();
+    });
+  });
+
+  describe("day selection", () => {
+    it("selects a day in single mode", () => {
+      const onConfirm = jest.fn();
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={onConfirm}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getAllByText("10")[0]);
+      fireEvent.press(screen.getByText("OK"));
+      expect(onConfirm).toHaveBeenCalledWith(expect.any(Date));
+    });
+
+    it("selects a range start then end in range mode", () => {
+      const onConfirmRange = jest.fn();
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          selectionMode="range"
+          value={date}
+          onConfirm={jest.fn()}
+          onConfirmRange={onConfirmRange}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getAllByText("10")[0]);
+      fireEvent.press(screen.getAllByText("20")[0]);
+      fireEvent.press(screen.getByText("OK"));
+      expect(onConfirmRange).toHaveBeenCalledWith(
+        expect.any(Date),
+        expect.any(Date),
+      );
+    });
+
+    it("resets range start when selecting again after both set", () => {
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          selectionMode="range"
+          startDate={new Date(2026, 3, 5)}
+          endDate={new Date(2026, 3, 10)}
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getAllByText("15")[0]);
+      expect(screen.getByTestId("dp")).toBeTruthy();
+    });
+  });
+
+  describe("year selector", () => {
+    it("opens year grid when header is tapped", () => {
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-year-toggle"));
+      expect(screen.getByTestId("dp-year-grid")).toBeTruthy();
+    });
+
+    it("shows current year in year grid", () => {
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-year-toggle"));
+      expect(screen.getByText("2026")).toBeTruthy();
+    });
+
+    it("navigates back to calendar when year is selected", () => {
+      const date = new Date(2026, 3, 15);
+      render(
+        <DatePicker
+          visible
+          value={date}
+          onConfirm={jest.fn()}
+          onDismiss={jest.fn()}
+          testID="dp"
+        />,
+      );
+      fireEvent.press(screen.getByTestId("dp-year-toggle"));
+      fireEvent.press(screen.getByText("2025"));
+      expect(screen.getByText("April 2025")).toBeTruthy();
+      expect(screen.queryByTestId("dp-year-grid")).toBeNull();
+    });
+  });
 });
