@@ -133,28 +133,57 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate Storybook requires
-        run: npm run storybook:generate
+      - name: Build Storybook
+        run: npm run storybook:build
 
-      - name: Export web build
-        run: npx expo export --platform web
+      - name: Resolve deploy domain
+        id: domain
+        run: |
+          PROFILE="${{ needs.resolve-params.outputs.profile }}"
+          case "$PROFILE" in
+            develop) echo "url=develop.storybook.ui.arami.so" >> "$GITHUB_OUTPUT" ;;
+            stage)   echo "url=stage.storybook.ui.arami.so" >> "$GITHUB_OUTPUT" ;;
+            *)       echo "url=storybook.ui.arami.so" >> "$GITHUB_OUTPUT" ;;
+          esac
 
-      - name: Upload web build
-        uses: actions/upload-artifact@v4
-        with:
-          name: web-build-${{ needs.resolve-params.outputs.profile }}
-          path: dist/
+      - name: Configure Vercel project
+        working-directory: storybook-static
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          mkdir -p .vercel
+          jq -n --arg org "$VERCEL_ORG_ID" --arg proj "$VERCEL_PROJECT_ID" '{"orgId":$org,"projectId":$proj}' > .vercel/project.json
+
+      - name: Deploy to Vercel
+        id: deploy
+        working-directory: storybook-static
+        env:
+          PROFILE: ${{ needs.resolve-params.outputs.profile }}
+        run: |
+          PROD_FLAG=""
+          if [ "$PROFILE" = "master" ]; then
+            PROD_FLAG="--prod"
+          fi
+          DEPLOY_URL=$(npx vercel deploy --yes $PROD_FLAG \
+            --token=${{ secrets.VERCEL_TOKEN }})
+          echo "deploy_url=$DEPLOY_URL" >> "$GITHUB_OUTPUT"
+          if [ "$PROFILE" != "master" ]; then
+            npx vercel alias "$DEPLOY_URL" "${{ steps.domain.outputs.url }}" \
+              --token=${{ secrets.VERCEL_TOKEN }}
+          fi
 
       - name: Notify Slack
         if: always()
         run: |
           STATUS="${{ job.status == 'success' && '✅' || '❌' }}"
           PROFILE="${{ needs.resolve-params.outputs.profile }}"
+          DOMAIN="${{ steps.domain.outputs.url }}"
 
           curl -s -X POST https://slack.com/api/chat.postMessage \
             -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
               \"channel\": \"C0AJD47H6R4\",
-              \"text\": \"${STATUS} *@aramiworks/ui Build*\n🌐 Platform: Web\n🎯 Profile: ${PROFILE}\n🔗 <https://storybook.ui.arami.so|storybook.ui.arami.so>\"
+              \"text\": \"${STATUS} *@aramiworks/ui Build*\n🌐 Platform: Web\n🎯 Profile: ${PROFILE}\n🔗 <https://${DOMAIN}|${DOMAIN}>\"
             }"
