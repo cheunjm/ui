@@ -175,13 +175,13 @@ describe("Dialog", () => {
     });
 
     it("renders body in ScrollView when scrollable is true", () => {
-      const { toJSON } = render(
+      render(
         <Dialog visible scrollable testID="dialog">
-          <>{`Long scrollable content`}</>
+          Long scrollable content
         </Dialog>,
       );
       expect(screen.getByTestId("dialog-body")).toBeTruthy();
-      expect(toJSON()).toBeTruthy();
+      expect(screen.getByText("Long scrollable content")).toBeTruthy();
     });
 
     it("defaults to non-scrollable", () => {

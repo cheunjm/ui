@@ -79,7 +79,9 @@ export function Dialog({
                       style={{ maxHeight: 300 }}
                       testID={testID ? `${testID}-body` : undefined}
                     >
-                      {children}
+                      <Text role="body" size="medium" color="$onSurfaceVariant">
+                        {children}
+                      </Text>
                     </ScrollView>
                   ) : (
                     <Text
