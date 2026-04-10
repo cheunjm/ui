@@ -18,6 +18,8 @@ export type {
 } from "./date-picker";
 export { Dialog } from "./dialog";
 export type { DialogProps } from "./dialog";
+export { FullScreenDialog } from "./full-screen-dialog";
+export type { FullScreenDialogProps } from "./full-screen-dialog";
 export { Search } from "./search";
 export type { SearchProps, SearchSuggestion } from "./search";
 export { NavigationBar } from "./navigation-bar";
