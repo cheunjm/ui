@@ -46,3 +46,23 @@ export const Uncontained: Story = {
 export const FullScreen: Story = {
   args: { variant: "full-screen" },
 };
+
+export const Hero: Story = {
+  args: {
+    variant: "hero",
+    items: [
+      {
+        key: "1",
+        content: <View style={{ flex: 1, backgroundColor: "#E8DEF8" }} />,
+      },
+      {
+        key: "2",
+        content: <View style={{ flex: 1, backgroundColor: "#D0BCFF" }} />,
+      },
+      {
+        key: "3",
+        content: <View style={{ flex: 1, backgroundColor: "#EADDFF" }} />,
+      },
+    ],
+  },
+};

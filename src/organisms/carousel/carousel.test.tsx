@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@/test-utils";
-import { Text } from "tamagui";
+import { Text, View } from "tamagui";
 import { Carousel } from "./carousel";
 
 const items = [
@@ -27,6 +27,26 @@ describe("Carousel", () => {
   it("renders without dots when showDots is false", () => {
     render(<Carousel items={items} showDots={false} testID="carousel" />);
     expect(screen.getByTestId("carousel")).toBeTruthy();
+  });
+
+  it("renders hero variant", () => {
+    const heroItems = [
+      { key: "1", content: <View testID="hero-item" /> },
+    ];
+    render(<Carousel variant="hero" items={heroItems} testID="carousel" />);
+    expect(screen.getByTestId("carousel")).toBeTruthy();
+  });
+
+  it("renders hero variant with multiple items", () => {
+    const heroItems = [
+      { key: "1", content: <View /> },
+      { key: "2", content: <View /> },
+      { key: "3", content: <View /> },
+    ];
+    const { toJSON } = render(
+      <Carousel variant="hero" items={heroItems} showDots testID="carousel" />,
+    );
+    expect(toJSON()).toBeTruthy();
   });
 
   describe("content and interaction", () => {
