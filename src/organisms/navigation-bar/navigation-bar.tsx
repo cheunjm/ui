@@ -54,10 +54,11 @@ export function NavigationBar({
   destinations,
   activeIndex = 0,
   onDestinationPress,
+  showLabels = true,
   testID,
 }: NavigationBarProps) {
   return (
-    <Bar testID={testID}>
+    <Bar testID={testID} height={showLabels ? 80 : 56}>
       {destinations.map((dest: NavigationDestination, index: number) => {
         const active = index === activeIndex;
         const iconName =
@@ -87,14 +88,16 @@ export function NavigationBar({
                   <Icon name={iconName} size={24} color={iconColor} />
                 </Wrapper>
               </View>
-              <Text
-                role="label"
-                size="medium"
-                color={labelColor}
-                fontWeight={active ? "700" : undefined}
-              >
-                {dest.label}
-              </Text>
+              {showLabels && (
+                <Text
+                  role="label"
+                  size="medium"
+                  color={labelColor}
+                  fontWeight={active ? "700" : undefined}
+                >
+                  {dest.label}
+                </Text>
+              )}
             </Destination>
           </Pressable>
         );

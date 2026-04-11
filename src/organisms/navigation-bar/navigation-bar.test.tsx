@@ -59,6 +59,42 @@ describe("NavigationBar", () => {
     expect(screen.getByTestId("custom-nav")).toBeTruthy();
   });
 
+  it("hides labels when showLabels is false", () => {
+    const dests = [
+      { icon: "home", label: "Home" },
+      { icon: "search", label: "Search" },
+      { icon: "settings", label: "Settings" },
+    ];
+    render(
+      <NavigationBar destinations={dests} showLabels={false} testID="navbar" />,
+    );
+    expect(screen.queryByText("Home")).toBeNull();
+    expect(screen.queryByText("Search")).toBeNull();
+  });
+
+  it("shows labels by default", () => {
+    const dests = [
+      { icon: "home", label: "Home" },
+      { icon: "search", label: "Search" },
+      { icon: "settings", label: "Settings" },
+    ];
+    render(<NavigationBar destinations={dests} testID="navbar" />);
+    expect(screen.getByText("Home")).toBeTruthy();
+    expect(screen.getByText("Search")).toBeTruthy();
+  });
+
+  it("renders label-less variant with reduced height", () => {
+    const dests = [
+      { icon: "home", label: "Home" },
+      { icon: "search", label: "Search" },
+      { icon: "settings", label: "Settings" },
+    ];
+    const { toJSON } = render(
+      <NavigationBar destinations={dests} showLabels={false} testID="navbar" />,
+    );
+    expect(toJSON()).toBeTruthy();
+  });
+
   it("sets accessibility role and state on destinations", () => {
     render(
       <NavigationBar

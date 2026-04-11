@@ -52,3 +52,9 @@ export const FiveItems: Story = {
     ],
   },
 };
+
+export const LabelLess: Story = {
+  args: {
+    showLabels: false,
+  },
+};

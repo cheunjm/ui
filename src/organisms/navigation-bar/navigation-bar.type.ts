@@ -17,5 +17,7 @@ export type NavigationBarProps = {
   activeIndex?: number;
   /** Called when a destination is pressed */
   onDestinationPress?: (index: number) => void;
+  /** Whether to show text labels below icons. Default: true */
+  showLabels?: boolean;
   testID?: string;
 };
