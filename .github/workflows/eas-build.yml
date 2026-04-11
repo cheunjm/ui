@@ -61,7 +61,7 @@ jobs:
     needs: [resolve-params]
     if: needs.resolve-params.outputs.platform != 'web'
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 90
     strategy:
       matrix:
         platform: ${{ needs.resolve-params.outputs.platform == 'all' && fromJSON('["android", "ios"]') || fromJSON(format('["{0}"]', needs.resolve-params.outputs.platform)) }}
