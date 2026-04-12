@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { Text } from "react-native";
+import { useCallback, useRef, useState } from "react";
 import { Dialog } from "../../organisms/dialog";
 import type {
   ShowConfirmDialogOptions,
@@ -17,9 +16,13 @@ const INITIAL_STATE: DialogState = {
 
 export function useConfirmDialog(): UseConfirmDialogReturn {
   const [state, setState] = useState<DialogState>(INITIAL_STATE);
+  const onConfirmRef = useRef<() => void>(() => {});
+  const onDismissRef = useRef<(() => void) | undefined>(undefined);
 
   const showConfirmDialog = useCallback(
     (options: ShowConfirmDialogOptions) => {
+      onConfirmRef.current = options.onConfirm;
+      onDismissRef.current = options.onDismiss;
       setState({ ...options, visible: true });
     },
     [],
@@ -27,13 +30,13 @@ export function useConfirmDialog(): UseConfirmDialogReturn {
 
   const handleConfirm = useCallback(() => {
     setState((prev) => ({ ...prev, visible: false }));
-    state.onConfirm();
-  }, [state]);
+    onConfirmRef.current?.();
+  }, []);
 
   const handleDismiss = useCallback(() => {
     setState((prev) => ({ ...prev, visible: false }));
-    state.onDismiss?.();
-  }, [state]);
+    onDismissRef.current?.();
+  }, []);
 
   const ConfirmDialogPortal = useCallback(
     () =>
@@ -46,7 +49,7 @@ export function useConfirmDialog(): UseConfirmDialogReturn {
           onConfirm={handleConfirm}
           onDismiss={handleDismiss}
         >
-          <Text>{state.message}</Text>
+          {state.message}
         </Dialog>
       ) : null,
     [state, handleConfirm, handleDismiss],
