@@ -113,11 +113,11 @@ describe("ListItem", () => {
     expect(screen.getByTestId("list-item")).toBeTruthy();
   });
 
-  it("renders leadingAvatar with initials", () => {
+  it("renders leadingAvatar with name", () => {
     render(
       <ListItem
         headline="John Doe"
-        leadingAvatar={{ initials: "JD" }}
+        leadingAvatar={{ name: "John Doe" }}
         testID="list-item"
       />,
     );

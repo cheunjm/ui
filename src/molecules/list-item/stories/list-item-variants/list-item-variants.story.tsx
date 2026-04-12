@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Switch } from "react-native";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ListItem } from "../../list-item";
@@ -52,16 +53,24 @@ export const WithLeadingAvatar: Story = {
   args: {
     headline: "John Doe",
     supportingText: "john@example.com",
-    leadingAvatar: { initials: "JD" },
+    leadingAvatar: { name: "John Doe" },
     trailingSupportingText: "2m ago",
   },
 };
 
 export const WithTrailingElement: Story = {
   name: "With Trailing Element",
+  render: (args) => {
+    const [enabled, setEnabled] = useState(true);
+    return (
+      <ListItem
+        {...args}
+        trailingElement={<Switch value={enabled} onValueChange={setEnabled} />}
+      />
+    );
+  },
   args: {
     headline: "Notifications",
     supportingText: "Receive push notifications",
-    trailingElement: <Switch value={true} onValueChange={() => {}} />,
   },
 };

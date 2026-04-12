@@ -51,7 +51,10 @@ export function ListItem({
   testID,
 }: ListItemProps) {
   const hasLeading = leadingContent != null || leadingAvatar != null;
-  const hasTrailing = trailingContent != null || trailingSupportingText != null;
+  const hasTrailing =
+    trailingContent != null ||
+    trailingSupportingText != null ||
+    trailingElement != null;
 
   const minHeight = supportingText ? 72 : 56;
 
@@ -61,7 +64,7 @@ export function ListItem({
       const avatarProps =
         "uri" in leadingAvatar
           ? { source: { uri: leadingAvatar.uri } }
-          : { name: leadingAvatar.initials };
+          : { name: leadingAvatar.name };
       return (
         <LeadingContainer>
           <Avatar size="medium" {...avatarProps} />
@@ -96,6 +99,11 @@ export function ListItem({
           <Text role="body" size="small" color="$onSurfaceVariant">
             {trailingSupportingText}
           </Text>
+        ) : null}
+        {trailingElement != null ? (
+          <Pressable onPress={(e) => e.stopPropagation()}>
+            {trailingElement}
+          </Pressable>
         ) : null}
       </TrailingContainer>
     );
@@ -139,13 +147,6 @@ export function ListItem({
             ) : null}
           </Content>
           {renderTrailing()}
-          {trailingElement != null ? (
-            <TrailingContainer>
-              <Pressable onPress={(e) => e.stopPropagation()}>
-                {trailingElement}
-              </Pressable>
-            </TrailingContainer>
-          ) : null}
         </Row>
       </Pressable>
       {showDivider ? <Divider /> : null}

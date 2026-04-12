@@ -11,8 +11,8 @@ export type ListItemProps = {
   overlineText?: string;
   /** Leading element — Icon name (string) or custom ReactNode */
   leadingContent?: string | ReactNode;
-  /** Leading avatar — uri for image or initials for text avatar */
-  leadingAvatar?: { uri: string } | { initials: string };
+  /** Leading avatar — uri for image or full name (e.g. "John Doe") for text avatar */
+  leadingAvatar?: { uri: string } | { name: string };
   /** Trailing element — text (string) or custom ReactNode */
   trailingContent?: string | ReactNode;
   /** Trailing supporting text (e.g., timestamp) */
