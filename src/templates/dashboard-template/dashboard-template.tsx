@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { View, XStack } from "tamagui";
 import type { DashboardTemplateProps } from "./dashboard-template.type";
 
@@ -6,13 +6,22 @@ export function DashboardTemplate({
   topBar,
   summaryCards,
   children,
+  fab,
+  refreshControl,
+  contentContainerStyle,
+  showsVerticalScrollIndicator = false,
   testID,
 }: DashboardTemplateProps) {
   return (
     <View flex={1} testID={testID}>
       {topBar}
 
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={contentContainerStyle}
+        refreshControl={refreshControl}
+        showsVerticalScrollIndicator={showsVerticalScrollIndicator}
+      >
         {summaryCards && summaryCards.length > 0 ? (
           <XStack
             flexWrap="wrap"
@@ -34,6 +43,17 @@ export function DashboardTemplate({
 
         {children ? <View padding="$lg">{children}</View> : null}
       </ScrollView>
+
+      {fab ? <View style={styles.fabContainer}>{fab}</View> : null}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  fabContainer: {
+    position: "absolute",
+    bottom: 16,
+    right: 16,
+    alignItems: "center",
+  },
+});

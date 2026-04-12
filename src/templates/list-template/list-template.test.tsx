@@ -55,4 +55,11 @@ describe("ListTemplate", () => {
     expect(screen.getByTestId("content")).toBeTruthy();
     expect(screen.getByTestId("bottom")).toBeTruthy();
   });
+
+  it("renders fab slot", () => {
+    render(
+      <ListTemplate testID="lt" fab={<Text testID="fab">FAB</Text>} />,
+    );
+    expect(screen.getByTestId("fab")).toBeTruthy();
+  });
 });
