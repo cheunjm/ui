@@ -63,7 +63,7 @@ export function NavigationRail({
   return (
     <Rail testID={testID}>
       {menuIcon && (
-        <View paddingBottom={8}>
+        <View paddingBottom="$sm">
           <IconButton
             icon="menu"
             variant="standard"
@@ -74,7 +74,7 @@ export function NavigationRail({
         </View>
       )}
       {fab && (
-        <View paddingBottom={8}>
+        <View paddingBottom="$sm">
           <FAB
             icon={fab.icon}
             size="small"
