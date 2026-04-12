@@ -30,9 +30,7 @@ describe("Carousel", () => {
   });
 
   it("renders hero variant", () => {
-    const heroItems = [
-      { key: "1", content: <View testID="hero-item" /> },
-    ];
+    const heroItems = [{ key: "1", content: <View testID="hero-item" /> }];
     render(<Carousel variant="hero" items={heroItems} testID="carousel" />);
     expect(screen.getByTestId("carousel")).toBeTruthy();
   });

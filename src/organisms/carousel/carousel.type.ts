@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
 
-export type CarouselVariant = "multi-browse" | "uncontained" | "full-screen" | "hero";
+export type CarouselVariant =
+  | "multi-browse"
+  | "uncontained"
+  | "full-screen"
+  | "hero";
 
 export type CarouselItem = {
   /** Unique key */

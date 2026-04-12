@@ -58,7 +58,9 @@ export function Carousel({
             key={item.key}
             width={itemWidth}
             borderRadius={borderRadius}
-            minHeight={variant === "full-screen" ? 300 : variant === "hero" ? 400 : 200}
+            minHeight={
+              variant === "full-screen" ? 300 : variant === "hero" ? 400 : 200
+            }
           >
             {item.content}
           </ItemContainer>
