@@ -8,6 +8,10 @@ const preview: Preview = {
         date: /Date$/i,
       },
     },
+    options: {
+      // @ts-expect-error -- deeperSort is set by storybook-deeper-sort at import time
+      storySort: (a: any, b: any) => globalThis.deeperSort(a, b),
+    },
   },
 };
 
