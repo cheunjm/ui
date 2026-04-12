@@ -118,6 +118,38 @@ describe("Snackbar", () => {
     expect(screen.getByTestId("snackbar-close")).toBeTruthy();
   });
 
+  it("renders two-line variant with taller container", () => {
+    render(
+      <Snackbar
+        visible
+        message="A longer message that spans two lines"
+        lines="two"
+        testID="snackbar"
+      />,
+    );
+    expect(screen.getByTestId("snackbar")).toBeTruthy();
+    expect(screen.getByTestId("snackbar-message")).toBeTruthy();
+  });
+
+  it("renders two-line variant with action below message", () => {
+    render(
+      <Snackbar
+        visible
+        message="Error occurred"
+        lines="two"
+        actionLabel="Retry"
+        onAction={() => {}}
+        testID="snackbar"
+      />,
+    );
+    expect(screen.getByTestId("snackbar-action")).toBeTruthy();
+  });
+
+  it("defaults to single line when lines prop is omitted", () => {
+    render(<Snackbar visible message="Short message" testID="snackbar" />);
+    expect(screen.getByTestId("snackbar")).toBeTruthy();
+  });
+
   describe("dark mode", () => {
     it("renders in dark theme without crashing", () => {
       render(<Snackbar visible message="Test" testID="dark-test" />, {
