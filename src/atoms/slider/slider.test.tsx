@@ -121,6 +121,198 @@ describe("Slider", () => {
     });
   });
 
+  it("renders range variant", () => {
+    render(
+      <Slider variant="range" lowValue={20} highValue={80} testID="slider" />,
+    );
+    expect(screen.getByTestId("slider")).toBeTruthy();
+  });
+
+  it("renders two thumbs in range variant", () => {
+    render(
+      <Slider variant="range" lowValue={20} highValue={80} testID="slider" />,
+    );
+    expect(screen.getByTestId("slider-thumb-low")).toBeTruthy();
+    expect(screen.getByTestId("slider-thumb-high")).toBeTruthy();
+  });
+
+  it("does not render second thumb in default variant", () => {
+    render(<Slider value={50} testID="slider" />);
+    expect(screen.queryByTestId("slider-thumb-low")).toBeNull();
+    expect(screen.queryByTestId("slider-thumb-high")).toBeNull();
+  });
+
+  it("defaults range to full span when lowValue/highValue omitted", () => {
+    render(<Slider variant="range" min={0} max={100} testID="slider" />);
+    expect(screen.getByTestId("slider-thumb-low")).toBeTruthy();
+    expect(screen.getByTestId("slider-thumb-high")).toBeTruthy();
+  });
+
+  it("has reduced opacity when range variant is disabled", () => {
+    const { toJSON } = render(
+      <Slider
+        variant="range"
+        lowValue={20}
+        highValue={80}
+        disabled
+        testID="slider"
+      />,
+    );
+    const tree = JSON.stringify(toJSON());
+    expect(tree).toContain("0.38");
+  });
+
+  it("renders discrete range variant with step", () => {
+    render(
+      <Slider
+        variant="range"
+        type="discrete"
+        min={0}
+        max={50}
+        step={10}
+        lowValue={10}
+        highValue={40}
+        testID="slider"
+      />,
+    );
+    expect(screen.getByTestId("slider-thumb-low")).toBeTruthy();
+    expect(screen.getByTestId("slider-thumb-high")).toBeTruthy();
+  });
+
+  it("invokes onRangeChange when low thumb pan responder triggers", () => {
+    const onRangeChange = jest.fn();
+    render(
+      <Slider
+        variant="range"
+        min={0}
+        max={100}
+        lowValue={20}
+        highValue={80}
+        onRangeChange={onRangeChange}
+        testID="slider"
+      />,
+    );
+    const container = screen.getByTestId("slider");
+    const trackView = container.children[0];
+    const touchHistory = {
+      touchBank: [],
+      numberActiveTouches: 0,
+      indexOfSingleActiveTouch: -1,
+      mostRecentTimeStamp: 0,
+    };
+
+    fireEvent(trackView, "layout", {
+      nativeEvent: { layout: { width: 200, height: 4 } },
+    });
+
+    fireEvent(trackView, "responderGrant", {
+      touchHistory,
+      nativeEvent: { locationX: 30 },
+    });
+    fireEvent(trackView, "responderMove", {
+      touchHistory,
+      nativeEvent: { locationX: 50 },
+    });
+
+    expect(onRangeChange).toHaveBeenCalled();
+  });
+
+  it("invokes onRangeChange when high thumb pan responder triggers", () => {
+    const onRangeChange = jest.fn();
+    render(
+      <Slider
+        variant="range"
+        min={0}
+        max={100}
+        lowValue={20}
+        highValue={80}
+        onRangeChange={onRangeChange}
+        testID="slider"
+      />,
+    );
+    const container = screen.getByTestId("slider");
+    const trackView = container.children[0];
+    const touchHistory = {
+      touchBank: [],
+      numberActiveTouches: 0,
+      indexOfSingleActiveTouch: -1,
+      mostRecentTimeStamp: 0,
+    };
+
+    fireEvent(trackView, "layout", {
+      nativeEvent: { layout: { width: 200, height: 4 } },
+    });
+
+    fireEvent(trackView, "responderGrant", {
+      touchHistory,
+      nativeEvent: { locationX: 170 },
+    });
+    fireEvent(trackView, "responderMove", {
+      touchHistory,
+      nativeEvent: { locationX: 160 },
+    });
+
+    expect(onRangeChange).toHaveBeenCalled();
+  });
+
+  it("renders range variant in discrete mode after layout with tick marks", () => {
+    render(
+      <Slider
+        variant="range"
+        type="discrete"
+        min={0}
+        max={40}
+        step={10}
+        lowValue={10}
+        highValue={30}
+        testID="slider"
+      />,
+    );
+    const container = screen.getByTestId("slider");
+    const trackView = container.children[0];
+
+    fireEvent(trackView, "layout", {
+      nativeEvent: { layout: { width: 200, height: 4 } },
+    });
+
+    expect(screen.getByTestId("slider-thumb-low")).toBeTruthy();
+    expect(screen.getByTestId("slider-thumb-high")).toBeTruthy();
+  });
+
+  it("does not invoke onRangeChange when range slider is disabled", () => {
+    const onRangeChange = jest.fn();
+    render(
+      <Slider
+        variant="range"
+        min={0}
+        max={100}
+        lowValue={20}
+        highValue={80}
+        disabled
+        onRangeChange={onRangeChange}
+        testID="slider"
+      />,
+    );
+    const container = screen.getByTestId("slider");
+    const trackView = container.children[0];
+    const touchHistory = {
+      touchBank: [],
+      numberActiveTouches: 0,
+      indexOfSingleActiveTouch: -1,
+      mostRecentTimeStamp: 0,
+    };
+
+    fireEvent(trackView, "layout", {
+      nativeEvent: { layout: { width: 200, height: 4 } },
+    });
+    fireEvent(trackView, "responderGrant", {
+      touchHistory,
+      nativeEvent: { locationX: 50 },
+    });
+
+    expect(onRangeChange).not.toHaveBeenCalled();
+  });
+
   describe("dark mode", () => {
     it("renders in dark theme without crashing", () => {
       render(<Slider testID="dark-test" />, { theme: "dark" });
