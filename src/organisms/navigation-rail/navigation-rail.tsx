@@ -1,6 +1,7 @@
 import { Pressable } from "react-native";
 import { styled, View, YStack } from "tamagui";
 import { Icon } from "../../atoms/icon";
+import { IconButton } from "../../atoms/icon-button";
 import { Text } from "../../atoms/text";
 import { Badge } from "../../atoms/badge";
 import { FAB } from "../../atoms/fab";
@@ -55,13 +56,25 @@ export function NavigationRail({
   destinations,
   activeIndex = 0,
   onDestinationPress,
+  menuIcon,
   fab,
   testID,
 }: NavigationRailProps) {
   return (
     <Rail testID={testID}>
+      {menuIcon && (
+        <View paddingBottom="$sm">
+          <IconButton
+            icon="menu"
+            variant="standard"
+            onPress={menuIcon.onPress}
+            accessibilityLabel={menuIcon.accessibilityLabel ?? "Menu"}
+            testID={testID ? `${testID}-menu` : undefined}
+          />
+        </View>
+      )}
       {fab && (
-        <View paddingBottom={8}>
+        <View paddingBottom="$sm">
           <FAB
             icon={fab.icon}
             size="small"

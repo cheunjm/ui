@@ -20,6 +20,14 @@ export type RailFab = {
   accessibilityLabel: string;
 };
 
+/** Optional menu icon at the top of the rail */
+export type RailMenuIcon = {
+  /** Callback when pressed */
+  onPress: () => void;
+  /** Accessibility label. Default: "Menu" */
+  accessibilityLabel?: string;
+};
+
 export type NavigationRailProps = {
   /** 3–7 navigation destinations */
   destinations: RailDestination[];
@@ -27,6 +35,8 @@ export type NavigationRailProps = {
   activeIndex?: number;
   /** Called when a destination is pressed */
   onDestinationPress?: (index: number) => void;
+  /** Optional menu (hamburger) icon at the very top */
+  menuIcon?: RailMenuIcon;
   /** Optional FAB at the top of the rail */
   fab?: RailFab;
   testID?: string;

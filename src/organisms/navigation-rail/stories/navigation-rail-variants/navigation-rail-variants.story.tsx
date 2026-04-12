@@ -65,6 +65,39 @@ function Variants() {
           activeIndex={0}
         />
       </YStack>
+
+      <YStack gap={8} alignItems="center">
+        <Text fontSize={14} fontWeight="600" color="#49454F">
+          With Menu Icon
+        </Text>
+        <NavigationRail
+          destinations={destinations}
+          activeIndex={0}
+          menuIcon={{
+            onPress: () => {},
+            accessibilityLabel: "Open menu",
+          }}
+        />
+      </YStack>
+
+      <YStack gap={8} alignItems="center">
+        <Text fontSize={14} fontWeight="600" color="#49454F">
+          Menu Icon + FAB
+        </Text>
+        <NavigationRail
+          destinations={destinations}
+          activeIndex={0}
+          menuIcon={{
+            onPress: () => {},
+            accessibilityLabel: "Open menu",
+          }}
+          fab={{
+            icon: "edit",
+            onPress: () => {},
+            accessibilityLabel: "Compose",
+          }}
+        />
+      </YStack>
     </XStack>
   );
 }

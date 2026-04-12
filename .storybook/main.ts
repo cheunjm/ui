@@ -84,6 +84,8 @@ deeperSortSetup([
     SUB_ORDER,
     "navigation-drawer",
     SUB_ORDER,
+    "navigation-rail",
+    SUB_ORDER,
     "search",
     SUB_ORDER,
     "snackbar",

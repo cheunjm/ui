@@ -76,4 +76,34 @@ describe("NavigationRail", () => {
     expect(activeDest.props.accessibilityRole).toBe("tab");
     expect(activeDest.props.accessibilityState).toEqual({ selected: true });
   });
+
+  it("renders menu icon when menuIcon prop is provided", () => {
+    const onPress = jest.fn();
+    render(
+      <NavigationRail
+        destinations={destinations}
+        menuIcon={{ onPress }}
+        testID="rail"
+      />,
+    );
+    expect(screen.getByTestId("rail-menu")).toBeTruthy();
+  });
+
+  it("does not render menu icon by default", () => {
+    render(<NavigationRail destinations={destinations} testID="rail" />);
+    expect(screen.queryByTestId("rail-menu")).toBeNull();
+  });
+
+  it("calls menuIcon.onPress when menu icon is pressed", () => {
+    const onPress = jest.fn();
+    render(
+      <NavigationRail
+        destinations={destinations}
+        menuIcon={{ onPress }}
+        testID="rail"
+      />,
+    );
+    fireEvent.press(screen.getByTestId("rail-menu"));
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
 });
