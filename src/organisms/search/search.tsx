@@ -12,6 +12,17 @@ const Container = styled(View, {
   flex: 1,
 });
 
+const FullScreenContainer = styled(View, {
+  name: "SearchFullScreen",
+  position: "absolute",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  zIndex: 10,
+  backgroundColor: "$surface",
+});
+
 const SuggestionItem = styled(XStack, {
   name: "SearchSuggestionItem",
   height: 56,
@@ -40,28 +51,31 @@ export function Search({
   onClearRecent,
   active = false,
   onActiveChange,
+  variant = "bar",
   testID,
 }: SearchProps) {
+  const isActive = variant === "fullScreen" ? true : active;
   const hasRecent = recentSearches && recentSearches.length > 0;
   const hasSuggestions = suggestions && suggestions.length > 0;
+  const Wrapper = variant === "fullScreen" ? FullScreenContainer : Container;
 
   return (
-    <Container testID={testID}>
+    <Wrapper testID={testID}>
       <View paddingHorizontal={16} paddingVertical={8}>
         <SearchBar
           value={value}
           placeholder={placeholder}
           onChangeText={(text) => {
             onChangeText?.(text);
-            if (!active) onActiveChange?.(true);
+            if (!isActive) onActiveChange?.(true);
           }}
           onSubmit={onSubmit}
-          leadingIcon={active ? "arrow-back" : "search"}
-          onTrailingIconPress={active ? onBack : undefined}
+          leadingIcon={isActive ? "arrow-back" : "search"}
+          onTrailingIconPress={isActive ? onBack : undefined}
           trailingIcon={undefined}
           testID={testID ? `${testID}-bar` : undefined}
         />
-        {active && (
+        {isActive && (
           <Pressable
             onPress={onBack}
             testID={testID ? `${testID}-back` : undefined}
@@ -81,7 +95,7 @@ export function Search({
         )}
       </View>
 
-      {active && (
+      {isActive && (
         <ScrollView testID={testID ? `${testID}-suggestions` : undefined}>
           {hasRecent && (
             <YStack>
@@ -149,6 +163,6 @@ export function Search({
           )}
         </ScrollView>
       )}
-    </Container>
+    </Wrapper>
   );
 }

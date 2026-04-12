@@ -69,3 +69,14 @@ export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {};
+
+export const FullScreen: Story = {
+  render: () => (
+    <Search
+      variant="fullScreen"
+      placeholder="Search..."
+      recentSearches={["Material Design", "Tamagui", "React Native"]}
+      onBack={() => {}}
+    />
+  ),
+};

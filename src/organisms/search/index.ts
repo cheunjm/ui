@@ -1,2 +1,6 @@
 export { Search } from "./search";
-export type { SearchProps, SearchSuggestion } from "./search.type";
+export type {
+  SearchProps,
+  SearchSuggestion,
+  SearchVariant,
+} from "./search.type";

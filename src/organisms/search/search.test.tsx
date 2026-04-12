@@ -155,4 +155,45 @@ describe("Search", () => {
     );
     expect(screen.getByText("Clear all")).toBeTruthy();
   });
+
+  it("renders in full-screen variant with overlay positioning", () => {
+    render(<Search variant="fullScreen" testID="search" />);
+    expect(screen.getByTestId("search")).toBeTruthy();
+  });
+
+  it("shows suggestions in full-screen variant without active prop", () => {
+    render(
+      <Search
+        variant="fullScreen"
+        recentSearches={["react", "tamagui"]}
+        testID="search"
+      />,
+    );
+    expect(screen.getByTestId("search-suggestions")).toBeTruthy();
+  });
+
+  it("defaults to bar variant", () => {
+    render(<Search testID="search" />);
+    expect(screen.getByTestId("search")).toBeTruthy();
+  });
+
+  it("does not call onActiveChange when typing in fullScreen variant", () => {
+    const onActiveChange = jest.fn();
+    render(
+      <Search
+        variant="fullScreen"
+        onActiveChange={onActiveChange}
+        testID="search"
+      />,
+    );
+    fireEvent.changeText(screen.getByTestId("search-bar-input"), "q");
+    expect(onActiveChange).not.toHaveBeenCalled();
+  });
+
+  it("fires onBack when back button pressed in fullScreen variant", () => {
+    const onBack = jest.fn();
+    render(<Search variant="fullScreen" onBack={onBack} testID="search" />);
+    fireEvent.press(screen.getByTestId("search-back"));
+    expect(onBack).toHaveBeenCalled();
+  });
 });
