@@ -120,7 +120,12 @@ describe("Snackbar", () => {
 
   it("renders two-line variant with taller container", () => {
     render(
-      <Snackbar visible message="A longer message that spans two lines" lines="two" testID="snackbar" />,
+      <Snackbar
+        visible
+        message="A longer message that spans two lines"
+        lines="two"
+        testID="snackbar"
+      />,
     );
     expect(screen.getByTestId("snackbar")).toBeTruthy();
     expect(screen.getByTestId("snackbar-message")).toBeTruthy();
