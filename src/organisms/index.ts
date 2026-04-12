@@ -27,7 +27,6 @@ export type {
   NavigationBarProps,
   NavigationDestination,
 } from "./navigation-bar";
-<<<<<<< Updated upstream
 export { NavigationRail } from "./navigation-rail";
 export type {
   NavigationRailProps,
@@ -50,16 +49,9 @@ export type {
   TimePickerMode,
   TimePeriod,
 } from "./time-picker";
-=======
->>>>>>> Stashed changes
 export { TopAppBar } from "./top-app-bar";
 export type {
   TopAppBarProps,
   TopAppBarType,
   TopAppBarAction,
 } from "./top-app-bar";
-<<<<<<< Updated upstream
-=======
-export { Snackbar } from "./snackbar";
-export type { SnackbarProps } from "./snackbar";
->>>>>>> Stashed changes
