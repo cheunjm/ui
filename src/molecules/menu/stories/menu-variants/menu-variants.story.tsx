@@ -82,3 +82,33 @@ export const WithDisabledItem: Story = {
     ],
   },
 };
+
+export const WithDivider: Story = {
+  args: {
+    items: [
+      { key: "cut", label: "Cut", leadingIcon: "content-cut", onPress: () => {} },
+      { key: "copy", label: "Copy", leadingIcon: "content-copy", onPress: () => {} },
+      { key: "div1", type: "divider" },
+      { key: "paste", label: "Paste", leadingIcon: "content-paste", onPress: () => {} },
+    ],
+  },
+};
+
+export const WithSubmenu: Story = {
+  args: {
+    items: [
+      { key: "share", label: "Share", leadingIcon: "share", onPress: () => {} },
+      {
+        key: "export",
+        label: "Export as...",
+        leadingIcon: "download",
+        onPress: () => {},
+        submenu: [
+          { key: "pdf", label: "PDF", onPress: () => {} },
+          { key: "png", label: "PNG", onPress: () => {} },
+          { key: "svg", label: "SVG", onPress: () => {} },
+        ],
+      },
+    ],
+  },
+};

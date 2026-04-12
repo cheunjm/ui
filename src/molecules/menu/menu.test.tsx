@@ -93,4 +93,40 @@ describe("Menu", () => {
       expect.objectContaining({ disabled: true }),
     );
   });
+
+  it("renders divider between items", () => {
+    render(
+      <Menu
+        visible
+        onDismiss={() => {}}
+        items={[
+          { key: "a", label: "Item A", onPress: () => {} },
+          { key: "div", type: "divider" },
+          { key: "b", label: "Item B", onPress: () => {} },
+        ]}
+        testID="menu"
+      />,
+    );
+    expect(screen.getByTestId("menu-item-a")).toBeTruthy();
+    expect(screen.getByTestId("menu-item-b")).toBeTruthy();
+  });
+
+  it("renders chevron for items with submenu", () => {
+    render(
+      <Menu
+        visible
+        onDismiss={() => {}}
+        items={[
+          {
+            key: "more",
+            label: "More options",
+            onPress: () => {},
+            submenu: [{ key: "sub1", label: "Sub item", onPress: () => {} }],
+          },
+        ]}
+        testID="menu"
+      />,
+    );
+    expect(screen.getByTestId("menu-item-more")).toBeTruthy();
+  });
 });
