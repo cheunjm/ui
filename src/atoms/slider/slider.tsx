@@ -229,7 +229,9 @@ export function Slider({
     >
       <View
         position="relative"
-        {...(isRange ? rangePanResponder.panHandlers : panResponder.panHandlers)}
+        {...(isRange
+          ? rangePanResponder.panHandlers
+          : panResponder.panHandlers)}
         onLayout={handleLayout}
       >
         <Track backgroundColor={primaryContainerColor as any} />
