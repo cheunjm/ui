@@ -9,6 +9,7 @@ const ITEM_WIDTHS = {
   "multi-browse": 240,
   uncontained: SCREEN_WIDTH - 48,
   "full-screen": SCREEN_WIDTH,
+  hero: SCREEN_WIDTH - 32,
 };
 
 const ItemContainer = styled(View, {
@@ -57,7 +58,9 @@ export function Carousel({
             key={item.key}
             width={itemWidth}
             borderRadius={borderRadius}
-            minHeight={variant === "full-screen" ? 300 : 200}
+            minHeight={
+              variant === "full-screen" ? 300 : variant === "hero" ? 400 : 200
+            }
           >
             {item.content}
           </ItemContainer>
