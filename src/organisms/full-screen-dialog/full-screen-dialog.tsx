@@ -1,4 +1,4 @@
-import { Modal, ScrollView } from "react-native";
+import { KeyboardAvoidingView, Modal, Platform, ScrollView } from "react-native";
 import { styled, View, XStack } from "tamagui";
 import { IconButton } from "../../atoms/icon-button";
 import { Text } from "../../atoms/text";
@@ -29,8 +29,20 @@ export function FullScreenDialog({
   onClose,
   actionDisabled = false,
   children,
+  keyboardAvoiding = false,
   testID,
 }: FullScreenDialogProps) {
+  const body = (
+    <ScrollView
+      style={{ flex: 1 }}
+      contentContainerStyle={{ padding: 24 }}
+      keyboardShouldPersistTaps="handled"
+      testID={testID ? `${testID}-body` : undefined}
+    >
+      {children}
+    </ScrollView>
+  );
+
   return (
     <Modal
       visible={visible}
@@ -67,13 +79,16 @@ export function FullScreenDialog({
             {actionLabel}
           </Button>
         </Header>
-        <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={{ padding: 24 }}
-          testID={testID ? `${testID}-body` : undefined}
-        >
-          {children}
-        </ScrollView>
+        {keyboardAvoiding ? (
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === "ios" ? "padding" : undefined}
+          >
+            {body}
+          </KeyboardAvoidingView>
+        ) : (
+          body
+        )}
       </Container>
     </Modal>
   );

@@ -15,6 +15,8 @@ export type FullScreenDialogProps = {
   actionDisabled?: boolean;
   /** Scrollable body content */
   children?: ReactNode;
+  /** Whether to wrap body in KeyboardAvoidingView (recommended for forms). Default: false */
+  keyboardAvoiding?: boolean;
   /** Test ID */
   testID?: string;
 };
