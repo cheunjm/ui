@@ -1,3 +1,4 @@
+import { View } from "react-native";
 import { render, screen, fireEvent } from "@/test-utils";
 import { ListItem } from "./list-item";
 
@@ -99,5 +100,38 @@ describe("ListItem", () => {
     expect(pressable.props.accessibilityState).toEqual(
       expect.objectContaining({ disabled: true }),
     );
+  });
+
+  it("renders leadingAvatar with uri", () => {
+    render(
+      <ListItem
+        headline="John Doe"
+        leadingAvatar={{ uri: "https://example.com/avatar.jpg" }}
+        testID="list-item"
+      />,
+    );
+    expect(screen.getByTestId("list-item")).toBeTruthy();
+  });
+
+  it("renders leadingAvatar with initials", () => {
+    render(
+      <ListItem
+        headline="John Doe"
+        leadingAvatar={{ initials: "JD" }}
+        testID="list-item"
+      />,
+    );
+    expect(screen.getByTestId("list-item")).toBeTruthy();
+  });
+
+  it("renders trailingElement", () => {
+    const { getByTestId } = render(
+      <ListItem
+        headline="Notifications"
+        trailingElement={<View testID="trailing-el" />}
+        testID="list-item"
+      />,
+    );
+    expect(getByTestId("trailing-el")).toBeTruthy();
   });
 });

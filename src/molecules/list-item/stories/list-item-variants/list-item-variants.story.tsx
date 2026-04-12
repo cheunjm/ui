@@ -1,3 +1,4 @@
+import { Switch } from "react-native";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ListItem } from "../../list-item";
 import type { ListItemProps } from "../../list-item.type";
@@ -43,5 +44,24 @@ export const WithTrailing: Story = {
     headline: "With trailing",
     trailingContent: "100+",
     trailingSupportingText: "2h ago",
+  },
+};
+
+export const WithLeadingAvatar: Story = {
+  name: "With Leading Avatar",
+  args: {
+    headline: "John Doe",
+    supportingText: "john@example.com",
+    leadingAvatar: { initials: "JD" },
+    trailingSupportingText: "2m ago",
+  },
+};
+
+export const WithTrailingElement: Story = {
+  name: "With Trailing Element",
+  args: {
+    headline: "Notifications",
+    supportingText: "Receive push notifications",
+    trailingElement: <Switch value={true} onValueChange={() => {}} />,
   },
 };

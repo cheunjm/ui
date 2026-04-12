@@ -1,6 +1,7 @@
 import { isValidElement } from "react";
 import { Pressable } from "react-native";
 import { styled, View } from "tamagui";
+import { Avatar } from "../../atoms/avatar";
 import { Icon } from "../../atoms/icon";
 import { Text } from "../../atoms/text";
 import { Divider } from "../../atoms/divider";
@@ -39,21 +40,34 @@ export function ListItem({
   supportingText,
   overlineText,
   leadingContent,
+  leadingAvatar,
   trailingContent,
   trailingSupportingText,
+  trailingElement,
   showDivider = false,
   onPress,
   disabled = false,
   accessibilityLabel,
   testID,
 }: ListItemProps) {
-  const hasLeading = leadingContent != null;
+  const hasLeading = leadingContent != null || leadingAvatar != null;
   const hasTrailing = trailingContent != null || trailingSupportingText != null;
 
   const minHeight = supportingText ? 72 : 56;
 
   const renderLeading = () => {
     if (!hasLeading) return null;
+    if (leadingAvatar != null) {
+      const avatarProps =
+        "uri" in leadingAvatar
+          ? { source: { uri: leadingAvatar.uri } }
+          : { name: leadingAvatar.initials };
+      return (
+        <LeadingContainer>
+          <Avatar size="medium" {...avatarProps} />
+        </LeadingContainer>
+      );
+    }
     if (typeof leadingContent === "string") {
       return (
         <LeadingContainer>
@@ -125,6 +139,13 @@ export function ListItem({
             ) : null}
           </Content>
           {renderTrailing()}
+          {trailingElement != null ? (
+            <TrailingContainer>
+              <Pressable onPress={(e) => e.stopPropagation()}>
+                {trailingElement}
+              </Pressable>
+            </TrailingContainer>
+          ) : null}
         </Row>
       </Pressable>
       {showDivider ? <Divider /> : null}
