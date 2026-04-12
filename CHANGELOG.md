@@ -1,5 +1,109 @@
 # @aramiworks/ui
 
+## 0.5.0
+
+### Minor Changes
+
+- [#164](https://github.com/aramiworks/ui/pull/164) [`48b53af`](https://github.com/aramiworks/ui/commit/48b53af69575b9d36c2d41aed13dbf529008c69d) Thanks [@cheunjm](https://github.com/cheunjm)! - Harden accessibility across all atoms and molecules with consistent roles, states, labels, and test assertions.
+
+- [#158](https://github.com/aramiworks/ui/pull/158) [`729c9ee`](https://github.com/aramiworks/ui/commit/729c9eeb461d884978e972a9d4a25f8230198cba) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Avatar atom component with image, initials, and icon variants in three sizes.
+
+- [#159](https://github.com/aramiworks/ui/pull/159) [`b691d8c`](https://github.com/aramiworks/ui/commit/b691d8ccaed454e43ce9c8f57f0f2641e00f9300) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Banner and Accordion molecule components with full MD3 styling and animated transitions.
+
+- [#166](https://github.com/aramiworks/ui/pull/166) [`7b157ad`](https://github.com/aramiworks/ui/commit/7b157ad9664b3160bb36b9d7acacbcf51c11d360) Thanks [@cheunjm](https://github.com/cheunjm)! - Add SettingsTemplate and DashboardTemplate for settings screens and dashboard layouts.
+
+- [#162](https://github.com/aramiworks/ui/pull/162) [`6b2b7c3`](https://github.com/aramiworks/ui/commit/6b2b7c3c48d921080a3322873558464d0ae1f442) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Figma Variables → TypeScript token pipeline (tokens:fetch + tokens:build scripts).
+
+- [#207](https://github.com/aramiworks/ui/pull/207) [`f35062f`](https://github.com/aramiworks/ui/commit/f35062fc51b8f929dda82b6e9bd2df85411e46cd) Thanks [@cheunjm](https://github.com/cheunjm)! - Add hero variant to Carousel with larger item sizing and full-width layout.
+
+- [#157](https://github.com/aramiworks/ui/pull/157) [`c64f703`](https://github.com/aramiworks/ui/commit/c64f703824de44d998f68da5fdd88dd8ca2c8979) Thanks [@cheunjm](https://github.com/cheunjm)! - Add dark mode support with MD3 dark color palette, custom Tamagui themes, and UiProvider theme switching via useThemeMode hook.
+
+- [#197](https://github.com/aramiworks/ui/pull/197) [`e3daec2`](https://github.com/aramiworks/ui/commit/e3daec29193d2e0a381bc53af18b50caa80b8de7) Thanks [@cheunjm](https://github.com/cheunjm)! - Add range selection mode and year selector to DatePicker component.
+
+- [#193](https://github.com/aramiworks/ui/pull/193) [`393acd8`](https://github.com/aramiworks/ui/commit/393acd8e9566cebc3bd9fc204b3caf094b97ca49) Thanks [@cheunjm](https://github.com/cheunjm)! - Expand MD3 animation token set with standardDecelerate, standardAccelerate, emphasized presets and full duration scale.
+
+- [#199](https://github.com/aramiworks/ui/pull/199) [`329a47d`](https://github.com/aramiworks/ui/commit/329a47d285cb3b1817679e8db8e35fcae8050f6d) Thanks [@cheunjm](https://github.com/cheunjm)! - Add FullScreenDialog organism for MD3 full-screen dialog pattern.
+
+- [#120](https://github.com/aramiworks/ui/pull/120) [`557b411`](https://github.com/aramiworks/ui/commit/557b4113aace0e5c1e2b3965524fdaf25ab74f8a) Thanks [@cheunjm](https://github.com/cheunjm)! - Add SideSheet organism — MD3 side panel that slides in from left or right with optional header and close action.
+
+- [#115](https://github.com/aramiworks/ui/pull/115) [`3c5b157`](https://github.com/aramiworks/ui/commit/3c5b1574dbe0050e20e05c271178d693d1309013) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Search organism — MD3 full search experience with suggestions panel, recent searches, and active/inactive states.
+
+- [#208](https://github.com/aramiworks/ui/pull/208) [`d0c381a`](https://github.com/aramiworks/ui/commit/d0c381a321a069ac44f88b38ac163034981159ed) Thanks [@cheunjm](https://github.com/cheunjm)! - Add label-less variant to NavigationBar with `showLabels` prop to hide text labels.
+
+- [#201](https://github.com/aramiworks/ui/pull/201) [`05c91c0`](https://github.com/aramiworks/ui/commit/05c91c0cdea9a8620d2ed5c1db86ca535a3557be) Thanks [@cheunjm](https://github.com/cheunjm)! - Add standard variant to SideSheet for persistent inline display without Modal/scrim.
+
+- [#141](https://github.com/aramiworks/ui/pull/141) [`0aad4a4`](https://github.com/aramiworks/ui/commit/0aad4a45d10a0f4535c4b696e4fb10e9b7a11ab0) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Skeleton atom — animated loading placeholder with pulse animation, supports line/block/circle/pill shapes.
+
+### Patch Changes
+
+- [#188](https://github.com/aramiworks/ui/pull/188) [`78199f9`](https://github.com/aramiworks/ui/commit/78199f98cb621f049c7c73ea84ff790ad862dab4) Thanks [@cheunjm](https://github.com/cheunjm)! - Add accessibilityHint prop support to all interactive components.
+
+- [#175](https://github.com/aramiworks/ui/pull/175) [`54b423b`](https://github.com/aramiworks/ui/commit/54b423bdfa742b050a1340169253dcb3610ac683) Thanks [@cheunjm](https://github.com/cheunjm)! - Add dark mode render tests for all theme-dependent components and Storybook theme toggle.
+
+- [#174](https://github.com/aramiworks/ui/pull/174) [`e322535`](https://github.com/aramiworks/ui/commit/e32253536d53b6625477b375875456bfff3b9e22) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Prettier format check to CI and auto-format existing codebase.
+
+- [#177](https://github.com/aramiworks/ui/pull/177) [`e267bee`](https://github.com/aramiworks/ui/commit/e267bee5b99c76e48abeaef0ca1edadb5bdcbb13) Thanks [@cheunjm](https://github.com/cheunjm)! - Add standalone Storybook build check to CI.
+
+- [#167](https://github.com/aramiworks/ui/pull/167) [`ac5d8a8`](https://github.com/aramiworks/ui/commit/ac5d8a808fdd43ba477ed46a2106f6bab0f635f8) Thanks [@cheunjm](https://github.com/cheunjm)! - Add tokens-sync CI workflow for automated Figma-to-code token generation.
+
+- [#187](https://github.com/aramiworks/ui/pull/187) [`ccc93c6`](https://github.com/aramiworks/ui/commit/ccc93c697465c253e8a4815219b8dfd623017978) Thanks [@cheunjm](https://github.com/cheunjm)! - Add `tokens:sync` convenience script that runs fetch + build in one step.
+
+- [#139](https://github.com/aramiworks/ui/pull/139) [`32eea8b`](https://github.com/aramiworks/ui/commit/32eea8b4628755eb136fa40bb3b1476c81ab40a4) Thanks [@cheunjm](https://github.com/cheunjm)! - Gate Chromatic CI job on src/ changes to avoid unnecessary builds on non-story PRs.
+
+- [#163](https://github.com/aramiworks/ui/pull/163) [`a6761fa`](https://github.com/aramiworks/ui/commit/a6761fab8af79350902e9221a29a928e7a675ee7) Thanks [@cheunjm](https://github.com/cheunjm)! - Remove hardcoded hex color fallbacks for dark-mode-safe theme token resolution.
+
+- [#186](https://github.com/aramiworks/ui/pull/186) [`585cdb3`](https://github.com/aramiworks/ui/commit/585cdb367548fcb12bf4bbeff787728ef49d22c9) Thanks [@cheunjm](https://github.com/cheunjm)! - Deepen test coverage for Slider, FormField, Carousel, Avatar, and Badge.
+
+- [#200](https://github.com/aramiworks/ui/pull/200) [`696b0bb`](https://github.com/aramiworks/ui/commit/696b0bb15ad0c962ba830f3e5b02898bfe7b7b83) Thanks [@cheunjm](https://github.com/cheunjm)! - Add scrollable prop to Dialog for long body content.
+
+- [#147](https://github.com/aramiworks/ui/pull/147) [`ed14453`](https://github.com/aramiworks/ui/commit/ed14453322dd52d9f563228eadca8d9a5c85cd64) Thanks [@cheunjm](https://github.com/cheunjm)! - Auto-trigger EAS builds on release with version-to-environment mapping.
+
+- [#149](https://github.com/aramiworks/ui/pull/149) [`a6f94e2`](https://github.com/aramiworks/ui/commit/a6f94e218d07dfc846da1d23be09240c9bad8c96) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Figma design page links to all molecule, organism, template, and extra atom stories.
+
+- [#142](https://github.com/aramiworks/ui/pull/142) [`7539e11`](https://github.com/aramiworks/ui/commit/7539e11974b26337a52b7a1777aca21118d69e29) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Figma design node links to card, tooltip, and skeleton stories.
+
+- [#145](https://github.com/aramiworks/ui/pull/145) [`a8a7683`](https://github.com/aramiworks/ui/commit/a8a7683e99083bdf9eec97e4e06e9aa088228b5a) Thanks [@cheunjm](https://github.com/cheunjm)! - Convert app.config.ts to app.config.js so EAS CLI can parse it without TypeScript support.
+
+- [#140](https://github.com/aramiworks/ui/pull/140) [`9cae2c2`](https://github.com/aramiworks/ui/commit/9cae2c2372252a69a392ee827151b82ce256dfd0) Thanks [@cheunjm](https://github.com/cheunjm)! - Remove incorrect Figma node links from card and tooltip overview stories — both pointed to the Button page.
+
+- [#143](https://github.com/aramiworks/ui/pull/143) [`3b5c90f`](https://github.com/aramiworks/ui/commit/3b5c90fd925dfd2ca8159a23ff35a43e1e7513db) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix EAS Update CI — use import type so sucrase strips TypeScript annotations correctly.
+
+- [#153](https://github.com/aramiworks/ui/pull/153) [`f0bb00a`](https://github.com/aramiworks/ui/commit/f0bb00ac0293d494884bce7ab7308edca84a895e) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix createIconComponent mock to use the fontFamily parameter instead of hardcoding 'Material Icons'.
+
+- [#148](https://github.com/aramiworks/ui/pull/148) [`d8a6c3f`](https://github.com/aramiworks/ui/commit/d8a6c3f848d41f0d0d51b356ce8a58212865313a) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix storybook:generate script to use correct .ondevice config path.
+
+- [#205](https://github.com/aramiworks/ui/pull/205) [`9f02b4a`](https://github.com/aramiworks/ui/commit/9f02b4a4130815f44f6db88ee068d8842f91c9b7) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix Storybook story ordering with storybook-deeper-sort addon.
+
+- [#180](https://github.com/aramiworks/ui/pull/180) [`d1c5492`](https://github.com/aramiworks/ui/commit/d1c549282e0cb0cd80e45058594132b72cd2e73f) Thanks [@cheunjm](https://github.com/cheunjm)! - Add commit status gating to Greptile Response workflow and convert from reusable to standalone.
+
+- [#152](https://github.com/aramiworks/ui/pull/152) [`4b55120`](https://github.com/aramiworks/ui/commit/4b55120afc4cc14fd3ebae46aea81407da7107d0) Thanks [@cheunjm](https://github.com/cheunjm)! - Gate OTA updates behind CI passing — switch EAS Update trigger from push to workflow_run so OTA only publishes when e2e-web passes.
+
+- [#150](https://github.com/aramiworks/ui/pull/150) [`372269c`](https://github.com/aramiworks/ui/commit/372269c0b93e74adf9765bef9de552fa7db0685c) Thanks [@cheunjm](https://github.com/cheunjm)! - Add Deploy Storybook workflow to publish Storybook to Vercel on push to main.
+
+- [#156](https://github.com/aramiworks/ui/pull/156) [`d0d3437`](https://github.com/aramiworks/ui/commit/d0d3437ff2e1c1449c15b26c449567a969d9a409) Thanks [@cheunjm](https://github.com/cheunjm)! - Remove developmentClient from develop EAS profile so it builds a standalone internal app.
+
+- [#161](https://github.com/aramiworks/ui/pull/161) [`0804226`](https://github.com/aramiworks/ui/commit/080422685aab7617f44fbdabb85f4d8adf884ca1) Thanks [@cheunjm](https://github.com/cheunjm)! - Add storybook:generate step to EAS Build web job to fix missing storybook.requires error.
+
+- [#168](https://github.com/aramiworks/ui/pull/168) [`c05295c`](https://github.com/aramiworks/ui/commit/c05295c4f89abf871aacbb63a367cc159b3df3bd) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix EAS Build Slack notifications to post to the correct channel.
+
+- [#171](https://github.com/aramiworks/ui/pull/171) [`bdc6770`](https://github.com/aramiworks/ui/commit/bdc677039f4525101d570b4c6711e550cf98cb01) Thanks [@cheunjm](https://github.com/cheunjm)! - Add eas-build-post-install hook to generate storybook.requires on Expo servers; fix Slack notification to show Expo build URL and fail on EAS error.
+
+- [#173](https://github.com/aramiworks/ui/pull/173) [`fded37d`](https://github.com/aramiworks/ui/commit/fded37dc1d3c58044fceeaa5b15afb6ee2e5ef87) Thanks [@cheunjm](https://github.com/cheunjm)! - Improve EAS build Slack notification format to show platform and profile as distinct fields.
+
+- [#182](https://github.com/aramiworks/ui/pull/182) [`1108ca6`](https://github.com/aramiworks/ui/commit/1108ca627826780d3b7847acec639e35960b09a0) Thanks [@cheunjm](https://github.com/cheunjm)! - Deploy Expo web build to Vercel in EAS build web job; link Vercel URL in Slack notification.
+
+- [#195](https://github.com/aramiworks/ui/pull/195) [`3e8a97d`](https://github.com/aramiworks/ui/commit/3e8a97d6b7d019a856aaeaba148c4a7b38474d53) Thanks [@cheunjm](https://github.com/cheunjm)! - Fix Vercel deploy step to run from dist/ working directory so project.json is discovered correctly.
+
+- [#198](https://github.com/aramiworks/ui/pull/198) [`7dbf3ec`](https://github.com/aramiworks/ui/commit/7dbf3ecfc40a4c9f1858435b20390423b93507c0) Thanks [@cheunjm](https://github.com/cheunjm)! - Remove ad-hoc Vercel deploy from eas-build web job; Slack notification now links to storybook.ui.arami.so.
+
+- [#206](https://github.com/aramiworks/ui/pull/206) [`2a0d469`](https://github.com/aramiworks/ui/commit/2a0d4695644b077a85c4efe53103441e54d7ceaf) Thanks [@cheunjm](https://github.com/cheunjm)! - Increase native EAS build timeout from 45 to 90 minutes to handle queue waits.
+
+- [#151](https://github.com/aramiworks/ui/pull/151) [`e85ba57`](https://github.com/aramiworks/ui/commit/e85ba572ab30acecbf1c22c97fcfae68b3174443) Thanks [@cheunjm](https://github.com/cheunjm)! - Remove redundant claude-code-review workflow; Greptile covers auto PR review org-wide.
+
+- [#185](https://github.com/aramiworks/ui/pull/185) [`24ef439`](https://github.com/aramiworks/ui/commit/24ef4391e43899e425552eb575c9427e3c5657f7) Thanks [@cheunjm](https://github.com/cheunjm)! - Standardize Skeleton and NavigationDrawer to use react-native-reanimated.
+
+- [#203](https://github.com/aramiworks/ui/pull/203) [`b3f6dac`](https://github.com/aramiworks/ui/commit/b3f6dac2e455351531a0986fe6d0dfea445969c8) Thanks [@cheunjm](https://github.com/cheunjm)! - Deploy Storybook per build profile with env-specific URLs (develop/stage/production).
+
 ## 0.4.0
 
 ### Minor Changes
