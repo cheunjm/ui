@@ -164,7 +164,7 @@ export function Slider({
           const lowX = lowFraction * trackWidth;
           const highX = highFraction * trackWidth;
           activeThumb.current =
-            Math.abs(x - lowX) <= Math.abs(x - highX) ? "low" : "high";
+            Math.abs(x - lowX) < Math.abs(x - highX) ? "low" : "high";
           updateRangeValue(x);
         },
         onPanResponderMove: (evt) => {
