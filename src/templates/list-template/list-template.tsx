@@ -1,4 +1,4 @@
-import { ScrollView } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { View } from "tamagui";
 import type { ListTemplateProps } from "./list-template.type";
 
@@ -7,6 +7,10 @@ export function ListTemplate({
   headerContent,
   children,
   bottomBar,
+  fab,
+  refreshControl,
+  contentContainerStyle,
+  showsVerticalScrollIndicator = false,
   testID,
 }: ListTemplateProps) {
   return (
@@ -15,11 +19,24 @@ export function ListTemplate({
       {headerContent}
       <ScrollView
         style={{ flex: 1 }}
+        contentContainerStyle={contentContainerStyle}
+        refreshControl={refreshControl}
+        showsVerticalScrollIndicator={showsVerticalScrollIndicator}
         testID={testID ? `${testID}-scroll` : undefined}
       >
         {children}
       </ScrollView>
       {bottomBar}
+      {fab ? <View style={styles.fabContainer}>{fab}</View> : null}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  fabContainer: {
+    position: "absolute",
+    bottom: 16,
+    right: 16,
+    alignItems: "center",
+  },
+});

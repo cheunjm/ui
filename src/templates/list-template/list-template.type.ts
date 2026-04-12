@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+import type { ReactElement, ReactNode } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
 
 export type ListTemplateProps = {
   /** Typically a TopAppBar */
@@ -9,5 +10,13 @@ export type ListTemplateProps = {
   children?: ReactNode;
   /** Typically a NavigationBar */
   bottomBar?: ReactNode;
+  /** Floating action button(s) positioned bottom-right */
+  fab?: ReactNode;
+  /** RefreshControl element forwarded to the internal ScrollView */
+  refreshControl?: ReactElement;
+  /** Additional styles merged into the ScrollView's contentContainerStyle */
+  contentContainerStyle?: StyleProp<ViewStyle>;
+  /** Whether to show the vertical scroll indicator. Default: false */
+  showsVerticalScrollIndicator?: boolean;
   testID?: string;
 };
