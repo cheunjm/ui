@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { View, XStack } from "tamagui";
+import { spacing } from "../../tokens/generated/spacing";
 import type { DashboardTemplateProps } from "./dashboard-template.type";
 
 export function DashboardTemplate({
@@ -52,8 +53,8 @@ export function DashboardTemplate({
 const styles = StyleSheet.create({
   fabContainer: {
     position: "absolute",
-    bottom: 16,
-    right: 16,
+    bottom: spacing.lg,
+    right: spacing.lg,
     alignItems: "center",
   },
 });

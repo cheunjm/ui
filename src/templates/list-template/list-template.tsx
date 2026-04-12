@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet } from "react-native";
 import { View } from "tamagui";
+import { spacing } from "../../tokens/generated/spacing";
 import type { ListTemplateProps } from "./list-template.type";
 
 export function ListTemplate({
@@ -8,6 +9,7 @@ export function ListTemplate({
   children,
   bottomBar,
   fab,
+  fabBottomOffset = spacing.lg,
   refreshControl,
   contentContainerStyle,
   showsVerticalScrollIndicator = false,
@@ -27,7 +29,11 @@ export function ListTemplate({
         {children}
       </ScrollView>
       {bottomBar}
-      {fab ? <View style={styles.fabContainer}>{fab}</View> : null}
+      {fab ? (
+        <View style={[styles.fabContainer, { bottom: fabBottomOffset }]}>
+          {fab}
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -35,8 +41,8 @@ export function ListTemplate({
 const styles = StyleSheet.create({
   fabContainer: {
     position: "absolute",
-    bottom: 16,
-    right: 16,
+    bottom: spacing.lg,
+    right: spacing.lg,
     alignItems: "center",
   },
 });

@@ -12,6 +12,8 @@ export type ListTemplateProps = {
   bottomBar?: ReactNode;
   /** Floating action button(s) positioned bottom-right */
   fab?: ReactNode;
+  /** Bottom offset for the FAB container. Increase to clear a bottomBar (e.g. NavigationBar). Default: spacing.lg (16) */
+  fabBottomOffset?: number;
   /** RefreshControl element forwarded to the internal ScrollView */
   refreshControl?: ReactElement;
   /** Additional styles merged into the ScrollView's contentContainerStyle */
