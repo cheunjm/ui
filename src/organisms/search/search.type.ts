@@ -16,7 +16,15 @@ export type SearchProps = {
   recentSearches?: string[];
   onRecentSearchPress?: (query: string) => void;
   onClearRecent?: () => void;
+  /**
+   * Controls suggestion visibility. Ignored when `variant="fullScreen"`,
+   * which is always active. Default: false.
+   */
   active?: boolean;
+  /**
+   * Called when the search transitions from inactive to active.
+   * Not called when `variant="fullScreen"` since it is always active.
+   */
   onActiveChange?: (active: boolean) => void;
   /** Search display variant. "fullScreen" expands to fill the screen. Default: "bar" */
   variant?: SearchVariant;

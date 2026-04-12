@@ -76,6 +76,7 @@ export const FullScreen: Story = {
       variant="fullScreen"
       placeholder="Search..."
       recentSearches={["Material Design", "Tamagui", "React Native"]}
+      onBack={() => {}}
     />
   ),
 };
