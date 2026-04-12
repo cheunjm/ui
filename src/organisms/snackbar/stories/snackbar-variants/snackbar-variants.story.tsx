@@ -37,3 +37,14 @@ export const WithCloseIcon: Story = {
     showCloseIcon: true,
   },
 };
+
+export const TwoLine: Story = {
+  args: {
+    message:
+      "An error occurred while processing your request. Please try again later.",
+    lines: "two",
+    actionLabel: "Retry",
+    onAction: () => {},
+    showCloseIcon: true,
+  },
+};
