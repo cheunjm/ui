@@ -86,4 +86,16 @@ describe("DashboardTemplate", () => {
     render(<DashboardTemplate summaryCards={cards} />);
     expect(screen.getByText("Card")).toBeTruthy();
   });
+
+  it("renders fab slot", () => {
+    render(
+      <DashboardTemplate testID="dashboard" fab={<Text>FAB Button</Text>} />,
+    );
+    expect(screen.getByText("FAB Button")).toBeTruthy();
+  });
+
+  it("does not render fab container when fab is undefined", () => {
+    const { queryByText } = render(<DashboardTemplate testID="dashboard" />);
+    expect(queryByText("FAB Button")).toBeNull();
+  });
 });
