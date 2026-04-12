@@ -40,3 +40,23 @@ export const WithLabel: Story = {
 export const Disabled: Story = {
   args: { type: "continuous", disabled: true },
 };
+
+export const Range: Story = {
+  args: {
+    variant: "range",
+    lowValue: 20,
+    highValue: 75,
+    onRangeChange: (low, high) => console.log(low, high),
+  },
+};
+
+export const RangeDiscrete: Story = {
+  args: {
+    variant: "range",
+    type: "discrete",
+    step: 10,
+    lowValue: 20,
+    highValue: 70,
+    onRangeChange: (low, high) => console.log(low, high),
+  },
+};

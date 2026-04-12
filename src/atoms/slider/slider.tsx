@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { PanResponder, type LayoutChangeEvent } from "react-native";
 import { styled, View, Text, useTheme } from "tamagui";
 import type { SliderProps } from "./slider.type";
@@ -81,13 +81,27 @@ export function Slider({
   accessibilityLabel,
   accessibilityHint,
   testID,
+  variant = "continuous",
+  lowValue: controlledLow,
+  highValue: controlledHigh,
+  onRangeChange,
 }: SliderProps) {
   const theme = useTheme();
   const [trackWidth, setTrackWidth] = useState(0);
   const [internalValue, setInternalValue] = useState(controlledValue ?? min);
+  const [internalLow, setInternalLow] = useState(controlledLow ?? min);
+  const [internalHigh, setInternalHigh] = useState(controlledHigh ?? max);
+  const activeThumb = useRef<"low" | "high">("low");
+
+  const isRange = variant === "range";
 
   const currentValue = controlledValue ?? internalValue;
   const fraction = max > min ? (currentValue - min) / (max - min) : 0;
+
+  const currentLow = controlledLow ?? internalLow;
+  const currentHigh = controlledHigh ?? internalHigh;
+  const lowFraction = max > min ? (currentLow - min) / (max - min) : 0;
+  const highFraction = max > min ? (currentHigh - min) / (max - min) : 1;
 
   const updateValue = useCallback(
     (locationX: number) => {
@@ -103,6 +117,27 @@ export function Slider({
     [disabled, trackWidth, max, min, type, step, onValueChange],
   );
 
+  const updateRangeValue = useCallback(
+    (locationX: number) => {
+      if (disabled || trackWidth === 0) return;
+      const raw = (locationX / trackWidth) * (max - min) + min;
+      const resolved =
+        type === "discrete"
+          ? snapToStep(raw, min, max, step)
+          : clamp(raw, min, max);
+      if (activeThumb.current === "low") {
+        const newLow = Math.min(resolved, currentHigh);
+        setInternalLow(newLow);
+        onRangeChange?.(newLow, currentHigh);
+      } else {
+        const newHigh = Math.max(resolved, currentLow);
+        setInternalHigh(newHigh);
+        onRangeChange?.(currentLow, newHigh);
+      }
+    },
+    [disabled, trackWidth, max, min, type, step, currentLow, currentHigh, onRangeChange],
+  );
+
   const panResponder = useMemo(
     () =>
       PanResponder.create({
@@ -116,6 +151,27 @@ export function Slider({
         },
       }),
     [disabled, updateValue],
+  );
+
+  const rangePanResponder = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => !disabled,
+        onMoveShouldSetPanResponder: () => !disabled,
+        onPanResponderGrant: (evt) => {
+          if (trackWidth === 0) return;
+          const x = evt.nativeEvent.locationX;
+          const lowX = lowFraction * trackWidth;
+          const highX = highFraction * trackWidth;
+          activeThumb.current =
+            Math.abs(x - lowX) <= Math.abs(x - highX) ? "low" : "high";
+          updateRangeValue(x);
+        },
+        onPanResponderMove: (evt) => {
+          updateRangeValue(evt.nativeEvent.locationX);
+        },
+      }),
+    [disabled, trackWidth, lowFraction, highFraction, updateRangeValue],
   );
 
   const handleLayout = useCallback((e: LayoutChangeEvent) => {
@@ -134,7 +190,9 @@ export function Slider({
     for (let i = 0; i < count; i++) {
       const tickFraction = i / (count - 1);
       const tickLeft = tickFraction * trackWidth - 2;
-      const isActive = tickFraction <= fraction;
+      const isActive = isRange
+        ? tickFraction >= lowFraction && tickFraction <= highFraction
+        : tickFraction <= fraction;
       marks.push(
         <TickMark
           key={i}
@@ -151,6 +209,9 @@ export function Slider({
     min,
     step,
     fraction,
+    isRange,
+    lowFraction,
+    highFraction,
     onPrimaryColor,
     primaryColor,
   ]);
@@ -168,24 +229,47 @@ export function Slider({
     >
       <View
         position="relative"
-        {...panResponder.panHandlers}
+        {...(isRange ? rangePanResponder.panHandlers : panResponder.panHandlers)}
         onLayout={handleLayout}
       >
         <Track backgroundColor={primaryContainerColor as any} />
-        <ActiveTrack
-          backgroundColor={primaryColor as any}
-          width={fraction * trackWidth}
-        />
+        {isRange ? (
+          <ActiveTrack
+            backgroundColor={primaryColor as any}
+            left={lowFraction * trackWidth}
+            width={(highFraction - lowFraction) * trackWidth}
+          />
+        ) : (
+          <ActiveTrack
+            backgroundColor={primaryColor as any}
+            width={fraction * trackWidth}
+          />
+        )}
         {tickMarks}
-        <Thumb backgroundColor={primaryColor as any} left={thumbLeft}>
-          {showLabel && (
-            <ValueLabel backgroundColor={primaryColor as any}>
-              <ValueLabelText color={onPrimaryColor as any}>
-                {Math.round(currentValue)}
-              </ValueLabelText>
-            </ValueLabel>
-          )}
-        </Thumb>
+        {isRange ? (
+          <>
+            <Thumb
+              backgroundColor={primaryColor as any}
+              left={lowFraction * trackWidth - 10}
+              testID={testID ? `${testID}-thumb-low` : undefined}
+            />
+            <Thumb
+              backgroundColor={primaryColor as any}
+              left={highFraction * trackWidth - 10}
+              testID={testID ? `${testID}-thumb-high` : undefined}
+            />
+          </>
+        ) : (
+          <Thumb backgroundColor={primaryColor as any} left={thumbLeft}>
+            {showLabel && (
+              <ValueLabel backgroundColor={primaryColor as any}>
+                <ValueLabelText color={onPrimaryColor as any}>
+                  {Math.round(currentValue)}
+                </ValueLabelText>
+              </ValueLabel>
+            )}
+          </Thumb>
+        )}
       </View>
     </SliderContainer>
   );

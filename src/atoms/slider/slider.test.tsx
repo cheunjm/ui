@@ -121,6 +121,23 @@ describe("Slider", () => {
     });
   });
 
+  it("renders range variant", () => {
+    render(<Slider variant="range" lowValue={20} highValue={80} testID="slider" />);
+    expect(screen.getByTestId("slider")).toBeTruthy();
+  });
+
+  it("renders two thumbs in range variant", () => {
+    render(<Slider variant="range" lowValue={20} highValue={80} testID="slider" />);
+    expect(screen.getByTestId("slider-thumb-low")).toBeTruthy();
+    expect(screen.getByTestId("slider-thumb-high")).toBeTruthy();
+  });
+
+  it("does not render second thumb in default variant", () => {
+    render(<Slider value={50} testID="slider" />);
+    expect(screen.queryByTestId("slider-thumb-low")).toBeNull();
+    expect(screen.queryByTestId("slider-thumb-high")).toBeNull();
+  });
+
   describe("dark mode", () => {
     it("renders in dark theme without crashing", () => {
       render(<Slider testID="dark-test" />, { theme: "dark" });
