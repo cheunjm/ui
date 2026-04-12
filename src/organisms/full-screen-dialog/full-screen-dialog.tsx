@@ -36,7 +36,7 @@ export function FullScreenDialog({
     <ScrollView
       style={{ flex: 1 }}
       contentContainerStyle={{ padding: 24 }}
-      keyboardShouldPersistTaps="handled"
+      keyboardShouldPersistTaps={keyboardAvoiding ? "handled" : undefined}
       testID={testID ? `${testID}-body` : undefined}
     >
       {children}
