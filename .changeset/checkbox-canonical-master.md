@@ -1,5 +1,0 @@
----
-"@aramiworks/ui": patch
----
-
-Checkbox: canonicalize Figma master in unified design system file b79qv459pnXaypgNQfNXuc. COMPONENT_SET Checkbox (637:12) reduced from 6 variants (State × Disabled) to a single COMPONENT named Type=Default (637:3, 18×18) — matches runtime container size. Container fill bound to `primary`, checkmark fill bound to `onPrimary`. State (unchecked/checked/indeterminate), error, and disabled are all runtime concerns; the Variants section communicates them via instance overrides (fill/stroke/visibility/opacity). Documentation page (379:81) rebuilt to doc-stack convention with Overview/Variants/Anatomy/Specs FRAMEs — Anatomy uses Card outlined focal + numbered Badges with Connectors labeling Container/Checkmark, Specs uses a single Table instance (Rows=8) covering Size / Corner radius / Border width / Touch target / Container color / Checkmark color / Border color / Error color. Story Figma URLs repointed to specific doc nodes (1656:3, 1656:24, 1657:2, 1657:19).
