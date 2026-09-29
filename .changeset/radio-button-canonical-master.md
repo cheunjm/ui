@@ -1,5 +1,0 @@
----
-"@aramiworks/ui": patch
----
-
-Radio Button: canonicalize Figma master in unified design system file b79qv459pnXaypgNQfNXuc. COMPONENT_SET Radio Button (644:12) reduced from 4 variants (Selected × Disabled) to a single COMPONENT named Type=Default (644:4, 20×20) — kept the Selected=true variant since it has both outer-ring + inner-dot bound to `primary`. Outer ring stroke bound to `primary`, inner dot fill bound to `primary`. Selected, error, and disabled are runtime concerns; the Variants section communicates them via instance overrides (stroke/fill/visibility/opacity). Documentation page (379:82) rebuilt to doc-stack convention with Overview/Variants/Anatomy/Specs FRAMEs — Anatomy uses Card outlined focal + numbered Badges with Connectors labeling Outer ring / Inner dot, Specs uses a single Table instance (Rows=8) covering Outer circle size / Inner circle size / Border width / Touch target / Shape / Selected color / Unselected color / Error color. Story Figma URLs repointed to specific doc nodes (1687:3, 1687:38, 1690:2, 1690:21).
