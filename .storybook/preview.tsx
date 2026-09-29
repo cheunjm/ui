@@ -1,3 +1,4 @@
+import "../src/tokens/unistyles.config";
 import type { Preview } from "@storybook/react-vite";
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
