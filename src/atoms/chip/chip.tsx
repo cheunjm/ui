@@ -1,41 +1,25 @@
-import { Pressable } from "react-native";
-import { styled, View, Text, useTheme } from "tamagui";
+import { Pressable, View } from "react-native";
+import { StyleSheet } from "react-native-unistyles";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { DISABLED_OPACITY } from "../../tokens/custom/interaction";
+import { Text } from "../text";
+import { useAppTheme } from "../../tokens/use-app-theme";
 import type { ChipProps } from "./chip.type";
 
-const StyledChipContainer = styled(View, {
-  name: "Chip",
-  height: 32,
-  borderRadius: "$sm",
-  flexDirection: "row",
-  alignItems: "center",
-  paddingHorizontal: "$lg",
-  borderWidth: 1,
-  borderColor: "$outline",
-  backgroundColor: "transparent",
-
-  variants: {
-    selected: {
-      true: {
-        backgroundColor: "$secondaryContainer",
-        borderWidth: 0,
-      },
-    },
-    hasLeadingIcon: {
-      true: {
-        paddingLeft: "$sm",
-      },
-    },
-  } as const,
-} as const);
-
-const ChipLabel = styled(Text, {
-  name: "ChipLabel",
-  fontSize: 14,
-  fontWeight: "500",
-  color: "$onSurface",
-});
+const stylesheet = StyleSheet.create((theme) => ({
+  chip: {
+    height: 32,
+    borderRadius: theme.radii.sm,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: theme.spacing.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.outline,
+    backgroundColor: "transparent",
+  },
+  icon: {
+    marginRight: 8,
+  },
+}));
 
 export function Chip({
   label,
@@ -49,15 +33,15 @@ export function Chip({
   accessibilityLabel,
   accessibilityHint,
   testID,
+  style,
   ...props
 }: ChipProps) {
-  const theme = useTheme();
-
+  const { theme } = useAppTheme();
   const isSelected = type === "filter" && selected;
   const hasLeadingIcon = !!leadingIcon || isSelected;
 
-  const iconColor = theme.onSurfaceVariant?.val as string;
-  const selectedIconColor = theme.onSecondaryContainer?.val as string;
+  const iconColor = theme.colors.onSurfaceVariant;
+  const selectedIconColor = theme.colors.onSecondaryContainer;
   const labelColor = isSelected ? selectedIconColor : iconColor;
 
   return (
@@ -70,20 +54,29 @@ export function Chip({
       accessibilityState={{ selected: isSelected, disabled }}
       testID={testID}
     >
-      <StyledChipContainer
-        selected={isSelected as any}
-        hasLeadingIcon={hasLeadingIcon as any}
-        opacity={disabled ? DISABLED_OPACITY : 1}
+      <View
+        style={[
+          stylesheet.chip,
+          isSelected
+            ? {
+                backgroundColor: theme.colors.secondaryContainer,
+                borderWidth: 0,
+              }
+            : null,
+          hasLeadingIcon ? { paddingLeft: theme.spacing.sm } : null,
+          disabled ? { opacity: theme.opacity.disabled } : null,
+          style,
+        ]}
         {...props}
       >
         {isSelected && !leadingIcon && (
-          <View marginRight={8}>
+          <View style={stylesheet.icon}>
             <MaterialIcons name="check" size={18} color={selectedIconColor} />
           </View>
         )}
 
         {leadingIcon && (
-          <View marginRight={8}>
+          <View style={stylesheet.icon}>
             <MaterialIcons
               name={leadingIcon as any}
               size={18}
@@ -92,7 +85,13 @@ export function Chip({
           </View>
         )}
 
-        <ChipLabel color={labelColor as any}>{label}</ChipLabel>
+        <Text
+          role="label"
+          size="medium"
+          style={{ fontWeight: "500", color: labelColor }}
+        >
+          {label}
+        </Text>
 
         {type === "input" && trailingIcon && (
           <Pressable
@@ -100,7 +99,7 @@ export function Chip({
             disabled={disabled}
             testID={testID ? `${testID}-trailing` : undefined}
           >
-            <View marginLeft={8}>
+            <View style={{ marginLeft: 8 }}>
               <MaterialIcons
                 name={trailingIcon as any}
                 size={18}
@@ -109,7 +108,7 @@ export function Chip({
             </View>
           </Pressable>
         )}
-      </StyledChipContainer>
+      </View>
     </Pressable>
   );
 }

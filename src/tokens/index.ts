@@ -6,3 +6,6 @@ export * from "./generated/elevation";
 export * from "./custom/animation";
 export * from "./custom/shadows";
 export * from "./custom/interaction";
+export * from "./unistyles.theme";
+export * from "./resolve-color";
+export * from "./resolve-spacing";

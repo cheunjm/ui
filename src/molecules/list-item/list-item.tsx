@@ -1,6 +1,6 @@
 import { isValidElement } from "react";
-import { Pressable } from "react-native";
-import { styled, View } from "tamagui";
+import { Pressable, View } from "react-native";
+import { StyleSheet } from "react-native-unistyles";
 import { Avatar } from "../../atoms/avatar";
 import { Icon } from "../../atoms/icon";
 import { Text } from "../../atoms/text";
@@ -8,33 +8,28 @@ import { Divider } from "../../atoms/divider";
 import { DISABLED_OPACITY } from "../../tokens/custom/interaction";
 import type { ListItemProps } from "./list-item.type";
 
-const Row = styled(View, {
-  name: "ListItemRow",
-  flexDirection: "row",
-  alignItems: "center",
-  paddingHorizontal: "$lg",
-  paddingVertical: "$sm",
-});
-
-const Content = styled(View, {
-  name: "ListItemContent",
-  flex: 1,
-  justifyContent: "center",
-});
-
-const LeadingContainer = styled(View, {
-  name: "ListItemLeading",
-  marginRight: "$lg",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-const TrailingContainer = styled(View, {
-  name: "ListItemTrailing",
-  marginLeft: "$lg",
-  justifyContent: "center",
-  alignItems: "center",
-});
+const stylesheet = StyleSheet.create((theme) => ({
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.sm,
+  },
+  content: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  leading: {
+    marginRight: theme.spacing.lg,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  trailing: {
+    marginLeft: theme.spacing.lg,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
 
 export function ListItem({
   headline,
@@ -67,20 +62,20 @@ export function ListItem({
           ? { source: { uri: leadingAvatar.uri } }
           : { name: leadingAvatar.name };
       return (
-        <LeadingContainer>
+        <View style={stylesheet.leading}>
           <Avatar size="medium" {...avatarProps} />
-        </LeadingContainer>
+        </View>
       );
     }
     if (typeof leadingContent === "string") {
       return (
-        <LeadingContainer>
+        <View style={stylesheet.leading}>
           <Icon name={leadingContent} size={24} color="$onSurfaceVariant" />
-        </LeadingContainer>
+        </View>
       );
     }
     if (isValidElement(leadingContent)) {
-      return <LeadingContainer>{leadingContent}</LeadingContainer>;
+      return <View style={stylesheet.leading}>{leadingContent}</View>;
     }
     return null;
   };
@@ -88,7 +83,7 @@ export function ListItem({
   const renderTrailing = () => {
     if (!hasTrailing) return null;
     return (
-      <TrailingContainer>
+      <View style={stylesheet.trailing}>
         {typeof trailingContent === "string" ? (
           <Text role="label" size="small" color="$onSurfaceVariant">
             {trailingContent}
@@ -106,7 +101,7 @@ export function ListItem({
             {trailingElement}
           </Pressable>
         ) : null}
-      </TrailingContainer>
+      </View>
     );
   };
 
@@ -120,9 +115,9 @@ export function ListItem({
         accessibilityState={disabled ? { disabled: true } : undefined}
         style={{ opacity: disabled ? DISABLED_OPACITY : 1 }}
       >
-        <Row minHeight={minHeight}>
+        <View style={[stylesheet.row, { minHeight }]}>
           {renderLeading()}
-          <Content>
+          <View style={stylesheet.content}>
             {overlineText ? (
               <Text
                 role="label"
@@ -146,9 +141,9 @@ export function ListItem({
                 {supportingText}
               </Text>
             ) : null}
-          </Content>
+          </View>
           {renderTrailing()}
-        </Row>
+        </View>
       </Pressable>
       {showDivider ? <Divider /> : null}
     </View>
