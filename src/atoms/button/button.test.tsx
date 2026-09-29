@@ -1,3 +1,4 @@
+import { StyleSheet, Text } from "react-native";
 import { render, screen, fireEvent } from "@/test-utils";
 import { Button } from "./button";
 
@@ -61,6 +62,34 @@ describe("Button", () => {
     expect(screen.getByTestId("hint-test").props.accessibilityHint).toBe(
       "Submits the form",
     );
+  });
+
+  it("applies flex to the container style", () => {
+    render(
+      <Button flex={1} testID="flex-btn">
+        Flex
+      </Button>,
+    );
+    expect(
+      StyleSheet.flatten(screen.getByTestId("flex-btn").props.style),
+    ).toEqual(
+      expect.objectContaining({ flex: 1 }),
+    );
+  });
+
+  it("renders an icon before the label", () => {
+    render(<Button icon={<Text>icon</Text>}>With icon</Button>);
+    expect(screen.getByText("icon")).toBeTruthy();
+    expect(screen.getByText("With icon")).toBeTruthy();
+  });
+
+  it("renders non-string children as-is", () => {
+    render(
+      <Button>
+        <Text>custom child</Text>
+      </Button>,
+    );
+    expect(screen.getByText("custom child")).toBeTruthy();
   });
 
   it("has correct accessibility state when disabled", () => {
