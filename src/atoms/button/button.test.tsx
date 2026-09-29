@@ -72,9 +72,7 @@ describe("Button", () => {
     );
     expect(
       StyleSheet.flatten(screen.getByTestId("flex-btn").props.style),
-    ).toEqual(
-      expect.objectContaining({ flex: 1 }),
-    );
+    ).toEqual(expect.objectContaining({ flex: 1 }));
   });
 
   it("renders an icon before the label", () => {
