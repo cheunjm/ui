@@ -8,6 +8,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./unistyles": {
+      "types": "./dist/unistyles.d.ts",
+      "import": "./dist/unistyles.mjs",
+      "require": "./dist/unistyles.js"
     }
   },
   "types": "dist/index.d.ts",
