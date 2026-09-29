@@ -2,6 +2,7 @@ import type { Config } from "@jest/types";
 
 const config: Config.InitialOptions = {
   preset: "jest-expo",
+  setupFiles: ["react-native-unistyles/mocks", "./jest.setup.unistyles.ts"],
   setupFilesAfterEnv: ["./jest.setup.ts"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",

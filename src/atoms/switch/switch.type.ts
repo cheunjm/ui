@@ -1,7 +1,6 @@
-import type { GetProps } from "tamagui";
-import type { View } from "tamagui";
+import type { ViewProps } from "react-native";
 
-export type SwitchProps = Omit<GetProps<typeof View>, "children"> & {
+export type SwitchProps = Omit<ViewProps, "children"> & {
   /** Whether switch is on. Default: false */
   selected?: boolean;
   /** Show icon inside thumb. Default: false */

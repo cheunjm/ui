@@ -1,10 +1,9 @@
-import type { GetProps } from "tamagui";
-import type { View } from "tamagui";
+import type { ViewProps } from "react-native";
 
 /** MD3 Chip type */
 export type ChipType = "assist" | "filter" | "input" | "suggestion";
 
-export type ChipProps = Omit<GetProps<typeof View>, "children"> & {
+export type ChipProps = Omit<ViewProps, "children"> & {
   /** Chip label text */
   label: string;
   /** Chip type. Default: "assist" */

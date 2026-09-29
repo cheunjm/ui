@@ -1,45 +1,22 @@
-import { styled, View, useTheme } from "tamagui";
-import { Pressable } from "react-native";
+import { View, Pressable } from "react-native";
+import { StyleSheet } from "react-native-unistyles";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { DISABLED_OPACITY } from "../../tokens/custom/interaction";
+import { useAppTheme } from "../../tokens/use-app-theme";
 import type { SwitchProps } from "./switch.type";
 
-const Track = styled(View, {
-  name: "SwitchTrack",
-  width: 52,
-  height: 32,
-  borderRadius: "$full",
-  justifyContent: "center",
-
-  variants: {
-    selected: {
-      true: {
-        backgroundColor: "$primary",
-        borderWidth: 0,
-        // No border: pad 4dp directly so thumb sits 4dp from track edge.
-        paddingHorizontal: 4,
-      },
-      false: {
-        backgroundColor: "$surfaceContainerHighest",
-        borderWidth: 2,
-        borderColor: "$outline",
-        // 2dp border + 2dp pad = 4dp from outer track edge.
-        paddingHorizontal: 2,
-      },
-    },
-  } as const,
-
-  defaultVariants: {
-    selected: false,
+const stylesheet = StyleSheet.create((theme) => ({
+  track: {
+    width: 52,
+    height: 32,
+    borderRadius: theme.radii.full,
+    justifyContent: "center",
   },
-} as const);
-
-const Thumb = styled(View, {
-  name: "SwitchThumb",
-  borderRadius: "$full",
-  justifyContent: "center",
-  alignItems: "center",
-} as const);
+  thumb: {
+    borderRadius: theme.radii.full,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
 
 export function Switch({
   selected = false,
@@ -49,26 +26,38 @@ export function Switch({
   accessibilityLabel,
   accessibilityHint,
   testID,
+  style,
   ...props
 }: SwitchProps) {
-  const theme = useTheme();
+  const { theme } = useAppTheme();
 
   const thumbSize = selected || showIcon ? 24 : 16;
 
   const thumbBackgroundColor = (() => {
     if (selected) {
       return showIcon
-        ? (theme.onPrimaryContainer?.val as string)
-        : (theme.onPrimary?.val as string);
+        ? theme.colors.onPrimaryContainer
+        : theme.colors.onPrimary;
     }
-    return showIcon
-      ? (theme.onSurfaceVariant?.val as string)
-      : (theme.outline?.val as string);
+    return showIcon ? theme.colors.onSurfaceVariant : theme.colors.outline;
   })();
 
   const iconColor = selected
-    ? (theme.primaryContainer?.val as string)
-    : (theme.surfaceContainerHighest?.val as string);
+    ? theme.colors.primaryContainer
+    : theme.colors.surfaceContainerHighest;
+
+  const trackStyle = selected
+    ? {
+        backgroundColor: theme.colors.primary,
+        borderWidth: 0,
+        paddingHorizontal: 4,
+      }
+    : {
+        backgroundColor: theme.colors.surfaceContainerHighest,
+        borderWidth: 2,
+        borderColor: theme.colors.outline,
+        paddingHorizontal: 2,
+      };
 
   return (
     <Pressable
@@ -81,13 +70,21 @@ export function Switch({
       testID={testID}
       style={{ minWidth: 52, minHeight: 48, justifyContent: "center" }}
     >
-      <View opacity={disabled ? DISABLED_OPACITY : 1} {...props}>
-        <Track selected={selected as any}>
-          <Thumb
-            width={thumbSize}
-            height={thumbSize}
-            backgroundColor={thumbBackgroundColor as any}
-            alignSelf={selected ? "flex-end" : "flex-start"}
+      <View
+        style={[disabled ? { opacity: theme.opacity.disabled } : null, style]}
+        {...props}
+      >
+        <View style={[stylesheet.track, trackStyle]}>
+          <View
+            style={[
+              stylesheet.thumb,
+              {
+                width: thumbSize,
+                height: thumbSize,
+                backgroundColor: thumbBackgroundColor,
+                alignSelf: selected ? "flex-end" : "flex-start",
+              },
+            ]}
           >
             {showIcon && (
               <MaterialIcons
@@ -96,8 +93,8 @@ export function Switch({
                 color={iconColor}
               />
             )}
-          </Thumb>
-        </Track>
+          </View>
+        </View>
       </View>
     </Pressable>
   );

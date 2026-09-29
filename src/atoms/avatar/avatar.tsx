@@ -1,7 +1,8 @@
-import { View, useTheme } from "tamagui";
-import { Image } from "react-native";
+import { View, Image, StyleSheet as RNStyleSheet } from "react-native";
 import { Text } from "../text";
 import { Icon } from "../icon";
+import { resolveColor } from "../../tokens/resolve-color";
+import { useAppTheme } from "../../tokens/use-app-theme";
 import { AVATAR_SIZES } from "./avatar.const";
 import type { AvatarProps } from "./avatar.type";
 
@@ -20,17 +21,15 @@ export function Avatar({
   color,
   accessibilityLabel,
   testID,
+  style,
   ...props
 }: AvatarProps) {
-  const theme = useTheme();
+  const { theme } = useAppTheme();
   const sizeConfig = AVATAR_SIZES[size];
   const containerSize = sizeConfig.container;
 
-  const bgColor = color?.startsWith("$")
-    ? ((theme[color.slice(1)]?.val as string) ?? color)
-    : (color ?? (theme.primaryContainer?.val as string));
-
-  const fgColor = theme.onPrimaryContainer?.val as string;
+  const bgColor = resolveColor(color, theme) ?? theme.colors.primaryContainer;
+  const fgColor = theme.colors.onPrimaryContainer;
 
   const initials = name ? extractInitials(name) : "";
   const variant = source ? "image" : initials ? "initials" : "icon";
@@ -40,13 +39,18 @@ export function Avatar({
       testID={testID}
       accessibilityRole="image"
       accessibilityLabel={accessibilityLabel ?? name}
-      width={containerSize}
-      height={containerSize}
-      borderRadius={containerSize / 2}
-      backgroundColor={variant === "image" ? undefined : (bgColor as any)}
-      overflow="hidden"
-      justifyContent="center"
-      alignItems="center"
+      style={RNStyleSheet.flatten([
+        {
+          width: containerSize,
+          height: containerSize,
+          borderRadius: containerSize / 2,
+          backgroundColor: variant === "image" ? undefined : bgColor,
+          overflow: "hidden",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        style,
+      ])}
       {...props}
     >
       {variant === "image" && (
@@ -64,9 +68,11 @@ export function Avatar({
         <Text
           role="label"
           size="medium"
-          color={fgColor as any}
-          fontSize={sizeConfig.fontSize}
-          lineHeight={sizeConfig.fontSize * 1.2}
+          color={fgColor}
+          style={{
+            fontSize: sizeConfig.fontSize,
+            lineHeight: sizeConfig.fontSize * 1.2,
+          }}
           testID={testID ? `${testID}-initials` : undefined}
         >
           {initials}

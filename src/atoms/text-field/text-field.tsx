@@ -1,122 +1,61 @@
 import { useState, useCallback } from "react";
-import { TextInput, Pressable } from "react-native";
-import { styled, View, Text, useTheme } from "tamagui";
+import { TextInput, Pressable, View, Text as RNText } from "react-native";
+import { StyleSheet } from "react-native-unistyles";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { DISABLED_OPACITY } from "../../tokens/custom/interaction";
 import { fontSize, lineHeight } from "../../tokens/generated/typography";
+import { useAppTheme } from "../../tokens/use-app-theme";
 import type { TextFieldProps } from "./text-field.type";
 
-const FilledContainer = styled(View, {
-  name: "TextFieldFilledContainer",
-  height: 56,
-  backgroundColor: "$surfaceContainerHighest",
-  borderTopLeftRadius: "$md",
-  borderTopRightRadius: "$md",
-  borderBottomLeftRadius: 0,
-  borderBottomRightRadius: 0,
-  flexDirection: "row",
-  alignItems: "center",
-  paddingHorizontal: "$lg",
-
-  variants: {
-    isDisabled: {
-      true: {
-        opacity: DISABLED_OPACITY,
-      },
-    },
-  } as const,
-} as const);
-
-const OutlinedContainer = styled(View, {
-  name: "TextFieldOutlinedContainer",
-  height: 56,
-  backgroundColor: "transparent",
-  borderRadius: "$md",
-  borderWidth: 1,
-  borderColor: "$outline",
-  flexDirection: "row",
-  alignItems: "center",
-  paddingHorizontal: "$lg",
-
-  variants: {
-    isFocused: {
-      true: {
-        borderWidth: 2,
-        borderColor: "$primary",
-      },
-    },
-    isError: {
-      true: {
-        borderWidth: 2,
-        borderColor: "$error",
-      },
-    },
-    isDisabled: {
-      true: {
-        opacity: DISABLED_OPACITY,
-      },
-    },
-  } as const,
-} as const);
-
-const LabelText = styled(Text, {
-  name: "TextFieldLabel",
-  position: "absolute",
-  left: "$lg",
-
-  variants: {
-    isFloating: {
-      true: {
-        top: "$sm",
-        fontSize: fontSize.bodySmall,
-        lineHeight: lineHeight.bodySmall,
-      },
-      false: {
-        top: "$lg",
-        fontSize: fontSize.bodyLarge,
-        lineHeight: lineHeight.bodyLarge,
-      },
-    },
-  } as const,
-} as const);
-
-const HelperText = styled(Text, {
-  name: "TextFieldHelperText",
-  fontSize: fontSize.bodySmall,
-  lineHeight: lineHeight.bodySmall,
-  paddingHorizontal: "$lg",
-  paddingTop: "$xs",
-} as const);
-
-const CounterText = styled(Text, {
-  name: "TextFieldCounterText",
-  fontSize: fontSize.bodySmall,
-  lineHeight: lineHeight.bodySmall,
-  paddingTop: "$xs",
-  paddingRight: "$lg",
-  color: "$onSurfaceVariant",
-} as const);
-
-const FilledBottomBorder = styled(View, {
-  name: "TextFieldFilledBorder",
-  height: 1,
-  backgroundColor: "$onSurfaceVariant",
-
-  variants: {
-    isFocused: {
-      true: {
-        height: 2,
-        backgroundColor: "$primary",
-      },
-    },
-    isError: {
-      true: {
-        height: 2,
-        backgroundColor: "$error",
-      },
-    },
-  } as const,
-} as const);
+const stylesheet = StyleSheet.create((theme) => ({
+  filledContainer: {
+    height: 56,
+    backgroundColor: theme.colors.surfaceContainerHighest,
+    borderTopLeftRadius: theme.radii.md,
+    borderTopRightRadius: theme.radii.md,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: theme.spacing.lg,
+  },
+  outlinedContainer: {
+    height: 56,
+    backgroundColor: "transparent",
+    borderRadius: theme.radii.md,
+    borderWidth: 1,
+    borderColor: theme.colors.outline,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: theme.spacing.lg,
+  },
+  label: {
+    position: "absolute",
+    left: theme.spacing.lg,
+  },
+  labelWithIcon: {
+    left: 52,
+  },
+  helperText: {
+    fontSize: fontSize.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    paddingHorizontal: theme.spacing.lg,
+    paddingTop: theme.spacing.xs,
+  },
+  counterText: {
+    fontSize: fontSize.bodySmall,
+    lineHeight: lineHeight.bodySmall,
+    paddingTop: theme.spacing.xs,
+    paddingRight: theme.spacing.lg,
+    color: theme.colors.onSurfaceVariant,
+  },
+  filledBottomBorder: {
+    height: 1,
+    backgroundColor: theme.colors.onSurfaceVariant,
+  },
+  bottomRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 0,
+  },
+}));
 
 export function TextField({
   variant = "filled",
@@ -143,10 +82,11 @@ export function TextField({
   multiline,
 }: TextFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
-  const theme = useTheme();
+  const { theme } = useAppTheme();
 
   const isFloating = isFocused || !!value;
   const isError = error || !!errorText;
+  const showFocusRing = !isError && isFocused;
 
   const handleFocus = useCallback(() => {
     setIsFocused(true);
@@ -159,27 +99,49 @@ export function TextField({
   }, [onBlur]);
 
   const labelColor = isError
-    ? (theme.error?.val as string)
+    ? theme.colors.error
     : isFocused
-      ? (theme.primary?.val as string)
-      : (theme.onSurfaceVariant?.val as string);
+      ? theme.colors.primary
+      : theme.colors.onSurfaceVariant;
 
-  const inputColor = disabled
-    ? (theme.onSurface?.val as string)
-    : (theme.onSurface?.val as string);
-
-  const iconColor = theme.onSurfaceVariant?.val as string;
-
+  const inputColor = theme.colors.onSurface;
+  const iconColor = theme.colors.onSurfaceVariant;
   const supportText = errorText ?? helperText;
   const supportColor = isError
-    ? (theme.error?.val as string)
-    : (theme.onSurfaceVariant?.val as string);
+    ? theme.colors.error
+    : theme.colors.onSurfaceVariant;
+
+  const labelVariantStyle = isFloating
+    ? {
+        top: theme.spacing.sm,
+        fontSize: fontSize.bodySmall,
+        lineHeight: lineHeight.bodySmall,
+      }
+    : {
+        top: theme.spacing.lg,
+        fontSize: fontSize.bodyLarge,
+        lineHeight: lineHeight.bodyLarge,
+      };
+
+  const outlinedBorderStyle = isError
+    ? { borderWidth: 2, borderColor: theme.colors.error }
+    : showFocusRing
+      ? { borderWidth: 2, borderColor: theme.colors.primary }
+      : null;
+
+  const bottomBorderStyle = isError
+    ? { height: 2, backgroundColor: theme.colors.error }
+    : showFocusRing
+      ? { height: 2, backgroundColor: theme.colors.primary }
+      : null;
+
+  const disabledStyle = disabled ? { opacity: theme.opacity.disabled } : null;
 
   const inputElement = (
     <TextInput
       value={value}
       placeholder={!label || isFloating ? placeholder : undefined}
-      placeholderTextColor={theme.onSurfaceVariant?.val as string}
+      placeholderTextColor={theme.colors.onSurfaceVariant}
       onChangeText={onChangeText}
       onFocus={handleFocus}
       onBlur={handleBlur}
@@ -206,48 +168,49 @@ export function TextField({
   );
 
   const leadingIconElement = leadingIcon ? (
-    <View marginRight="$md">
+    <View style={{ marginRight: theme.spacing.md }}>
       <MaterialIcons name={leadingIcon as any} size={24} color={iconColor} />
     </View>
   ) : null;
 
   const trailingIconElement = trailingIcon ? (
     <Pressable onPress={disabled ? undefined : onTrailingIconPress}>
-      <View marginLeft="$md">
+      <View style={{ marginLeft: theme.spacing.md }}>
         <MaterialIcons name={trailingIcon as any} size={24} color={iconColor} />
       </View>
     </Pressable>
   ) : null;
 
   const labelElement = label ? (
-    <LabelText
-      isFloating={isFloating}
-      color={labelColor as any}
+    <RNText
+      style={[
+        stylesheet.label,
+        labelVariantStyle,
+        { color: labelColor },
+        leadingIcon ? stylesheet.labelWithIcon : null,
+      ]}
       pointerEvents="none"
-      style={leadingIcon ? { left: 52 } : undefined}
     >
       {label}
-    </LabelText>
+    </RNText>
   ) : null;
 
   const bottomRow =
     supportText || maxLength ? (
-      <View
-        flexDirection="row"
-        justifyContent="space-between"
-        paddingHorizontal={0}
-      >
+      <View style={stylesheet.bottomRow}>
         {supportText ? (
-          <HelperText color={supportColor as any} flex={1}>
+          <RNText
+            style={[stylesheet.helperText, { color: supportColor, flex: 1 }]}
+          >
             {supportText}
-          </HelperText>
+          </RNText>
         ) : (
-          <View flex={1} />
+          <View style={{ flex: 1 }} />
         )}
         {maxLength ? (
-          <CounterText>
+          <RNText style={stylesheet.counterText}>
             {value?.length ?? 0}/{maxLength}
-          </CounterText>
+          </RNText>
         ) : null}
       </View>
     ) : null;
@@ -255,16 +218,18 @@ export function TextField({
   if (variant === "outlined") {
     return (
       <View testID={testID}>
-        <View position="relative">
-          <OutlinedContainer
-            isFocused={!isError && isFocused ? true : undefined}
-            isError={isError ? true : undefined}
-            isDisabled={disabled ? true : undefined}
+        <View style={{ position: "relative" }}>
+          <View
+            style={[
+              stylesheet.outlinedContainer,
+              outlinedBorderStyle,
+              disabledStyle,
+            ]}
           >
             {leadingIconElement}
             {inputElement}
             {trailingIconElement}
-          </OutlinedContainer>
+          </View>
           {labelElement}
         </View>
         {bottomRow}
@@ -274,17 +239,14 @@ export function TextField({
 
   return (
     <View testID={testID}>
-      <View position="relative">
-        <FilledContainer isDisabled={disabled ? true : undefined}>
+      <View style={{ position: "relative" }}>
+        <View style={[stylesheet.filledContainer, disabledStyle]}>
           {leadingIconElement}
           {inputElement}
           {trailingIconElement}
-        </FilledContainer>
+        </View>
         {labelElement}
-        <FilledBottomBorder
-          isFocused={!isError && isFocused ? true : undefined}
-          isError={isError ? true : undefined}
-        />
+        <View style={[stylesheet.filledBottomBorder, bottomBorderStyle]} />
       </View>
       {bottomRow}
     </View>

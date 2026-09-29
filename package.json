@@ -4,9 +4,22 @@
   "description": "Expo-based design system — Brad Frost atomic design, MD3 interface, Tamagui internals",
   "main": "expo/AppEntry",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./unistyles": {
+      "types": "./dist/unistyles.d.ts",
+      "import": "./dist/unistyles.mjs",
+      "require": "./dist/unistyles.js"
+    }
   },
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com",
     "access": "public"
@@ -17,6 +30,8 @@
     "ios": "expo start --ios",
     "android": "expo start --android",
     "web": "expo start --web",
+    "build": "tsup",
+    "prepare": "npm run build",
     "storybook:generate": "sb-rn-get-stories --config-path .ondevice",
     "eas-build-post-install": "npm run storybook:generate",
     "format": "prettier --write \"**/*.{ts,tsx,md,json}\"",
@@ -56,6 +71,8 @@
     "react-native-safe-area-context": ">=5.0.0",
     "react-native-svg": ">=15.0.0",
     "react-native-worklets": ">=0.7.0",
+    "react-native-unistyles": ">=3.0.0",
+    "react-native-nitro-modules": ">=0.35.0",
     "tamagui": ">=1.112.0"
   },
   "devDependencies": {
@@ -106,10 +123,13 @@
     "react-native-svg": "^15.15.4",
     "react-native-web": "^0.21.0",
     "react-native-worklets": "0.7.2",
+    "react-native-unistyles": "^3.0.0",
+    "react-native-nitro-modules": "^0.35.0",
     "storybook": "^10.3.4",
     "storybook-deeper-sort": "^2.0.6",
     "tamagui": "^1.112.0",
     "ts-node": "^10.9.2",
+    "tsup": "^8.3.5",
     "tsx": "^4.19.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.57.2",

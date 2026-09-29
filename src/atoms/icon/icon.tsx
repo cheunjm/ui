@@ -1,6 +1,7 @@
 import { View } from "react-native";
-import { useTheme } from "tamagui";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { resolveColor } from "../../tokens/resolve-color";
+import { useAppTheme } from "../../tokens/use-app-theme";
 import type { IconProps } from "./icon.type";
 
 export function Icon({
@@ -11,10 +12,8 @@ export function Icon({
   testID,
   style,
 }: IconProps) {
-  const theme = useTheme();
-  const resolvedColor = color?.startsWith("$")
-    ? ((theme[color.slice(1)]?.val as string) ?? color)
-    : (color ?? (theme.onSurface?.val as string));
+  const { theme } = useAppTheme();
+  const resolvedColor = resolveColor(color, theme) ?? theme.colors.onSurface;
 
   return (
     <View testID={testID} accessibilityLabel={accessibilityLabel} style={style}>
